@@ -10,33 +10,298 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as IndustryResourcesRouteImport } from './routes/industry-resources'
+import { Route as LivingIndependentlyAndPersonalFinanceRouteImport } from './routes/living-independently-and-personal-finance'
+import { Route as SurveyRouteImport } from './routes/survey'
+import { Route as ToolsAndResourcesRouteImport } from './routes/tools-and-resources'
+import { Route as AboutIndexRouteImport } from './routes/about.index'
+import { Route as AboutOmanVision2040RouteImport } from './routes/about.oman-vision-2040'
+import { Route as AboutProjectRouteImport } from './routes/about.project'
+import { Route as AboutTeamRouteImport } from './routes/about.team'
+import { Route as IndustryResourcesIndexRouteImport } from './routes/industry-resources.index'
+import { Route as IndustryResourcesEconomicsRouteImport } from './routes/industry-resources.economics'
+import { Route as IndustryResourcesEntrepreneurshipRouteImport } from './routes/industry-resources.entrepreneurship'
+import { Route as IndustryResourcesInvestmentBankingAndTradingRouteImport } from './routes/industry-resources.investment-banking-and-trading'
+import { Route as IndustryResourcesLawRouteImport } from './routes/industry-resources.law'
+import { Route as IndustryResourcesOperationsRouteImport } from './routes/industry-resources.operations'
+import { Route as IndustryResourcesOtherFinanceRouteImport } from './routes/industry-resources.other-finance'
+import { Route as IndustryResourcesTaxRouteImport } from './routes/industry-resources.tax'
+import { Route as LivingIndependentlyAndPersonalFinanceIndexRouteImport } from './routes/living-independently-and-personal-finance.index'
+import { Route as LivingIndependentlyAndPersonalFinanceLinkedinRouteImport } from './routes/living-independently-and-personal-finance.linkedin'
+import { Route as LivingIndependentlyAndPersonalFinanceMyJourneyBlogRouteImport } from './routes/living-independently-and-personal-finance.my-journey-blog'
+import { Route as LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRouteImport } from './routes/living-independently-and-personal-finance.personal-finance-blog'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustryResourcesRoute = IndustryResourcesRouteImport.update({
+  id: '/industry-resources',
+  path: '/industry-resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LivingIndependentlyAndPersonalFinanceRoute =
+  LivingIndependentlyAndPersonalFinanceRouteImport.update({
+    id: '/living-independently-and-personal-finance',
+    path: '/living-independently-and-personal-finance',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SurveyRoute = SurveyRouteImport.update({
+  id: '/survey',
+  path: '/survey',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsAndResourcesRoute = ToolsAndResourcesRouteImport.update({
+  id: '/tools-and-resources',
+  path: '/tools-and-resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutIndexRoute = AboutIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutOmanVision2040Route = AboutOmanVision2040RouteImport.update({
+  id: '/oman-vision-2040',
+  path: '/oman-vision-2040',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutProjectRoute = AboutProjectRouteImport.update({
+  id: '/project',
+  path: '/project',
+  getParentRoute: () => AboutRoute,
+} as any)
+const AboutTeamRoute = AboutTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => AboutRoute,
+} as any)
+const IndustryResourcesIndexRoute = IndustryResourcesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => IndustryResourcesRoute,
+} as any)
+const IndustryResourcesEconomicsRoute =
+  IndustryResourcesEconomicsRouteImport.update({
+    id: '/economics',
+    path: '/economics',
+    getParentRoute: () => IndustryResourcesRoute,
+  } as any)
+const IndustryResourcesEntrepreneurshipRoute =
+  IndustryResourcesEntrepreneurshipRouteImport.update({
+    id: '/entrepreneurship',
+    path: '/entrepreneurship',
+    getParentRoute: () => IndustryResourcesRoute,
+  } as any)
+const IndustryResourcesInvestmentBankingAndTradingRoute =
+  IndustryResourcesInvestmentBankingAndTradingRouteImport.update({
+    id: '/investment-banking-and-trading',
+    path: '/investment-banking-and-trading',
+    getParentRoute: () => IndustryResourcesRoute,
+  } as any)
+const IndustryResourcesLawRoute = IndustryResourcesLawRouteImport.update({
+  id: '/law',
+  path: '/law',
+  getParentRoute: () => IndustryResourcesRoute,
+} as any)
+const IndustryResourcesOperationsRoute =
+  IndustryResourcesOperationsRouteImport.update({
+    id: '/operations',
+    path: '/operations',
+    getParentRoute: () => IndustryResourcesRoute,
+  } as any)
+const IndustryResourcesOtherFinanceRoute =
+  IndustryResourcesOtherFinanceRouteImport.update({
+    id: '/other-finance',
+    path: '/other-finance',
+    getParentRoute: () => IndustryResourcesRoute,
+  } as any)
+const IndustryResourcesTaxRoute = IndustryResourcesTaxRouteImport.update({
+  id: '/tax',
+  path: '/tax',
+  getParentRoute: () => IndustryResourcesRoute,
+} as any)
+const LivingIndependentlyAndPersonalFinanceIndexRoute =
+  LivingIndependentlyAndPersonalFinanceIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => LivingIndependentlyAndPersonalFinanceRoute,
+  } as any)
+const LivingIndependentlyAndPersonalFinanceLinkedinRoute =
+  LivingIndependentlyAndPersonalFinanceLinkedinRouteImport.update({
+    id: '/linkedin',
+    path: '/linkedin',
+    getParentRoute: () => LivingIndependentlyAndPersonalFinanceRoute,
+  } as any)
+const LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute =
+  LivingIndependentlyAndPersonalFinanceMyJourneyBlogRouteImport.update({
+    id: '/my-journey-blog',
+    path: '/my-journey-blog',
+    getParentRoute: () => LivingIndependentlyAndPersonalFinanceRoute,
+  } as any)
+const LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute =
+  LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRouteImport.update({
+    id: '/personal-finance-blog',
+    path: '/personal-finance-blog',
+    getParentRoute: () => LivingIndependentlyAndPersonalFinanceRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRouteWithChildren
+  '/industry-resources': typeof IndustryResourcesRouteWithChildren
+  '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
+  '/survey': typeof SurveyRoute
+  '/tools-and-resources': typeof ToolsAndResourcesRoute
+  '/about/oman-vision-2040': typeof AboutOmanVision2040Route
+  '/about/project': typeof AboutProjectRoute
+  '/about/team': typeof AboutTeamRoute
+  '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
+  '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
+  '/industry-resources/investment-banking-and-trading': typeof IndustryResourcesInvestmentBankingAndTradingRoute
+  '/industry-resources/law': typeof IndustryResourcesLawRoute
+  '/industry-resources/operations': typeof IndustryResourcesOperationsRoute
+  '/industry-resources/other-finance': typeof IndustryResourcesOtherFinanceRoute
+  '/industry-resources/tax': typeof IndustryResourcesTaxRoute
+  '/living-independently-and-personal-finance/linkedin': typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
+  '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
+  '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
+  '/about/': typeof AboutIndexRoute
+  '/industry-resources/': typeof IndustryResourcesIndexRoute
+  '/living-independently-and-personal-finance/': typeof LivingIndependentlyAndPersonalFinanceIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/survey': typeof SurveyRoute
+  '/tools-and-resources': typeof ToolsAndResourcesRoute
+  '/about/oman-vision-2040': typeof AboutOmanVision2040Route
+  '/about/project': typeof AboutProjectRoute
+  '/about/team': typeof AboutTeamRoute
+  '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
+  '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
+  '/industry-resources/investment-banking-and-trading': typeof IndustryResourcesInvestmentBankingAndTradingRoute
+  '/industry-resources/law': typeof IndustryResourcesLawRoute
+  '/industry-resources/operations': typeof IndustryResourcesOperationsRoute
+  '/industry-resources/other-finance': typeof IndustryResourcesOtherFinanceRoute
+  '/industry-resources/tax': typeof IndustryResourcesTaxRoute
+  '/living-independently-and-personal-finance/linkedin': typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
+  '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
+  '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
+  '/about': typeof AboutIndexRoute
+  '/industry-resources': typeof IndustryResourcesIndexRoute
+  '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRouteWithChildren
+  '/industry-resources': typeof IndustryResourcesRouteWithChildren
+  '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
+  '/survey': typeof SurveyRoute
+  '/tools-and-resources': typeof ToolsAndResourcesRoute
+  '/about/oman-vision-2040': typeof AboutOmanVision2040Route
+  '/about/project': typeof AboutProjectRoute
+  '/about/team': typeof AboutTeamRoute
+  '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
+  '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
+  '/industry-resources/investment-banking-and-trading': typeof IndustryResourcesInvestmentBankingAndTradingRoute
+  '/industry-resources/law': typeof IndustryResourcesLawRoute
+  '/industry-resources/operations': typeof IndustryResourcesOperationsRoute
+  '/industry-resources/other-finance': typeof IndustryResourcesOtherFinanceRoute
+  '/industry-resources/tax': typeof IndustryResourcesTaxRoute
+  '/living-independently-and-personal-finance/linkedin': typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
+  '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
+  '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
+  '/about/': typeof AboutIndexRoute
+  '/industry-resources/': typeof IndustryResourcesIndexRoute
+  '/living-independently-and-personal-finance/': typeof LivingIndependentlyAndPersonalFinanceIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/industry-resources'
+    | '/living-independently-and-personal-finance'
+    | '/survey'
+    | '/tools-and-resources'
+    | '/about/oman-vision-2040'
+    | '/about/project'
+    | '/about/team'
+    | '/industry-resources/economics'
+    | '/industry-resources/entrepreneurship'
+    | '/industry-resources/investment-banking-and-trading'
+    | '/industry-resources/law'
+    | '/industry-resources/operations'
+    | '/industry-resources/other-finance'
+    | '/industry-resources/tax'
+    | '/living-independently-and-personal-finance/linkedin'
+    | '/living-independently-and-personal-finance/my-journey-blog'
+    | '/living-independently-and-personal-finance/personal-finance-blog'
+    | '/about/'
+    | '/industry-resources/'
+    | '/living-independently-and-personal-finance/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/survey'
+    | '/tools-and-resources'
+    | '/about/oman-vision-2040'
+    | '/about/project'
+    | '/about/team'
+    | '/industry-resources/economics'
+    | '/industry-resources/entrepreneurship'
+    | '/industry-resources/investment-banking-and-trading'
+    | '/industry-resources/law'
+    | '/industry-resources/operations'
+    | '/industry-resources/other-finance'
+    | '/industry-resources/tax'
+    | '/living-independently-and-personal-finance/linkedin'
+    | '/living-independently-and-personal-finance/my-journey-blog'
+    | '/living-independently-and-personal-finance/personal-finance-blog'
+    | '/about'
+    | '/industry-resources'
+    | '/living-independently-and-personal-finance'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/industry-resources'
+    | '/living-independently-and-personal-finance'
+    | '/survey'
+    | '/tools-and-resources'
+    | '/about/oman-vision-2040'
+    | '/about/project'
+    | '/about/team'
+    | '/industry-resources/economics'
+    | '/industry-resources/entrepreneurship'
+    | '/industry-resources/investment-banking-and-trading'
+    | '/industry-resources/law'
+    | '/industry-resources/operations'
+    | '/industry-resources/other-finance'
+    | '/industry-resources/tax'
+    | '/living-independently-and-personal-finance/linkedin'
+    | '/living-independently-and-personal-finance/my-journey-blog'
+    | '/living-independently-and-personal-finance/personal-finance-blog'
+    | '/about/'
+    | '/industry-resources/'
+    | '/living-independently-and-personal-finance/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRouteWithChildren
+  IndustryResourcesRoute: typeof IndustryResourcesRouteWithChildren
+  LivingIndependentlyAndPersonalFinanceRoute: typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
+  SurveyRoute: typeof SurveyRoute
+  ToolsAndResourcesRoute: typeof ToolsAndResourcesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +313,231 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industry-resources': {
+      id: '/industry-resources'
+      path: '/industry-resources'
+      fullPath: '/industry-resources'
+      preLoaderRoute: typeof IndustryResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/living-independently-and-personal-finance': {
+      id: '/living-independently-and-personal-finance'
+      path: '/living-independently-and-personal-finance'
+      fullPath: '/living-independently-and-personal-finance'
+      preLoaderRoute: typeof LivingIndependentlyAndPersonalFinanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/survey': {
+      id: '/survey'
+      path: '/survey'
+      fullPath: '/survey'
+      preLoaderRoute: typeof SurveyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools-and-resources': {
+      id: '/tools-and-resources'
+      path: '/tools-and-resources'
+      fullPath: '/tools-and-resources'
+      preLoaderRoute: typeof ToolsAndResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about/': {
+      id: '/about/'
+      path: '/'
+      fullPath: '/about/'
+      preLoaderRoute: typeof AboutIndexRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/oman-vision-2040': {
+      id: '/about/oman-vision-2040'
+      path: '/oman-vision-2040'
+      fullPath: '/about/oman-vision-2040'
+      preLoaderRoute: typeof AboutOmanVision2040RouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/project': {
+      id: '/about/project'
+      path: '/project'
+      fullPath: '/about/project'
+      preLoaderRoute: typeof AboutProjectRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/about/team': {
+      id: '/about/team'
+      path: '/team'
+      fullPath: '/about/team'
+      preLoaderRoute: typeof AboutTeamRouteImport
+      parentRoute: typeof AboutRoute
+    }
+    '/industry-resources/': {
+      id: '/industry-resources/'
+      path: '/'
+      fullPath: '/industry-resources/'
+      preLoaderRoute: typeof IndustryResourcesIndexRouteImport
+      parentRoute: typeof IndustryResourcesRoute
+    }
+    '/industry-resources/economics': {
+      id: '/industry-resources/economics'
+      path: '/economics'
+      fullPath: '/industry-resources/economics'
+      preLoaderRoute: typeof IndustryResourcesEconomicsRouteImport
+      parentRoute: typeof IndustryResourcesRoute
+    }
+    '/industry-resources/entrepreneurship': {
+      id: '/industry-resources/entrepreneurship'
+      path: '/entrepreneurship'
+      fullPath: '/industry-resources/entrepreneurship'
+      preLoaderRoute: typeof IndustryResourcesEntrepreneurshipRouteImport
+      parentRoute: typeof IndustryResourcesRoute
+    }
+    '/industry-resources/investment-banking-and-trading': {
+      id: '/industry-resources/investment-banking-and-trading'
+      path: '/investment-banking-and-trading'
+      fullPath: '/industry-resources/investment-banking-and-trading'
+      preLoaderRoute: typeof IndustryResourcesInvestmentBankingAndTradingRouteImport
+      parentRoute: typeof IndustryResourcesRoute
+    }
+    '/industry-resources/law': {
+      id: '/industry-resources/law'
+      path: '/law'
+      fullPath: '/industry-resources/law'
+      preLoaderRoute: typeof IndustryResourcesLawRouteImport
+      parentRoute: typeof IndustryResourcesRoute
+    }
+    '/industry-resources/operations': {
+      id: '/industry-resources/operations'
+      path: '/operations'
+      fullPath: '/industry-resources/operations'
+      preLoaderRoute: typeof IndustryResourcesOperationsRouteImport
+      parentRoute: typeof IndustryResourcesRoute
+    }
+    '/industry-resources/other-finance': {
+      id: '/industry-resources/other-finance'
+      path: '/other-finance'
+      fullPath: '/industry-resources/other-finance'
+      preLoaderRoute: typeof IndustryResourcesOtherFinanceRouteImport
+      parentRoute: typeof IndustryResourcesRoute
+    }
+    '/industry-resources/tax': {
+      id: '/industry-resources/tax'
+      path: '/tax'
+      fullPath: '/industry-resources/tax'
+      preLoaderRoute: typeof IndustryResourcesTaxRouteImport
+      parentRoute: typeof IndustryResourcesRoute
+    }
+    '/living-independently-and-personal-finance/': {
+      id: '/living-independently-and-personal-finance/'
+      path: '/'
+      fullPath: '/living-independently-and-personal-finance/'
+      preLoaderRoute: typeof LivingIndependentlyAndPersonalFinanceIndexRouteImport
+      parentRoute: typeof LivingIndependentlyAndPersonalFinanceRoute
+    }
+    '/living-independently-and-personal-finance/linkedin': {
+      id: '/living-independently-and-personal-finance/linkedin'
+      path: '/linkedin'
+      fullPath: '/living-independently-and-personal-finance/linkedin'
+      preLoaderRoute: typeof LivingIndependentlyAndPersonalFinanceLinkedinRouteImport
+      parentRoute: typeof LivingIndependentlyAndPersonalFinanceRoute
+    }
+    '/living-independently-and-personal-finance/my-journey-blog': {
+      id: '/living-independently-and-personal-finance/my-journey-blog'
+      path: '/my-journey-blog'
+      fullPath: '/living-independently-and-personal-finance/my-journey-blog'
+      preLoaderRoute: typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRouteImport
+      parentRoute: typeof LivingIndependentlyAndPersonalFinanceRoute
+    }
+    '/living-independently-and-personal-finance/personal-finance-blog': {
+      id: '/living-independently-and-personal-finance/personal-finance-blog'
+      path: '/personal-finance-blog'
+      fullPath: '/living-independently-and-personal-finance/personal-finance-blog'
+      preLoaderRoute: typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRouteImport
+      parentRoute: typeof LivingIndependentlyAndPersonalFinanceRoute
+    }
   }
 }
 
+interface AboutRouteChildren {
+  AboutOmanVision2040Route: typeof AboutOmanVision2040Route
+  AboutProjectRoute: typeof AboutProjectRoute
+  AboutTeamRoute: typeof AboutTeamRoute
+  AboutIndexRoute: typeof AboutIndexRoute
+}
+
+const AboutRouteChildren: AboutRouteChildren = {
+  AboutOmanVision2040Route: AboutOmanVision2040Route,
+  AboutProjectRoute: AboutProjectRoute,
+  AboutTeamRoute: AboutTeamRoute,
+  AboutIndexRoute: AboutIndexRoute,
+}
+
+const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
+
+interface IndustryResourcesRouteChildren {
+  IndustryResourcesEconomicsRoute: typeof IndustryResourcesEconomicsRoute
+  IndustryResourcesEntrepreneurshipRoute: typeof IndustryResourcesEntrepreneurshipRoute
+  IndustryResourcesInvestmentBankingAndTradingRoute: typeof IndustryResourcesInvestmentBankingAndTradingRoute
+  IndustryResourcesLawRoute: typeof IndustryResourcesLawRoute
+  IndustryResourcesOperationsRoute: typeof IndustryResourcesOperationsRoute
+  IndustryResourcesOtherFinanceRoute: typeof IndustryResourcesOtherFinanceRoute
+  IndustryResourcesTaxRoute: typeof IndustryResourcesTaxRoute
+  IndustryResourcesIndexRoute: typeof IndustryResourcesIndexRoute
+}
+
+const IndustryResourcesRouteChildren: IndustryResourcesRouteChildren = {
+  IndustryResourcesEconomicsRoute: IndustryResourcesEconomicsRoute,
+  IndustryResourcesEntrepreneurshipRoute:
+    IndustryResourcesEntrepreneurshipRoute,
+  IndustryResourcesInvestmentBankingAndTradingRoute:
+    IndustryResourcesInvestmentBankingAndTradingRoute,
+  IndustryResourcesLawRoute: IndustryResourcesLawRoute,
+  IndustryResourcesOperationsRoute: IndustryResourcesOperationsRoute,
+  IndustryResourcesOtherFinanceRoute: IndustryResourcesOtherFinanceRoute,
+  IndustryResourcesTaxRoute: IndustryResourcesTaxRoute,
+  IndustryResourcesIndexRoute: IndustryResourcesIndexRoute,
+}
+
+const IndustryResourcesRouteWithChildren =
+  IndustryResourcesRoute._addFileChildren(IndustryResourcesRouteChildren)
+
+interface LivingIndependentlyAndPersonalFinanceRouteChildren {
+  LivingIndependentlyAndPersonalFinanceLinkedinRoute: typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
+  LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute: typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
+  LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute: typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
+  LivingIndependentlyAndPersonalFinanceIndexRoute: typeof LivingIndependentlyAndPersonalFinanceIndexRoute
+}
+
+const LivingIndependentlyAndPersonalFinanceRouteChildren: LivingIndependentlyAndPersonalFinanceRouteChildren =
+  {
+    LivingIndependentlyAndPersonalFinanceLinkedinRoute:
+      LivingIndependentlyAndPersonalFinanceLinkedinRoute,
+    LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute:
+      LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute,
+    LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute:
+      LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute,
+    LivingIndependentlyAndPersonalFinanceIndexRoute:
+      LivingIndependentlyAndPersonalFinanceIndexRoute,
+  }
+
+const LivingIndependentlyAndPersonalFinanceRouteWithChildren =
+  LivingIndependentlyAndPersonalFinanceRoute._addFileChildren(
+    LivingIndependentlyAndPersonalFinanceRouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRouteWithChildren,
+  IndustryResourcesRoute: IndustryResourcesRouteWithChildren,
+  LivingIndependentlyAndPersonalFinanceRoute:
+    LivingIndependentlyAndPersonalFinanceRouteWithChildren,
+  SurveyRoute: SurveyRoute,
+  ToolsAndResourcesRoute: ToolsAndResourcesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
