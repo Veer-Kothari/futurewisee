@@ -294,6 +294,64 @@
   background-image: linear-gradient(135deg, var(--light-blue), var(--background) 72%);
 }
 
+@utility offer-card {
+  display: block;
+  border-radius: 1.125rem;
+  background-color: var(--light-grey);
+  padding: 2rem;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px color-mix(in oklab, var(--navy) 10%, transparent);
+  }
+}
+
+@utility offer-card-icon {
+  display: flex;
+  size: 3rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.875rem;
+  background-color: var(--white);
+  color: var(--navy);
+}
+
+@utility blog-card {
+  display: block;
+  overflow: hidden;
+  border-radius: 1.125rem;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  box-shadow: 0 14px 36px color-mix(in oklab, var(--navy) 6%, transparent);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px color-mix(in oklab, var(--navy) 11%, transparent);
+  }
+}
+
+@utility blog-card-image {
+  aspect-ratio: 16 / 10;
+  background-image: linear-gradient(135deg, var(--light-blue), color-mix(in oklab, var(--teal) 30%, var(--light-blue)));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue);
+}
+
+@utility blob {
+  position: absolute;
+  border-radius: 50%;
+  background-image: linear-gradient(135deg, color-mix(in oklab, var(--navy) 85%, transparent), color-mix(in oklab, var(--teal) 70%, transparent));
+  filter: blur(60px);
+  opacity: 0.22;
+}
+
+@utility vision-strip {
+  background-color: var(--navy);
+  color: var(--white);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
