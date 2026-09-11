@@ -18,10 +18,12 @@ export const Route = createFileRoute("/about/")({
 
 function Page() {
   return (
-    <PlaceholderPage
-      eyebrow="About Us"
-      title="About FutureWise"
-      description="Learn how FutureWise helps high school students in Oman prepare for careers, money, and independent life."
-    />
+    <div id="vision-2040">
+      <PlaceholderPage
+        eyebrow="About Us"
+        title="About FutureWise"
+        description="Learn how FutureWise helps high school students in Oman prepare for careers, money, and independent life."
+      />
+    </div>
   );
 }
