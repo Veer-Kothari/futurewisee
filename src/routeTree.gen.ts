@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as IndustryResourcesRouteImport } from './routes/industry-resources'
 import { Route as LivingIndependentlyAndPersonalFinanceRouteImport } from './routes/living-independently-and-personal-finance'
 import { Route as SurveyRouteImport } from './routes/survey'
@@ -40,6 +42,16 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustriesRoute = IndustriesRouteImport.update({
+  id: '/industries',
+  path: '/industries',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndustryResourcesRoute = IndustryResourcesRouteImport.update({
@@ -156,6 +168,8 @@ const LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRouteWithChildren
+  '/blog': typeof BlogRoute
+  '/industries': typeof IndustriesRoute
   '/industry-resources': typeof IndustryResourcesRouteWithChildren
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
   '/survey': typeof SurveyRoute
@@ -179,6 +193,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/blog': typeof BlogRoute
+  '/industries': typeof IndustriesRoute
   '/survey': typeof SurveyRoute
   '/tools-and-resources': typeof ToolsAndResourcesRoute
   '/about/oman-vision-2040': typeof AboutOmanVision2040Route
@@ -202,6 +218,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRouteWithChildren
+  '/blog': typeof BlogRoute
+  '/industries': typeof IndustriesRoute
   '/industry-resources': typeof IndustryResourcesRouteWithChildren
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
   '/survey': typeof SurveyRoute
@@ -228,6 +246,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/blog'
+    | '/industries'
     | '/industry-resources'
     | '/living-independently-and-personal-finance'
     | '/survey'
@@ -251,6 +271,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/blog'
+    | '/industries'
     | '/survey'
     | '/tools-and-resources'
     | '/about/oman-vision-2040'
@@ -273,6 +295,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/blog'
+    | '/industries'
     | '/industry-resources'
     | '/living-independently-and-personal-finance'
     | '/survey'
@@ -298,6 +322,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRouteWithChildren
+  BlogRoute: typeof BlogRoute
+  IndustriesRoute: typeof IndustriesRoute
   IndustryResourcesRoute: typeof IndustryResourcesRouteWithChildren
   LivingIndependentlyAndPersonalFinanceRoute: typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
   SurveyRoute: typeof SurveyRoute
@@ -318,6 +344,20 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industries': {
+      id: '/industries'
+      path: '/industries'
+      fullPath: '/industries'
+      preLoaderRoute: typeof IndustriesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/industry-resources': {
@@ -533,6 +573,8 @@ const LivingIndependentlyAndPersonalFinanceRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRouteWithChildren,
+  BlogRoute: BlogRoute,
+  IndustriesRoute: IndustriesRoute,
   IndustryResourcesRoute: IndustryResourcesRouteWithChildren,
   LivingIndependentlyAndPersonalFinanceRoute:
     LivingIndependentlyAndPersonalFinanceRouteWithChildren,
