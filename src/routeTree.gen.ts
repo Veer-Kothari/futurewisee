@@ -15,9 +15,11 @@ import { Route as IndustryResourcesRouteImport } from './routes/industry-resourc
 import { Route as LivingIndependentlyAndPersonalFinanceRouteImport } from './routes/living-independently-and-personal-finance'
 import { Route as SurveyRouteImport } from './routes/survey'
 import { Route as ToolsAndResourcesRouteImport } from './routes/tools-and-resources'
+import { Route as AboutIndexRouteImport } from './routes/about.index'
 import { Route as AboutOmanVision2040RouteImport } from './routes/about.oman-vision-2040'
 import { Route as AboutProjectRouteImport } from './routes/about.project'
 import { Route as AboutTeamRouteImport } from './routes/about.team'
+import { Route as IndustryResourcesIndexRouteImport } from './routes/industry-resources.index'
 import { Route as IndustryResourcesEconomicsRouteImport } from './routes/industry-resources.economics'
 import { Route as IndustryResourcesEntrepreneurshipRouteImport } from './routes/industry-resources.entrepreneurship'
 import { Route as IndustryResourcesInvestmentBankingAndTradingRouteImport } from './routes/industry-resources.investment-banking-and-trading'
@@ -25,6 +27,7 @@ import { Route as IndustryResourcesLawRouteImport } from './routes/industry-reso
 import { Route as IndustryResourcesOperationsRouteImport } from './routes/industry-resources.operations'
 import { Route as IndustryResourcesOtherFinanceRouteImport } from './routes/industry-resources.other-finance'
 import { Route as IndustryResourcesTaxRouteImport } from './routes/industry-resources.tax'
+import { Route as LivingIndependentlyAndPersonalFinanceIndexRouteImport } from './routes/living-independently-and-personal-finance.index'
 import { Route as LivingIndependentlyAndPersonalFinanceLinkedinRouteImport } from './routes/living-independently-and-personal-finance.linkedin'
 import { Route as LivingIndependentlyAndPersonalFinanceMyJourneyBlogRouteImport } from './routes/living-independently-and-personal-finance.my-journey-blog'
 import { Route as LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRouteImport } from './routes/living-independently-and-personal-finance.personal-finance-blog'
@@ -60,6 +63,11 @@ const ToolsAndResourcesRoute = ToolsAndResourcesRouteImport.update({
   path: '/tools-and-resources',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutIndexRoute = AboutIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AboutRoute,
+} as any)
 const AboutOmanVision2040Route = AboutOmanVision2040RouteImport.update({
   id: '/oman-vision-2040',
   path: '/oman-vision-2040',
@@ -74,6 +82,11 @@ const AboutTeamRoute = AboutTeamRouteImport.update({
   id: '/team',
   path: '/team',
   getParentRoute: () => AboutRoute,
+} as any)
+const IndustryResourcesIndexRoute = IndustryResourcesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => IndustryResourcesRoute,
 } as any)
 const IndustryResourcesEconomicsRoute =
   IndustryResourcesEconomicsRouteImport.update({
@@ -115,6 +128,12 @@ const IndustryResourcesTaxRoute = IndustryResourcesTaxRouteImport.update({
   path: '/tax',
   getParentRoute: () => IndustryResourcesRoute,
 } as any)
+const LivingIndependentlyAndPersonalFinanceIndexRoute =
+  LivingIndependentlyAndPersonalFinanceIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => LivingIndependentlyAndPersonalFinanceRoute,
+  } as any)
 const LivingIndependentlyAndPersonalFinanceLinkedinRoute =
   LivingIndependentlyAndPersonalFinanceLinkedinRouteImport.update({
     id: '/linkedin',
@@ -154,12 +173,12 @@ export interface FileRoutesByFullPath {
   '/living-independently-and-personal-finance/linkedin': typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
   '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
+  '/about/': typeof AboutIndexRoute
+  '/industry-resources/': typeof IndustryResourcesIndexRoute
+  '/living-independently-and-personal-finance/': typeof LivingIndependentlyAndPersonalFinanceIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRouteWithChildren
-  '/industry-resources': typeof IndustryResourcesRouteWithChildren
-  '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
   '/survey': typeof SurveyRoute
   '/tools-and-resources': typeof ToolsAndResourcesRoute
   '/about/oman-vision-2040': typeof AboutOmanVision2040Route
@@ -175,6 +194,9 @@ export interface FileRoutesByTo {
   '/living-independently-and-personal-finance/linkedin': typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
   '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
+  '/about': typeof AboutIndexRoute
+  '/industry-resources': typeof IndustryResourcesIndexRoute
+  '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -197,6 +219,9 @@ export interface FileRoutesById {
   '/living-independently-and-personal-finance/linkedin': typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
   '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
+  '/about/': typeof AboutIndexRoute
+  '/industry-resources/': typeof IndustryResourcesIndexRoute
+  '/living-independently-and-personal-finance/': typeof LivingIndependentlyAndPersonalFinanceIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -220,12 +245,12 @@ export interface FileRouteTypes {
     | '/living-independently-and-personal-finance/linkedin'
     | '/living-independently-and-personal-finance/my-journey-blog'
     | '/living-independently-and-personal-finance/personal-finance-blog'
+    | '/about/'
+    | '/industry-resources/'
+    | '/living-independently-and-personal-finance/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
-    | '/industry-resources'
-    | '/living-independently-and-personal-finance'
     | '/survey'
     | '/tools-and-resources'
     | '/about/oman-vision-2040'
@@ -241,6 +266,9 @@ export interface FileRouteTypes {
     | '/living-independently-and-personal-finance/linkedin'
     | '/living-independently-and-personal-finance/my-journey-blog'
     | '/living-independently-and-personal-finance/personal-finance-blog'
+    | '/about'
+    | '/industry-resources'
+    | '/living-independently-and-personal-finance'
   id:
     | '__root__'
     | '/'
@@ -262,6 +290,9 @@ export interface FileRouteTypes {
     | '/living-independently-and-personal-finance/linkedin'
     | '/living-independently-and-personal-finance/my-journey-blog'
     | '/living-independently-and-personal-finance/personal-finance-blog'
+    | '/about/'
+    | '/industry-resources/'
+    | '/living-independently-and-personal-finance/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -317,6 +348,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsAndResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about/': {
+      id: '/about/'
+      path: '/'
+      fullPath: '/about/'
+      preLoaderRoute: typeof AboutIndexRouteImport
+      parentRoute: typeof AboutRoute
+    }
     '/about/oman-vision-2040': {
       id: '/about/oman-vision-2040'
       path: '/oman-vision-2040'
@@ -337,6 +375,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/about/team'
       preLoaderRoute: typeof AboutTeamRouteImport
       parentRoute: typeof AboutRoute
+    }
+    '/industry-resources/': {
+      id: '/industry-resources/'
+      path: '/'
+      fullPath: '/industry-resources/'
+      preLoaderRoute: typeof IndustryResourcesIndexRouteImport
+      parentRoute: typeof IndustryResourcesRoute
     }
     '/industry-resources/economics': {
       id: '/industry-resources/economics'
@@ -387,6 +432,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndustryResourcesTaxRouteImport
       parentRoute: typeof IndustryResourcesRoute
     }
+    '/living-independently-and-personal-finance/': {
+      id: '/living-independently-and-personal-finance/'
+      path: '/'
+      fullPath: '/living-independently-and-personal-finance/'
+      preLoaderRoute: typeof LivingIndependentlyAndPersonalFinanceIndexRouteImport
+      parentRoute: typeof LivingIndependentlyAndPersonalFinanceRoute
+    }
     '/living-independently-and-personal-finance/linkedin': {
       id: '/living-independently-and-personal-finance/linkedin'
       path: '/linkedin'
@@ -415,12 +467,14 @@ interface AboutRouteChildren {
   AboutOmanVision2040Route: typeof AboutOmanVision2040Route
   AboutProjectRoute: typeof AboutProjectRoute
   AboutTeamRoute: typeof AboutTeamRoute
+  AboutIndexRoute: typeof AboutIndexRoute
 }
 
 const AboutRouteChildren: AboutRouteChildren = {
   AboutOmanVision2040Route: AboutOmanVision2040Route,
   AboutProjectRoute: AboutProjectRoute,
   AboutTeamRoute: AboutTeamRoute,
+  AboutIndexRoute: AboutIndexRoute,
 }
 
 const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
@@ -433,6 +487,7 @@ interface IndustryResourcesRouteChildren {
   IndustryResourcesOperationsRoute: typeof IndustryResourcesOperationsRoute
   IndustryResourcesOtherFinanceRoute: typeof IndustryResourcesOtherFinanceRoute
   IndustryResourcesTaxRoute: typeof IndustryResourcesTaxRoute
+  IndustryResourcesIndexRoute: typeof IndustryResourcesIndexRoute
 }
 
 const IndustryResourcesRouteChildren: IndustryResourcesRouteChildren = {
@@ -445,6 +500,7 @@ const IndustryResourcesRouteChildren: IndustryResourcesRouteChildren = {
   IndustryResourcesOperationsRoute: IndustryResourcesOperationsRoute,
   IndustryResourcesOtherFinanceRoute: IndustryResourcesOtherFinanceRoute,
   IndustryResourcesTaxRoute: IndustryResourcesTaxRoute,
+  IndustryResourcesIndexRoute: IndustryResourcesIndexRoute,
 }
 
 const IndustryResourcesRouteWithChildren =
@@ -454,6 +510,7 @@ interface LivingIndependentlyAndPersonalFinanceRouteChildren {
   LivingIndependentlyAndPersonalFinanceLinkedinRoute: typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
   LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute: typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute: typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
+  LivingIndependentlyAndPersonalFinanceIndexRoute: typeof LivingIndependentlyAndPersonalFinanceIndexRoute
 }
 
 const LivingIndependentlyAndPersonalFinanceRouteChildren: LivingIndependentlyAndPersonalFinanceRouteChildren =
@@ -464,6 +521,8 @@ const LivingIndependentlyAndPersonalFinanceRouteChildren: LivingIndependentlyAnd
       LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute,
     LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute:
       LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute,
+    LivingIndependentlyAndPersonalFinanceIndexRoute:
+      LivingIndependentlyAndPersonalFinanceIndexRoute,
   }
 
 const LivingIndependentlyAndPersonalFinanceRouteWithChildren =
