@@ -34,11 +34,11 @@ export const Route = createFileRoute("/survey")({
 });
 
 type SurveyAnswers = {
-  source?: string;
-  role?: string;
+  source: string | undefined;
+  role: string | undefined;
   industries: string[];
   needs: string[];
-  confidence?: string;
+  confidence: string | undefined;
 };
 
 type SignupInfo = {
@@ -47,16 +47,37 @@ type SignupInfo = {
   password: string;
 };
 
-const questions = [
+type Question =
+  | {
+      key: "source" | "role";
+      type: "single";
+      question: string;
+      options: string[];
+    }
+  | {
+      key: "industries" | "needs";
+      type: "multi";
+      question: string;
+      options: string[];
+    }
+  | {
+      key: "confidence";
+      type: "scale";
+      question: string;
+      scale: string[];
+      labels: [string, string];
+    };
+
+const questions: Question[] = [
   {
-    key: "source" as const,
-    type: "single" as const,
+    key: "source",
+    type: "single",
     question: "How did you hear about FutureWise?",
     options: ["School", "Friend", "LinkedIn", "Instagram", "Parent/Teacher", "Other"],
   },
   {
-    key: "role" as const,
-    type: "single" as const,
+    key: "role",
+    type: "single",
     question: "Which best describes you?",
     options: [
       "High school student",
@@ -68,8 +89,8 @@ const questions = [
     ],
   },
   {
-    key: "industries" as const,
-    type: "multi" as const,
+    key: "industries",
+    type: "multi",
     question: "Which industries are you most interested in?",
     options: [
       "Law",
@@ -83,8 +104,8 @@ const questions = [
     ],
   },
   {
-    key: "needs" as const,
-    type: "multi" as const,
+    key: "needs",
+    type: "multi",
     question: "What do you need the most help with right now?",
     options: [
       "Understanding industries",
@@ -95,8 +116,8 @@ const questions = [
     ],
   },
   {
-    key: "confidence" as const,
-    type: "scale" as const,
+    key: "confidence",
+    type: "scale",
     question: "How confident do you feel about your career direction right now?",
     scale: ["1", "2", "3", "4", "5"],
     labels: ["Not confident", "Very confident"],
@@ -114,45 +135,53 @@ function Page() {
     confidence: undefined,
   });
   const [signup, setSignup] = useState<SignupInfo>({ name: "", email: "", password: "" });
-  const [submitted, setSubmitted] = useState(false);
 
+  const totalSteps = questions.length + 1;
   const isSignupStep = step === questions.length;
-  const isThanksStep = step === questions.length + 1;
-  const currentQuestion = questions[step];
+  const isThanksStep = step === totalSteps;
+
+  const currentAnswer = (() => {
+    if (step >= questions.length) return undefined;
+    const q = questions[step];
+    if (q.type === "multi") return answers[q.key];
+    return answers[q.key];
+  })();
 
   const canProceed = () => {
     if (isSignupStep) {
-      return signup.name.trim() && signup.email.trim() && signup.password.trim();
+      return Boolean(signup.name.trim() && signup.email.trim() && signup.password.trim());
     }
-    const answer = answers[currentQuestion.key];
-    if (Array.isArray(answer)) return answer.length > 0;
-    return !!answer;
+    if (isThanksStep) return true;
+    return Array.isArray(currentAnswer) ? currentAnswer.length > 0 : Boolean(currentAnswer);
   };
 
   const goNext = () => {
     if (!canProceed()) return;
     setVisible(false);
     setTimeout(() => {
-      if (isSignupStep) {
-        setSubmitted(true);
-      }
       setStep((s) => s + 1);
       setVisible(true);
     }, 200);
   };
 
   const updateSingle = (value: string) => {
-    setAnswers((prev) => ({ ...prev, [currentQuestion.key]: value } as SurveyAnswers));
+    if (step >= questions.length) return;
+    const q = questions[step];
+    if (q.type === "single" || q.type === "scale") {
+      setAnswers((prev) => ({ ...prev, [q.key]: value } as SurveyAnswers));
+    }
   };
 
   const toggleMulti = (value: string) => {
+    if (step >= questions.length) return;
+    const q = questions[step];
+    if (q.type !== "multi") return;
     setAnswers((prev) => {
-      const key = currentQuestion.key as "industries" | "needs";
-      const current = prev[key];
+      const current = prev[q.key];
       const next = current.includes(value)
         ? current.filter((v) => v !== value)
         : [...current, value];
-      return { ...prev, [key]: next };
+      return { ...prev, [q.key]: next } as SurveyAnswers;
     });
   };
 
@@ -161,7 +190,7 @@ function Page() {
       <div className="w-full max-w-[32rem] rounded-card bg-white p-6 shadow-soft sm:p-10">
         {/* Progress dots */}
         <div className="mb-8 flex justify-center gap-2" aria-label="Survey progress">
-          {[...Array(questions.length + 1)].map((_, i) => (
+          {Array.from({ length: totalSteps }).map((_, i) => (
             <span
               key={i}
               className={cn(
@@ -189,7 +218,7 @@ function Page() {
             />
           ) : (
             <QuestionView
-              question={currentQuestion}
+              question={questions[step]}
               answers={answers}
               onSingleChange={updateSingle}
               onMultiToggle={toggleMulti}
@@ -222,7 +251,7 @@ function QuestionView({
   onSingleChange,
   onMultiToggle,
 }: {
-  question: (typeof questions)[number];
+  question: Question;
   answers: SurveyAnswers;
   onSingleChange: (value: string) => void;
   onMultiToggle: (value: string) => void;
@@ -262,8 +291,7 @@ function QuestionView({
   }
 
   if (question.type === "multi") {
-    const key = question.key as "industries" | "needs";
-    const selected = answers[key];
+    const selected = answers[question.key];
     return (
       <div className="space-y-6">
         <h2 className="text-2xl font-semibold leading-snug text-navy sm:text-3xl">
@@ -296,14 +324,13 @@ function QuestionView({
     );
   }
 
-  const key = question.key as "source" | "role";
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-semibold leading-snug text-navy sm:text-3xl">
         {question.question}
       </h2>
       <RadioGroup
-        value={answers[key]}
+        value={answers[question.key] ?? null}
         onValueChange={onSingleChange}
         className="grid gap-3"
       >
@@ -312,7 +339,7 @@ function QuestionView({
             key={option}
             className={cn(
               "flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-colors",
-              answers[key] === option
+              answers[question.key] === option
                 ? "border-teal bg-light-blue"
                 : "border-light-grey bg-white hover:border-teal/50",
             )}
@@ -398,9 +425,7 @@ function SignupView({
       </form>
       <p className="text-center text-sm text-charcoal/70">
         Already have an account?{" "}
-        <Link to="/auth" className="font-semibold text-blue hover:underline">
-          Log in
-        </Link>
+        <span className="cursor-not-allowed font-semibold text-blue opacity-70">Log in</span>
       </p>
     </div>
   );
