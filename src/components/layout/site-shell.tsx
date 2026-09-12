@@ -17,9 +17,9 @@ const navItems: NavItem[] = [
     label: "About Us",
     to: "/about",
     children: [
-      { label: "The Team", to: "/about/team" },
-      { label: "The Project", to: "/about/project" },
-      { label: "Oman Vision 2040", to: "/about/oman-vision-2040" },
+      { label: "The Project", to: "/about", hash: "project" },
+      { label: "The Team", to: "/about", hash: "team" },
+      { label: "Oman Vision 2040", to: "/about", hash: "vision-2040" },
     ],
   },
   {
