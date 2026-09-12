@@ -119,7 +119,7 @@ function DesktopNavItem({ item }: { item: NavItem }) {
       <div className="invisible absolute left-0 top-full z-50 min-w-64 translate-y-2 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
         <div className="rounded-card border border-border bg-popover p-2 shadow-soft">
           {item.children.map((child) => (
-            <Link key={child.to} to={child.to} className="dropdown-link">
+            <Link key={`${child.to}-${child.hash ?? ""}`} to={child.to} hash={child.hash} className="dropdown-link">
               {child.label}
             </Link>
           ))}
@@ -185,8 +185,9 @@ function SiteHeader() {
                     </Link>
                     {item.children.map((child) => (
                       <Link
-                        key={child.to}
+                        key={`${child.to}-${child.hash ?? ""}`}
                         to={child.to}
+                        hash={child.hash}
                         onClick={() => setMenuOpen(false)}
                         className="mobile-sub-link"
                       >
