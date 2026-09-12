@@ -143,6 +143,7 @@ function Page() {
   const currentAnswer = (() => {
     if (step >= questions.length) return undefined;
     const q = questions[step];
+    if (!q) return undefined;
     if (q.type === "multi") return answers[q.key];
     return answers[q.key];
   })();
@@ -167,6 +168,7 @@ function Page() {
   const updateSingle = (value: string) => {
     if (step >= questions.length) return;
     const q = questions[step];
+    if (!q) return;
     if (q.type === "single" || q.type === "scale") {
       setAnswers((prev) => ({ ...prev, [q.key]: value } as SurveyAnswers));
     }
@@ -175,13 +177,14 @@ function Page() {
   const toggleMulti = (value: string) => {
     if (step >= questions.length) return;
     const q = questions[step];
-    if (q.type !== "multi") return;
+    if (!q || q.type !== "multi") return;
     setAnswers((prev) => {
-      const current = prev[q.key];
+      const key = q.key;
+      const current = prev[key] as string[];
       const next = current.includes(value)
         ? current.filter((v) => v !== value)
         : [...current, value];
-      return { ...prev, [q.key]: next } as SurveyAnswers;
+      return { ...prev, [key]: next } as SurveyAnswers;
     });
   };
 
@@ -218,7 +221,7 @@ function Page() {
             />
           ) : (
             <QuestionView
-              question={questions[step]}
+              question={questions[step]!}
               answers={answers}
               onSingleChange={updateSingle}
               onMultiToggle={toggleMulti}
