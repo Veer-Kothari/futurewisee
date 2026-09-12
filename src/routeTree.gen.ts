@@ -18,9 +18,6 @@ import { Route as LivingIndependentlyAndPersonalFinanceRouteImport } from './rou
 import { Route as SurveyRouteImport } from './routes/survey'
 import { Route as ToolsAndResourcesRouteImport } from './routes/tools-and-resources'
 import { Route as AboutIndexRouteImport } from './routes/about.index'
-import { Route as AboutOmanVision2040RouteImport } from './routes/about.oman-vision-2040'
-import { Route as AboutProjectRouteImport } from './routes/about.project'
-import { Route as AboutTeamRouteImport } from './routes/about.team'
 import { Route as IndustryResourcesIndexRouteImport } from './routes/industry-resources.index'
 import { Route as IndustryResourcesEconomicsRouteImport } from './routes/industry-resources.economics'
 import { Route as IndustryResourcesEntrepreneurshipRouteImport } from './routes/industry-resources.entrepreneurship'
@@ -78,21 +75,6 @@ const ToolsAndResourcesRoute = ToolsAndResourcesRouteImport.update({
 const AboutIndexRoute = AboutIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AboutRoute,
-} as any)
-const AboutOmanVision2040Route = AboutOmanVision2040RouteImport.update({
-  id: '/oman-vision-2040',
-  path: '/oman-vision-2040',
-  getParentRoute: () => AboutRoute,
-} as any)
-const AboutProjectRoute = AboutProjectRouteImport.update({
-  id: '/project',
-  path: '/project',
-  getParentRoute: () => AboutRoute,
-} as any)
-const AboutTeamRoute = AboutTeamRouteImport.update({
-  id: '/team',
-  path: '/team',
   getParentRoute: () => AboutRoute,
 } as any)
 const IndustryResourcesIndexRoute = IndustryResourcesIndexRouteImport.update({
@@ -174,9 +156,6 @@ export interface FileRoutesByFullPath {
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
   '/survey': typeof SurveyRoute
   '/tools-and-resources': typeof ToolsAndResourcesRoute
-  '/about/oman-vision-2040': typeof AboutOmanVision2040Route
-  '/about/project': typeof AboutProjectRoute
-  '/about/team': typeof AboutTeamRoute
   '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
   '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
   '/industry-resources/investment-banking-and-trading': typeof IndustryResourcesInvestmentBankingAndTradingRoute
@@ -197,9 +176,6 @@ export interface FileRoutesByTo {
   '/industries': typeof IndustriesRoute
   '/survey': typeof SurveyRoute
   '/tools-and-resources': typeof ToolsAndResourcesRoute
-  '/about/oman-vision-2040': typeof AboutOmanVision2040Route
-  '/about/project': typeof AboutProjectRoute
-  '/about/team': typeof AboutTeamRoute
   '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
   '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
   '/industry-resources/investment-banking-and-trading': typeof IndustryResourcesInvestmentBankingAndTradingRoute
@@ -224,9 +200,6 @@ export interface FileRoutesById {
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
   '/survey': typeof SurveyRoute
   '/tools-and-resources': typeof ToolsAndResourcesRoute
-  '/about/oman-vision-2040': typeof AboutOmanVision2040Route
-  '/about/project': typeof AboutProjectRoute
-  '/about/team': typeof AboutTeamRoute
   '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
   '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
   '/industry-resources/investment-banking-and-trading': typeof IndustryResourcesInvestmentBankingAndTradingRoute
@@ -252,9 +225,6 @@ export interface FileRouteTypes {
     | '/living-independently-and-personal-finance'
     | '/survey'
     | '/tools-and-resources'
-    | '/about/oman-vision-2040'
-    | '/about/project'
-    | '/about/team'
     | '/industry-resources/economics'
     | '/industry-resources/entrepreneurship'
     | '/industry-resources/investment-banking-and-trading'
@@ -275,9 +245,6 @@ export interface FileRouteTypes {
     | '/industries'
     | '/survey'
     | '/tools-and-resources'
-    | '/about/oman-vision-2040'
-    | '/about/project'
-    | '/about/team'
     | '/industry-resources/economics'
     | '/industry-resources/entrepreneurship'
     | '/industry-resources/investment-banking-and-trading'
@@ -301,9 +268,6 @@ export interface FileRouteTypes {
     | '/living-independently-and-personal-finance'
     | '/survey'
     | '/tools-and-resources'
-    | '/about/oman-vision-2040'
-    | '/about/project'
-    | '/about/team'
     | '/industry-resources/economics'
     | '/industry-resources/entrepreneurship'
     | '/industry-resources/investment-banking-and-trading'
@@ -395,27 +359,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutIndexRouteImport
       parentRoute: typeof AboutRoute
     }
-    '/about/oman-vision-2040': {
-      id: '/about/oman-vision-2040'
-      path: '/oman-vision-2040'
-      fullPath: '/about/oman-vision-2040'
-      preLoaderRoute: typeof AboutOmanVision2040RouteImport
-      parentRoute: typeof AboutRoute
-    }
-    '/about/project': {
-      id: '/about/project'
-      path: '/project'
-      fullPath: '/about/project'
-      preLoaderRoute: typeof AboutProjectRouteImport
-      parentRoute: typeof AboutRoute
-    }
-    '/about/team': {
-      id: '/about/team'
-      path: '/team'
-      fullPath: '/about/team'
-      preLoaderRoute: typeof AboutTeamRouteImport
-      parentRoute: typeof AboutRoute
-    }
     '/industry-resources/': {
       id: '/industry-resources/'
       path: '/'
@@ -504,16 +447,10 @@ declare module '@tanstack/react-router' {
 }
 
 interface AboutRouteChildren {
-  AboutOmanVision2040Route: typeof AboutOmanVision2040Route
-  AboutProjectRoute: typeof AboutProjectRoute
-  AboutTeamRoute: typeof AboutTeamRoute
   AboutIndexRoute: typeof AboutIndexRoute
 }
 
 const AboutRouteChildren: AboutRouteChildren = {
-  AboutOmanVision2040Route: AboutOmanVision2040Route,
-  AboutProjectRoute: AboutProjectRoute,
-  AboutTeamRoute: AboutTeamRoute,
   AboutIndexRoute: AboutIndexRoute,
 }
 
