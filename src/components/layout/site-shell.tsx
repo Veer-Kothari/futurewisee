@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 type NavItem = {
   label: string;
   to: string;
-  children?: Array<{ label: string; to: string }>;
+  children?: Array<{ label: string; to: string; hash?: string }>;
 };
 
 const navItems: NavItem[] = [
@@ -65,9 +65,9 @@ const footerGroups = [
     links: [
       { label: "Home", to: "/" },
       { label: "About Us", to: "/about" },
-      { label: "The Team", to: "/about/team" },
-      { label: "The Project", to: "/about/project" },
-      { label: "Oman Vision 2040", to: "/about/oman-vision-2040" },
+      { label: "The Project", to: "/about", hash: "project" },
+      { label: "The Team", to: "/about", hash: "team" },
+      { label: "Oman Vision 2040", to: "/about", hash: "vision-2040" },
     ],
   },
   {
