@@ -56,7 +56,7 @@ const navItems: NavItem[] = [
       },
     ],
   },
-  { label: "Tools and Resources", to: "/tools-and-resources" },
+  { label: "Tools and Resources", to: "/resources" },
 ];
 
 const footerGroups = [
@@ -78,7 +78,7 @@ const footerGroups = [
         label: "Independent Living & Finance",
         to: "/living-independently-and-personal-finance",
       },
-      { label: "Tools and Resources", to: "/tools-and-resources" },
+      { label: "Tools and Resources", to: "/resources" },
       { label: "Take the Survey", to: "/survey" },
     ],
   },
