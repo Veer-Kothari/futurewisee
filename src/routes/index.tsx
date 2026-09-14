@@ -54,7 +54,7 @@ const offers = [
     icon: Building2,
     title: "Curated Student Resources",
     description: "Tools, reads, and links chosen specifically for students in Oman.",
-    to: "/tools-and-resources" as const,
+    to: "/resources" as const,
   },
   {
     icon: ClipboardList,
