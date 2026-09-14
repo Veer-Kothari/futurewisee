@@ -18,6 +18,8 @@ import { Route as LivingIndependentlyAndPersonalFinanceRouteImport } from './rou
 import { Route as SurveyRouteImport } from './routes/survey'
 import { Route as ToolsAndResourcesRouteImport } from './routes/tools-and-resources'
 import { Route as AboutIndexRouteImport } from './routes/about.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as IndustryResourcesIndexRouteImport } from './routes/industry-resources.index'
 import { Route as IndustryResourcesEconomicsRouteImport } from './routes/industry-resources.economics'
 import { Route as IndustryResourcesEntrepreneurshipRouteImport } from './routes/industry-resources.entrepreneurship'
@@ -76,6 +78,16 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AboutRoute,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
 } as any)
 const IndustryResourcesIndexRoute = IndustryResourcesIndexRouteImport.update({
   id: '/',
@@ -150,12 +162,13 @@ const LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRouteWithChildren
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/industries': typeof IndustriesRoute
   '/industry-resources': typeof IndustryResourcesRouteWithChildren
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
   '/survey': typeof SurveyRoute
   '/tools-and-resources': typeof ToolsAndResourcesRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
   '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
   '/industry-resources/investment-banking-and-trading': typeof IndustryResourcesInvestmentBankingAndTradingRoute
@@ -167,15 +180,16 @@ export interface FileRoutesByFullPath {
   '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
   '/about/': typeof AboutIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/industry-resources/': typeof IndustryResourcesIndexRoute
   '/living-independently-and-personal-finance/': typeof LivingIndependentlyAndPersonalFinanceIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/blog': typeof BlogRoute
   '/industries': typeof IndustriesRoute
   '/survey': typeof SurveyRoute
   '/tools-and-resources': typeof ToolsAndResourcesRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
   '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
   '/industry-resources/investment-banking-and-trading': typeof IndustryResourcesInvestmentBankingAndTradingRoute
@@ -187,6 +201,7 @@ export interface FileRoutesByTo {
   '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
   '/about': typeof AboutIndexRoute
+  '/blog': typeof BlogIndexRoute
   '/industry-resources': typeof IndustryResourcesIndexRoute
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceIndexRoute
 }
@@ -194,12 +209,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRouteWithChildren
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/industries': typeof IndustriesRoute
   '/industry-resources': typeof IndustryResourcesRouteWithChildren
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
   '/survey': typeof SurveyRoute
   '/tools-and-resources': typeof ToolsAndResourcesRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
   '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
   '/industry-resources/investment-banking-and-trading': typeof IndustryResourcesInvestmentBankingAndTradingRoute
@@ -211,6 +227,7 @@ export interface FileRoutesById {
   '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
   '/about/': typeof AboutIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/industry-resources/': typeof IndustryResourcesIndexRoute
   '/living-independently-and-personal-finance/': typeof LivingIndependentlyAndPersonalFinanceIndexRoute
 }
@@ -225,6 +242,7 @@ export interface FileRouteTypes {
     | '/living-independently-and-personal-finance'
     | '/survey'
     | '/tools-and-resources'
+    | '/blog/$slug'
     | '/industry-resources/economics'
     | '/industry-resources/entrepreneurship'
     | '/industry-resources/investment-banking-and-trading'
@@ -236,15 +254,16 @@ export interface FileRouteTypes {
     | '/living-independently-and-personal-finance/my-journey-blog'
     | '/living-independently-and-personal-finance/personal-finance-blog'
     | '/about/'
+    | '/blog/'
     | '/industry-resources/'
     | '/living-independently-and-personal-finance/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/blog'
     | '/industries'
     | '/survey'
     | '/tools-and-resources'
+    | '/blog/$slug'
     | '/industry-resources/economics'
     | '/industry-resources/entrepreneurship'
     | '/industry-resources/investment-banking-and-trading'
@@ -256,6 +275,7 @@ export interface FileRouteTypes {
     | '/living-independently-and-personal-finance/my-journey-blog'
     | '/living-independently-and-personal-finance/personal-finance-blog'
     | '/about'
+    | '/blog'
     | '/industry-resources'
     | '/living-independently-and-personal-finance'
   id:
@@ -268,6 +288,7 @@ export interface FileRouteTypes {
     | '/living-independently-and-personal-finance'
     | '/survey'
     | '/tools-and-resources'
+    | '/blog/$slug'
     | '/industry-resources/economics'
     | '/industry-resources/entrepreneurship'
     | '/industry-resources/investment-banking-and-trading'
@@ -279,6 +300,7 @@ export interface FileRouteTypes {
     | '/living-independently-and-personal-finance/my-journey-blog'
     | '/living-independently-and-personal-finance/personal-finance-blog'
     | '/about/'
+    | '/blog/'
     | '/industry-resources/'
     | '/living-independently-and-personal-finance/'
   fileRoutesById: FileRoutesById
@@ -286,7 +308,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRouteWithChildren
-  BlogRoute: typeof BlogRoute
+  BlogRoute: typeof BlogRouteWithChildren
   IndustriesRoute: typeof IndustriesRoute
   IndustryResourcesRoute: typeof IndustryResourcesRouteWithChildren
   LivingIndependentlyAndPersonalFinanceRoute: typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
@@ -358,6 +380,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/about/'
       preLoaderRoute: typeof AboutIndexRouteImport
       parentRoute: typeof AboutRoute
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
     }
     '/industry-resources/': {
       id: '/industry-resources/'
@@ -456,6 +492,18 @@ const AboutRouteChildren: AboutRouteChildren = {
 
 const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 interface IndustryResourcesRouteChildren {
   IndustryResourcesEconomicsRoute: typeof IndustryResourcesEconomicsRoute
   IndustryResourcesEntrepreneurshipRoute: typeof IndustryResourcesEntrepreneurshipRoute
@@ -510,7 +558,7 @@ const LivingIndependentlyAndPersonalFinanceRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRouteWithChildren,
-  BlogRoute: BlogRoute,
+  BlogRoute: BlogRouteWithChildren,
   IndustriesRoute: IndustriesRoute,
   IndustryResourcesRoute: IndustryResourcesRouteWithChildren,
   LivingIndependentlyAndPersonalFinanceRoute:
