@@ -15,8 +15,8 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as IndustryResourcesRouteImport } from './routes/industry-resources'
 import { Route as LivingIndependentlyAndPersonalFinanceRouteImport } from './routes/living-independently-and-personal-finance'
+import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SurveyRouteImport } from './routes/survey'
-import { Route as ToolsAndResourcesRouteImport } from './routes/tools-and-resources'
 import { Route as AboutIndexRouteImport } from './routes/about.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -64,14 +64,14 @@ const LivingIndependentlyAndPersonalFinanceRoute =
     path: '/living-independently-and-personal-finance',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SurveyRoute = SurveyRouteImport.update({
   id: '/survey',
   path: '/survey',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ToolsAndResourcesRoute = ToolsAndResourcesRouteImport.update({
-  id: '/tools-and-resources',
-  path: '/tools-and-resources',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutIndexRoute = AboutIndexRouteImport.update({
@@ -166,8 +166,8 @@ export interface FileRoutesByFullPath {
   '/industries': typeof IndustriesRoute
   '/industry-resources': typeof IndustryResourcesRouteWithChildren
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
+  '/resources': typeof ResourcesRoute
   '/survey': typeof SurveyRoute
-  '/tools-and-resources': typeof ToolsAndResourcesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
   '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
@@ -187,8 +187,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/industries': typeof IndustriesRoute
+  '/resources': typeof ResourcesRoute
   '/survey': typeof SurveyRoute
-  '/tools-and-resources': typeof ToolsAndResourcesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
   '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
@@ -213,8 +213,8 @@ export interface FileRoutesById {
   '/industries': typeof IndustriesRoute
   '/industry-resources': typeof IndustryResourcesRouteWithChildren
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
+  '/resources': typeof ResourcesRoute
   '/survey': typeof SurveyRoute
-  '/tools-and-resources': typeof ToolsAndResourcesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
   '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
@@ -240,8 +240,8 @@ export interface FileRouteTypes {
     | '/industries'
     | '/industry-resources'
     | '/living-independently-and-personal-finance'
+    | '/resources'
     | '/survey'
-    | '/tools-and-resources'
     | '/blog/$slug'
     | '/industry-resources/economics'
     | '/industry-resources/entrepreneurship'
@@ -261,8 +261,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/industries'
+    | '/resources'
     | '/survey'
-    | '/tools-and-resources'
     | '/blog/$slug'
     | '/industry-resources/economics'
     | '/industry-resources/entrepreneurship'
@@ -286,8 +286,8 @@ export interface FileRouteTypes {
     | '/industries'
     | '/industry-resources'
     | '/living-independently-and-personal-finance'
+    | '/resources'
     | '/survey'
-    | '/tools-and-resources'
     | '/blog/$slug'
     | '/industry-resources/economics'
     | '/industry-resources/entrepreneurship'
@@ -312,8 +312,8 @@ export interface RootRouteChildren {
   IndustriesRoute: typeof IndustriesRoute
   IndustryResourcesRoute: typeof IndustryResourcesRouteWithChildren
   LivingIndependentlyAndPersonalFinanceRoute: typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
+  ResourcesRoute: typeof ResourcesRoute
   SurveyRoute: typeof SurveyRoute
-  ToolsAndResourcesRoute: typeof ToolsAndResourcesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -360,18 +360,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LivingIndependentlyAndPersonalFinanceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/survey': {
       id: '/survey'
       path: '/survey'
       fullPath: '/survey'
       preLoaderRoute: typeof SurveyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tools-and-resources': {
-      id: '/tools-and-resources'
-      path: '/tools-and-resources'
-      fullPath: '/tools-and-resources'
-      preLoaderRoute: typeof ToolsAndResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about/': {
@@ -563,8 +563,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndustryResourcesRoute: IndustryResourcesRouteWithChildren,
   LivingIndependentlyAndPersonalFinanceRoute:
     LivingIndependentlyAndPersonalFinanceRouteWithChildren,
+  ResourcesRoute: ResourcesRoute,
   SurveyRoute: SurveyRoute,
-  ToolsAndResourcesRoute: ToolsAndResourcesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
