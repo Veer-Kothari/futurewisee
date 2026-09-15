@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, Linkedin, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -59,29 +59,42 @@ const navItems: NavItem[] = [
   { label: "Tools and Resources", to: "/resources" },
 ];
 
-const footerGroups = [
+const siteMapLinks: Array<{ label: string; to: string; hash?: string }> = [
+  { label: "Home", to: "/" },
+  { label: "About Us", to: "/about" },
+  { label: "The Project", to: "/about", hash: "project" },
+  { label: "The Team", to: "/about", hash: "team" },
+  { label: "Oman Vision 2040", to: "/about", hash: "vision-2040" },
+  { label: "Industry Resources", to: "/industry-resources" },
+  { label: "Law", to: "/industry-resources/law" },
+  { label: "Entrepreneurship", to: "/industry-resources/entrepreneurship" },
   {
-    title: "FutureWise",
-    links: [
-      { label: "Home", to: "/" },
-      { label: "About Us", to: "/about" },
-      { label: "The Project", to: "/about", hash: "project" },
-      { label: "The Team", to: "/about", hash: "team" },
-      { label: "Oman Vision 2040", to: "/about", hash: "vision-2040" },
-    ],
+    label: "Investment Banking & Trading",
+    to: "/industry-resources/investment-banking-and-trading",
+  },
+  { label: "Other Finance", to: "/industry-resources/other-finance" },
+  { label: "Tax", to: "/industry-resources/tax" },
+  { label: "Economics", to: "/industry-resources/economics" },
+  { label: "Operations", to: "/industry-resources/operations" },
+  {
+    label: "Living Independently & Personal Finance",
+    to: "/living-independently-and-personal-finance",
   },
   {
-    title: "Explore",
-    links: [
-      { label: "Industry Resources", to: "/industry-resources" },
-      {
-        label: "Independent Living & Finance",
-        to: "/living-independently-and-personal-finance",
-      },
-      { label: "Tools and Resources", to: "/resources" },
-      { label: "Take the Survey", to: "/survey" },
-    ],
+    label: "Personal Finance Blog",
+    to: "/living-independently-and-personal-finance/personal-finance-blog",
   },
+  {
+    label: "My Journey Blog",
+    to: "/living-independently-and-personal-finance/my-journey-blog",
+  },
+  {
+    label: "Follow Us on LinkedIn",
+    to: "/living-independently-and-personal-finance/linkedin",
+  },
+  { label: "Tools and Resources", to: "/resources" },
+  { label: "Blog", to: "/blog" },
+  { label: "Take the Survey", to: "/survey" },
 ];
 
 function Wordmark({ inverse = false }: { inverse?: boolean }) {
@@ -244,22 +257,59 @@ function SiteHeader() {
 function SiteFooter() {
   return (
     <footer className="bg-navy text-primary-foreground">
-      <div className="site-container grid gap-12 py-16 md:grid-cols-[1.3fr_1fr_1fr] lg:gap-20">
+      <div className="site-container grid gap-12 py-16 md:grid-cols-[1.2fr_1fr_1.3fr] lg:gap-20">
         <div className="max-w-sm">
           <Link to="/" aria-label="FutureWise home">
             <Wordmark inverse />
           </Link>
           <p className="mt-5 text-sm leading-7 text-primary-foreground/80">
-            Helping high school students in Oman build knowledge and confidence for life beyond
-            school.
+            Any Questions? E-mail{" "}
+            <a
+              href="mailto:partners@futurewiseapp.org"
+              className="underline underline-offset-2 transition-colors hover:text-teal"
+            >
+              partners@futurewiseapp.org
+            </a>
           </p>
         </div>
 
-        {footerGroups.map((group) => (
-          <div key={group.title}>
-            <h2 className="text-base font-semibold text-primary-foreground">{group.title}</h2>
-            <ul className="mt-4 space-y-3">
-              {group.links.map((link) => (
+        <div>
+          <h2 className="text-base font-semibold text-primary-foreground">Quick Links</h2>
+          <ul className="mt-4 space-y-3">
+            <li>
+              <Link
+                to="/privacy-policy"
+                className="text-sm text-primary-foreground/75 transition-colors hover:text-teal"
+              >
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/terms-of-use"
+                className="text-sm text-primary-foreground/75 transition-colors hover:text-teal"
+              >
+                Terms of Use
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h2 className="text-base font-semibold text-primary-foreground">Menu Sitemap</h2>
+          <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {siteMapLinks.map((link) =>
+              link.hash ? (
+                <li key={`${link.to}-${link.hash}`}>
+                  <Link
+                    to={link.to}
+                    hash={link.hash}
+                    className="text-sm text-primary-foreground/75 transition-colors hover:text-teal"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ) : (
                 <li key={link.to}>
                   <Link
                     to={link.to}
@@ -268,36 +318,23 @@ function SiteFooter() {
                     {link.label}
                   </Link>
                 </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-
-        <div className="md:col-start-3">
-          <h2 className="text-base font-semibold text-primary-foreground">Connect</h2>
-          <div className="mt-4 flex items-center gap-3">
-            <a
-              href="https://www.linkedin.com"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="FutureWise on LinkedIn"
-              className="inline-flex size-10 items-center justify-center rounded-full border border-primary-foreground/25 text-primary-foreground transition-colors hover:border-teal hover:text-teal"
-            >
-              <Linkedin aria-hidden="true" className="size-4" />
-            </a>
-            <a
-              href="mailto:hello@futurewise.om"
-              className="text-sm text-primary-foreground/75 transition-colors hover:text-teal"
-            >
-              hello@futurewise.om
-            </a>
-          </div>
+              ),
+            )}
+          </ul>
         </div>
       </div>
+
       <div className="border-t border-primary-foreground/15">
-        <div className="site-container flex flex-col gap-2 py-6 text-xs text-primary-foreground/65 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} FutureWise. All rights reserved.</p>
-          <p>Built to support Oman Vision 2040</p>
+        <div className="site-container flex flex-col items-center gap-4 py-8 text-center">
+          <p className="text-xs text-primary-foreground/65">© Copyright All Rights Reserved</p>
+          <p className="max-w-4xl text-xs leading-relaxed text-primary-foreground/60">
+            Educational Disclaimer: FutureWise provides general educational and informational
+            content only and does not provide legal, financial, investment, tax, career or other
+            professional advice. FutureWise and its contributors are not licensed professionals.
+            Information should not be relied upon as a substitute for qualified professional
+            advice. Users should conduct their own research and seek appropriate professional
+            guidance before making significant decisions.
+          </p>
         </div>
       </div>
     </footer>
