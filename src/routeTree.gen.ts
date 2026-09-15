@@ -15,8 +15,10 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as IndustryResourcesRouteImport } from './routes/industry-resources'
 import { Route as LivingIndependentlyAndPersonalFinanceRouteImport } from './routes/living-independently-and-personal-finance'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as SurveyRouteImport } from './routes/survey'
+import { Route as TermsOfUseRouteImport } from './routes/terms-of-use'
 import { Route as AboutIndexRouteImport } from './routes/about.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -64,6 +66,11 @@ const LivingIndependentlyAndPersonalFinanceRoute =
     path: '/living-independently-and-personal-finance',
     getParentRoute: () => rootRouteImport,
   } as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResourcesRoute = ResourcesRouteImport.update({
   id: '/resources',
   path: '/resources',
@@ -72,6 +79,11 @@ const ResourcesRoute = ResourcesRouteImport.update({
 const SurveyRoute = SurveyRouteImport.update({
   id: '/survey',
   path: '/survey',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsOfUseRoute = TermsOfUseRouteImport.update({
+  id: '/terms-of-use',
+  path: '/terms-of-use',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutIndexRoute = AboutIndexRouteImport.update({
@@ -166,8 +178,10 @@ export interface FileRoutesByFullPath {
   '/industries': typeof IndustriesRoute
   '/industry-resources': typeof IndustryResourcesRouteWithChildren
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/resources': typeof ResourcesRoute
   '/survey': typeof SurveyRoute
+  '/terms-of-use': typeof TermsOfUseRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
   '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
@@ -187,8 +201,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/industries': typeof IndustriesRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/resources': typeof ResourcesRoute
   '/survey': typeof SurveyRoute
+  '/terms-of-use': typeof TermsOfUseRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
   '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
@@ -213,8 +229,10 @@ export interface FileRoutesById {
   '/industries': typeof IndustriesRoute
   '/industry-resources': typeof IndustryResourcesRouteWithChildren
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/resources': typeof ResourcesRoute
   '/survey': typeof SurveyRoute
+  '/terms-of-use': typeof TermsOfUseRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
   '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
@@ -240,8 +258,10 @@ export interface FileRouteTypes {
     | '/industries'
     | '/industry-resources'
     | '/living-independently-and-personal-finance'
+    | '/privacy-policy'
     | '/resources'
     | '/survey'
+    | '/terms-of-use'
     | '/blog/$slug'
     | '/industry-resources/economics'
     | '/industry-resources/entrepreneurship'
@@ -261,8 +281,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/industries'
+    | '/privacy-policy'
     | '/resources'
     | '/survey'
+    | '/terms-of-use'
     | '/blog/$slug'
     | '/industry-resources/economics'
     | '/industry-resources/entrepreneurship'
@@ -286,8 +308,10 @@ export interface FileRouteTypes {
     | '/industries'
     | '/industry-resources'
     | '/living-independently-and-personal-finance'
+    | '/privacy-policy'
     | '/resources'
     | '/survey'
+    | '/terms-of-use'
     | '/blog/$slug'
     | '/industry-resources/economics'
     | '/industry-resources/entrepreneurship'
@@ -312,8 +336,10 @@ export interface RootRouteChildren {
   IndustriesRoute: typeof IndustriesRoute
   IndustryResourcesRoute: typeof IndustryResourcesRouteWithChildren
   LivingIndependentlyAndPersonalFinanceRoute: typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ResourcesRoute: typeof ResourcesRoute
   SurveyRoute: typeof SurveyRoute
+  TermsOfUseRoute: typeof TermsOfUseRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -360,6 +386,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LivingIndependentlyAndPersonalFinanceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/resources': {
       id: '/resources'
       path: '/resources'
@@ -372,6 +405,13 @@ declare module '@tanstack/react-router' {
       path: '/survey'
       fullPath: '/survey'
       preLoaderRoute: typeof SurveyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms-of-use': {
+      id: '/terms-of-use'
+      path: '/terms-of-use'
+      fullPath: '/terms-of-use'
+      preLoaderRoute: typeof TermsOfUseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about/': {
@@ -563,8 +603,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndustryResourcesRoute: IndustryResourcesRouteWithChildren,
   LivingIndependentlyAndPersonalFinanceRoute:
     LivingIndependentlyAndPersonalFinanceRouteWithChildren,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
   ResourcesRoute: ResourcesRoute,
   SurveyRoute: SurveyRoute,
+  TermsOfUseRoute: TermsOfUseRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
