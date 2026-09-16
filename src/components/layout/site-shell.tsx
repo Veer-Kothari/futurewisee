@@ -51,6 +51,10 @@ const navItems: NavItem[] = [
         to: "/living-independently-and-personal-finance/my-journey-blog",
       },
       {
+        label: "The Practical Skills Guide",
+        to: "/living-independently-and-personal-finance/the-practical-skills-guide",
+      },
+      {
         label: "Follow Us on LinkedIn",
         to: "/living-independently-and-personal-finance/linkedin",
       },
@@ -87,6 +91,10 @@ const siteMapLinks: Array<{ label: string; to: string; hash?: string }> = [
   {
     label: "My Journey Blog",
     to: "/living-independently-and-personal-finance/my-journey-blog",
+  },
+  {
+    label: "The Practical Skills Guide",
+    to: "/living-independently-and-personal-finance/the-practical-skills-guide",
   },
   {
     label: "Follow Us on LinkedIn",

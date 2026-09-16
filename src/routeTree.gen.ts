@@ -34,6 +34,7 @@ import { Route as LivingIndependentlyAndPersonalFinanceIndexRouteImport } from '
 import { Route as LivingIndependentlyAndPersonalFinanceLinkedinRouteImport } from './routes/living-independently-and-personal-finance.linkedin'
 import { Route as LivingIndependentlyAndPersonalFinanceMyJourneyBlogRouteImport } from './routes/living-independently-and-personal-finance.my-journey-blog'
 import { Route as LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRouteImport } from './routes/living-independently-and-personal-finance.personal-finance-blog'
+import { Route as LivingIndependentlyAndPersonalFinanceThePracticalSkillsGuideRouteImport } from './routes/living-independently-and-personal-finance.the-practical-skills-guide'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -170,6 +171,14 @@ const LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute =
     path: '/personal-finance-blog',
     getParentRoute: () => LivingIndependentlyAndPersonalFinanceRoute,
   } as any)
+const LivingIndependentlyAndPersonalFinanceThePracticalSkillsGuideRoute =
+  LivingIndependentlyAndPersonalFinanceThePracticalSkillsGuideRouteImport.update(
+    {
+      id: '/the-practical-skills-guide',
+      path: '/the-practical-skills-guide',
+      getParentRoute: () => LivingIndependentlyAndPersonalFinanceRoute,
+    } as any,
+  )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -193,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/living-independently-and-personal-finance/linkedin': typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
   '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
+  '/living-independently-and-personal-finance/the-practical-skills-guide': typeof LivingIndependentlyAndPersonalFinanceThePracticalSkillsGuideRoute
   '/about/': typeof AboutIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/industry-resources/': typeof IndustryResourcesIndexRoute
@@ -216,6 +226,7 @@ export interface FileRoutesByTo {
   '/living-independently-and-personal-finance/linkedin': typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
   '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
+  '/living-independently-and-personal-finance/the-practical-skills-guide': typeof LivingIndependentlyAndPersonalFinanceThePracticalSkillsGuideRoute
   '/about': typeof AboutIndexRoute
   '/blog': typeof BlogIndexRoute
   '/industry-resources': typeof IndustryResourcesIndexRoute
@@ -244,6 +255,7 @@ export interface FileRoutesById {
   '/living-independently-and-personal-finance/linkedin': typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
   '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
+  '/living-independently-and-personal-finance/the-practical-skills-guide': typeof LivingIndependentlyAndPersonalFinanceThePracticalSkillsGuideRoute
   '/about/': typeof AboutIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/industry-resources/': typeof IndustryResourcesIndexRoute
@@ -273,6 +285,7 @@ export interface FileRouteTypes {
     | '/living-independently-and-personal-finance/linkedin'
     | '/living-independently-and-personal-finance/my-journey-blog'
     | '/living-independently-and-personal-finance/personal-finance-blog'
+    | '/living-independently-and-personal-finance/the-practical-skills-guide'
     | '/about/'
     | '/blog/'
     | '/industry-resources/'
@@ -296,6 +309,7 @@ export interface FileRouteTypes {
     | '/living-independently-and-personal-finance/linkedin'
     | '/living-independently-and-personal-finance/my-journey-blog'
     | '/living-independently-and-personal-finance/personal-finance-blog'
+    | '/living-independently-and-personal-finance/the-practical-skills-guide'
     | '/about'
     | '/blog'
     | '/industry-resources'
@@ -323,6 +337,7 @@ export interface FileRouteTypes {
     | '/living-independently-and-personal-finance/linkedin'
     | '/living-independently-and-personal-finance/my-journey-blog'
     | '/living-independently-and-personal-finance/personal-finance-blog'
+    | '/living-independently-and-personal-finance/the-practical-skills-guide'
     | '/about/'
     | '/blog/'
     | '/industry-resources/'
@@ -519,6 +534,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRouteImport
       parentRoute: typeof LivingIndependentlyAndPersonalFinanceRoute
     }
+    '/living-independently-and-personal-finance/the-practical-skills-guide': {
+      id: '/living-independently-and-personal-finance/the-practical-skills-guide'
+      path: '/the-practical-skills-guide'
+      fullPath: '/living-independently-and-personal-finance/the-practical-skills-guide'
+      preLoaderRoute: typeof LivingIndependentlyAndPersonalFinanceThePracticalSkillsGuideRouteImport
+      parentRoute: typeof LivingIndependentlyAndPersonalFinanceRoute
+    }
   }
 }
 
@@ -575,6 +597,7 @@ interface LivingIndependentlyAndPersonalFinanceRouteChildren {
   LivingIndependentlyAndPersonalFinanceLinkedinRoute: typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
   LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute: typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute: typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
+  LivingIndependentlyAndPersonalFinanceThePracticalSkillsGuideRoute: typeof LivingIndependentlyAndPersonalFinanceThePracticalSkillsGuideRoute
   LivingIndependentlyAndPersonalFinanceIndexRoute: typeof LivingIndependentlyAndPersonalFinanceIndexRoute
 }
 
@@ -586,6 +609,8 @@ const LivingIndependentlyAndPersonalFinanceRouteChildren: LivingIndependentlyAnd
       LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute,
     LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute:
       LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute,
+    LivingIndependentlyAndPersonalFinanceThePracticalSkillsGuideRoute:
+      LivingIndependentlyAndPersonalFinanceThePracticalSkillsGuideRoute,
     LivingIndependentlyAndPersonalFinanceIndexRoute:
       LivingIndependentlyAndPersonalFinanceIndexRoute,
   }
