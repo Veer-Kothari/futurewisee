@@ -75,6 +75,7 @@ const posts = [
     category: "Money",
     title: "Budgeting basics before university",
     excerpt: "Simple habits that help you manage money confidently from day one.",
+    image: blogBudgetingAsset.url,
   },
   {
     category: "Independence",
