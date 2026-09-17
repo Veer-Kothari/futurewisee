@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import blogCareerFinanceAsset from "@/assets/blog-career-finance.jpg.asset.json";
 import blogBudgetingAsset from "@/assets/blog-budgeting-basics.jpg.asset.json";
+import blogLifeSkillsAsset from "@/assets/blog-life-skills.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
