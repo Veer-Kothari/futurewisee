@@ -84,6 +84,7 @@ const posts = [
     category: "Independence",
     title: "Life skills school doesn't cover",
     excerpt: "From paperwork to daily decisions: what to know before you leave home.",
+    image: blogLifeSkillsAsset.url,
   },
 ];
 
