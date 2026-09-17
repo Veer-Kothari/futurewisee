@@ -10,6 +10,7 @@ import {
   WalletCards,
 } from "lucide-react";
 
+import blogBudgetingAsset from "@/assets/blog-budgeting-basics.jpg.asset.json";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
