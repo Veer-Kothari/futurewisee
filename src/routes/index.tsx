@@ -214,10 +214,18 @@ function Index() {
             </Button>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map(({ category, title, excerpt }) => (
+            {posts.map(({ category, title, excerpt, image }) => (
               <Link key={title} to="/blog" className="blog-card group">
                 <div className="blog-card-image">
-                  <Newspaper aria-hidden="true" className="size-12 opacity-60" />
+                  {image ? (
+                    <img
+                      src={image}
+                      alt={title}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <Newspaper aria-hidden="true" className="size-12 opacity-60" />
+                  )}
                 </div>
                 <div className="p-6">
                   <span className="inline-block rounded-full bg-light-blue px-3 py-1 text-xs font-semibold text-blue">
