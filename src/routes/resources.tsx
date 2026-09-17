@@ -3,7 +3,7 @@ import { ExternalLink, Globe } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { resourceCategories, resources, type ResourceCategory } from "@/data/resources";
+import { resourceSections, resources, type ResourceSection } from "@/data/resources";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/resources")({
@@ -21,11 +21,11 @@ export const Route = createFileRoute("/resources")({
 });
 
 function ResourcesPage() {
-  const [activeCategory, setActiveCategory] = useState<ResourceCategory | "All">("All");
+  const [activeCategory, setActiveCategory] = useState<ResourceSection | "All">("All");
 
   const filteredResources = useMemo(() => {
     if (activeCategory === "All") return resources;
-    return resources.filter((resource) => resource.category === activeCategory);
+    return resources.filter((resource) => resource.sections.includes(activeCategory));
   }, [activeCategory]);
 
   return (
@@ -54,7 +54,7 @@ function ResourcesPage() {
               active={activeCategory === "All"}
               onClick={() => setActiveCategory("All")}
             />
-            {resourceCategories.map((category) => (
+            {resourceSections.map((category) => (
               <FilterPill
                 key={category}
                 label={category}
