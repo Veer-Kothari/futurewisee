@@ -10,7 +10,6 @@ import {
   WalletCards,
 } from "lucide-react";
 
-import blogBudgetingAsset from "@/assets/blog-budgeting-basics.jpg.asset.json";
 import { Button } from "@/components/ui/button";
 import blogCareerFinanceAsset from "@/assets/blog-career-finance.jpg.asset.json";
 import blogBudgetingAsset from "@/assets/blog-budgeting-basics.jpg.asset.json";
