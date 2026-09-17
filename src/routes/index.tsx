@@ -10,8 +10,9 @@ import {
   WalletCards,
 } from "lucide-react";
 
-import blogBudgetingAsset from "@/assets/blog-budgeting-basics.jpg.asset.json";
 import { Button } from "@/components/ui/button";
+import blogCareerFinanceAsset from "@/assets/blog-career-finance.jpg.asset.json";
+import blogBudgetingAsset from "@/assets/blog-budgeting-basics.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -70,6 +71,7 @@ const posts = [
     category: "Careers",
     title: "What does a career in finance actually look like?",
     excerpt: "A practical look at roles, skills, and pathways for students in Oman.",
+    image: blogCareerFinanceAsset.url,
   },
   {
     category: "Money",
