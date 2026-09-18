@@ -264,13 +264,7 @@
 }
 
 @utility eyebrow {
-  color: var(--blue);
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  display: none;
 }
 
 @utility resource-card {
