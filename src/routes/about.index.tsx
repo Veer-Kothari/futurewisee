@@ -3,7 +3,9 @@ import {
   Building2,
   GraduationCap,
   HeartHandshake,
+  Image,
   Lightbulb,
+  Plus,
   Target,
   TrendingUp,
   Users,
@@ -42,34 +44,19 @@ const tabs = [
 
 const team = [
   {
-    name: "Amna Al-Rashidiya",
+    name: "Veer Kothari",
     role: "Founder & Project Lead",
-    bio: "Amna started FutureWise to bridge the gap between school curricula and real-world readiness for students in Oman. She oversees strategy, partnerships, and content direction.",
+    bio: [
+      "I am Veer Kothari, a Year 12 student at British School Muscat in Muscat, Oman. I have a strong interest in mathematics, economics, careers and practical education, and I am particularly interested in business and finance. I am in the high school graduating class of 2028, and look to apply to the UK, the United States and wider Europe to pursue a career in finance.",
+      "Through my academic and extracurricular experiences, including the Harvard Secondary School Program in Microeconomics, an internship at one of the largest college investment funds globally, and articulating essays to answer economic queries far beyond the classroom, I have developed an interest in understanding how education can better prepare young people for the world beyond school and exams.",
+      "I founded FutureWise because I noticed that students, including myself, often receive strong academic preparation but have fewer opportunities to learn about different industries, career pathways, financial literacy and independent adulthood in a practical and accessible way.",
+      "Through FutureWise, I aim to make practical knowledge more accessible to young people and help students make more informed decisions about their futures. The project initially focuses on students in Oman, with the long-term goal of growing our impact further into the GCC and beyond.",
+    ],
   },
   {
-    name: "Youssef Al-Mamari",
-    role: "Content & Research Lead",
-    bio: "Youssef researches careers, industries, and student pathways, then turns complex topics into clear, practical guides that young people can act on.",
-  },
-  {
-    name: "Sara Al-Balushi",
-    role: "Personal Finance Editor",
-    bio: "Sara makes money topics approachable for students, covering budgeting, saving, and the financial decisions that come with independence.",
-  },
-  {
-    name: "Khalid Al-Saadi",
-    role: "Industry Insights Editor",
-    bio: "Khalid interviews professionals and maps out what different industries actually look like day to day, from law and finance to operations and entrepreneurship.",
-  },
-  {
-    name: "Maya Al-Harthy",
-    role: "Community & Outreach",
-    bio: "Maya builds relationships with schools, mentors, and student ambassadors to make sure FutureWise reaches the people who need it most.",
-  },
-  {
-    name: "Omar Al-Zadjali",
-    role: "Product & Design",
-    bio: "Omar designs the FutureWise experience, making every page, tool, and resource feel clear, credible, and easy to use across devices.",
+    name: "William Darker",
+    role: "Blog Writing & Living Independently Lead",
+    bio: [],
   },
 ];
 
@@ -261,27 +248,68 @@ function ProjectSection() {
 }
 
 function TeamSection() {
+  const [expandedMember, setExpandedMember] = useState<string | null>(null);
+
   return (
     <section id="team" className="scroll-mt-32">
-      <h2 className="text-3xl font-semibold text-navy sm:text-4xl">Meet the Team</h2>
-      <p className="mt-4 max-w-2xl text-lg leading-8 text-charcoal/80">
-        A small, student-centered team working to make career and life guidance accessible across
-        Oman.
-      </p>
-      <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {team.map((member) => (
-          <div
-            key={member.name}
-            className="rounded-card bg-light-grey p-6 text-center transition-transform duration-200 hover:-translate-y-1"
-          >
-            <div className="mx-auto flex size-32 items-center justify-center rounded-full bg-light-blue">
-              <Users aria-hidden="true" className="size-10 text-blue/70" />
-            </div>
-            <h3 className="mt-6 text-xl font-semibold text-navy">{member.name}</h3>
-            <p className="mt-1 text-sm font-semibold text-blue">{member.role}</p>
-            <p className="mt-4 text-sm leading-7 text-charcoal/75">{member.bio}</p>
-          </div>
-        ))}
+      <p className="eyebrow">Our People</p>
+      <h2 className="mt-3 text-3xl font-semibold text-navy sm:text-4xl">The Team</h2>
+      <div className="mt-10 grid gap-x-9 gap-y-12 sm:grid-cols-2">
+        {team.map((member) => {
+          const isExpanded = expandedMember === member.name;
+          const panelId = `bio-${member.name.toLowerCase().replaceAll(" ", "-")}`;
+
+          return (
+            <article key={member.name} className="min-w-0">
+              <div className="flex aspect-[4/3] items-center justify-center bg-light-grey">
+                <div className="flex flex-col items-center gap-3 text-blue/60">
+                  <Image aria-hidden="true" className="size-10" strokeWidth={1.5} />
+                  <span className="text-sm font-medium text-charcoal/55">Photo coming soon</span>
+                </div>
+              </div>
+
+              <div className="flex items-start justify-between gap-4 border-b border-border py-5">
+                <div>
+                  <h3 className="text-xl font-semibold uppercase text-navy sm:text-2xl">
+                    {member.name}
+                  </h3>
+                  <p className="mt-1 text-sm leading-6 text-blue sm:text-base">{member.role}</p>
+                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  aria-expanded={isExpanded}
+                  aria-controls={panelId}
+                  aria-label={`${isExpanded ? "Close" : "Read"} ${member.name}'s biography`}
+                  onClick={() => setExpandedMember(isExpanded ? null : member.name)}
+                  className="mt-0.5 shrink-0 text-navy hover:bg-light-blue"
+                >
+                  <Plus
+                    aria-hidden="true"
+                    className={`transition-transform duration-200 ${isExpanded ? "rotate-45" : ""}`}
+                  />
+                </Button>
+              </div>
+
+              {isExpanded && (
+                <div id={panelId} className="border-b border-border py-6 text-charcoal/80">
+                  {member.bio.length > 0 ? (
+                    <div className="space-y-5 text-base leading-8">
+                      {member.bio.map((paragraph) => (
+                        <p key={paragraph}>{paragraph}</p>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-base italic leading-8 text-charcoal/60">
+                      Biography coming soon.
+                    </p>
+                  )}
+                </div>
+              )}
+            </article>
+          );
+        })}
       </div>
     </section>
   );
