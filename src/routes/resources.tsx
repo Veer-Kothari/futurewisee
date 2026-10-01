@@ -9,9 +9,9 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/resources")({
   head: () => ({
     meta: [
-      { title: "Tools and Resources | FutureWise" },
+      { title: "Resources | FutureWise" },
       { name: "description", content: "A curated directory of useful external sites for students and young people in Oman." },
-      { property: "og:title", content: "Tools and Resources | FutureWise" },
+      { property: "og:title", content: "Resources | FutureWise" },
       { property: "og:description", content: "A curated directory of useful external sites for students and young people in Oman." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -35,7 +35,7 @@ function ResourcesPage() {
           <div className="max-w-3xl">
             <p className="eyebrow">Get Prepared</p>
             <h1 className="mt-5 text-4xl font-bold text-navy sm:text-5xl lg:text-6xl">
-              Tools and Resources
+              Resources
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-charcoal/80">
               A curated list of useful external sites for exploring careers, building skills,

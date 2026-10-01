@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep industry navigation entries in one availability-aware list so unpublished categories are filtered from both desktop and mobile menus.
