@@ -11,97 +11,74 @@ type NavItem = {
   children?: Array<{ label: string; to: string; hash?: string }>;
 };
 
+type IndustryNavItem = {
+  label: string;
+  to: string;
+  hasPublishedContent: boolean;
+};
+
+const industryNavItems: IndustryNavItem[] = [
+  { label: "Law", to: "/industry-resources/law", hasPublishedContent: true },
+  {
+    label: "Entrepreneurship",
+    to: "/industry-resources/entrepreneurship",
+    hasPublishedContent: true,
+  },
+  {
+    label: "Investment Banking & Trading",
+    to: "/industry-resources/investment-banking-and-trading",
+    hasPublishedContent: true,
+  },
+  { label: "Finance", to: "/industry-resources/other-finance", hasPublishedContent: true },
+  { label: "Tax", to: "/industry-resources/tax", hasPublishedContent: true },
+  { label: "Economics", to: "/industry-resources/economics", hasPublishedContent: true },
+  { label: "Operations", to: "/industry-resources/operations", hasPublishedContent: true },
+];
+
+const publishedIndustryNavItems = industryNavItems
+  .filter((item) => item.hasPublishedContent)
+  .map(({ label, to }) => ({ label, to }));
+
 const navItems: NavItem[] = [
   { label: "Home", to: "/" },
   {
     label: "About Us",
     to: "/about",
     children: [
-      { label: "The Project", to: "/about", hash: "project" },
-      { label: "The Team", to: "/about", hash: "team" },
+      { label: "Overview", to: "/about" },
+      { label: "Initiative", to: "/about", hash: "project" },
+      { label: "Team", to: "/about", hash: "team" },
       { label: "Oman Vision 2040", to: "/about", hash: "vision-2040" },
     ],
   },
   {
-    label: "Industry Resources",
+    label: "Industry Insights",
     to: "/industry-resources",
-    children: [
-      { label: "Law", to: "/industry-resources/law" },
-      { label: "Entrepreneurship", to: "/industry-resources/entrepreneurship" },
-      {
-        label: "Investment Banking & Trading",
-        to: "/industry-resources/investment-banking-and-trading",
-      },
-      { label: "Other Finance", to: "/industry-resources/other-finance" },
-      { label: "Tax", to: "/industry-resources/tax" },
-      { label: "Economics", to: "/industry-resources/economics" },
-      { label: "Operations", to: "/industry-resources/operations" },
-    ],
+    children: publishedIndustryNavItems,
   },
   {
-    label: "Living Independently & Personal Finance",
-    to: "/living-independently-and-personal-finance",
+    label: "Blog",
+    to: "/blog",
     children: [
       {
         label: "Personal Finance Blog",
-        to: "/living-independently-and-personal-finance/personal-finance-blog",
-      },
-      {
-        label: "My Journey Blog",
-        to: "/living-independently-and-personal-finance/my-journey-blog",
+        to: "/blog",
       },
       {
         label: "The Practical Skills Guide",
         to: "/living-independently-and-personal-finance/the-practical-skills-guide",
       },
-      {
-        label: "Follow Us on LinkedIn",
-        to: "/living-independently-and-personal-finance/linkedin",
-      },
     ],
   },
-  { label: "Tools and Resources", to: "/resources" },
+  { label: "Resources", to: "/resources" },
 ];
 
 const siteMapLinks: Array<{ label: string; to: string; hash?: string }> = [
   { label: "Home", to: "/" },
   { label: "About Us", to: "/about" },
-  { label: "The Project", to: "/about", hash: "project" },
-  { label: "The Team", to: "/about", hash: "team" },
-  { label: "Oman Vision 2040", to: "/about", hash: "vision-2040" },
-  { label: "Industry Resources", to: "/industry-resources" },
-  { label: "Law", to: "/industry-resources/law" },
-  { label: "Entrepreneurship", to: "/industry-resources/entrepreneurship" },
-  {
-    label: "Investment Banking & Trading",
-    to: "/industry-resources/investment-banking-and-trading",
-  },
-  { label: "Other Finance", to: "/industry-resources/other-finance" },
-  { label: "Tax", to: "/industry-resources/tax" },
-  { label: "Economics", to: "/industry-resources/economics" },
-  { label: "Operations", to: "/industry-resources/operations" },
-  {
-    label: "Living Independently & Personal Finance",
-    to: "/living-independently-and-personal-finance",
-  },
-  {
-    label: "Personal Finance Blog",
-    to: "/living-independently-and-personal-finance/personal-finance-blog",
-  },
-  {
-    label: "My Journey Blog",
-    to: "/living-independently-and-personal-finance/my-journey-blog",
-  },
-  {
-    label: "The Practical Skills Guide",
-    to: "/living-independently-and-personal-finance/the-practical-skills-guide",
-  },
-  {
-    label: "Follow Us on LinkedIn",
-    to: "/living-independently-and-personal-finance/linkedin",
-  },
-  { label: "Tools and Resources", to: "/resources" },
+  { label: "Industry Insights", to: "/industry-resources" },
   { label: "Blog", to: "/blog" },
+  { label: "Resources", to: "/resources" },
   { label: "Take the Survey", to: "/survey" },
 ];
 
