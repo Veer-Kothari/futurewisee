@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -190,7 +190,7 @@ function Page() {
 
   return (
     <div className="flex flex-1 items-center justify-center bg-light-blue px-4 py-12 sm:py-16">
-      <div className="w-full max-w-[32rem] rounded-card bg-white p-6 shadow-soft sm:p-10">
+      <div className="w-full max-w-[32rem] rounded-sm border border-border bg-white p-6 sm:p-10">
         {/* Progress dots */}
         <div className="mb-8 flex justify-center gap-2" aria-label="Survey progress">
           {Array.from({ length: totalSteps }).map((_, i) => (
@@ -198,7 +198,7 @@ function Page() {
               key={i}
               className={cn(
                 "size-2.5 rounded-full transition-colors duration-200",
-                i < step ? "bg-teal" : i === step ? "bg-navy" : "bg-light-grey",
+                i < step ? "bg-blue" : i === step ? "bg-navy" : "bg-light-grey",
               )}
             />
           ))}
@@ -274,10 +274,10 @@ function QuestionView({
                 type="button"
                 onClick={() => onSingleChange(value)}
                 className={cn(
-                  "flex size-12 items-center justify-center rounded-full border-2 text-lg font-semibold transition-colors",
+                  "flex size-12 items-center justify-center rounded-sm border text-lg font-semibold transition-colors",
                   selected === value
-                    ? "border-teal bg-teal text-navy"
-                    : "border-light-grey bg-white text-charcoal hover:border-teal/60",
+                    ? "border-navy bg-navy text-primary-foreground"
+                    : "border-border bg-white text-charcoal hover:border-navy/60",
                 )}
               >
                 {value}
@@ -307,16 +307,16 @@ function QuestionView({
               <label
                 key={option}
                 className={cn(
-                  "flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-colors",
+                  "flex cursor-pointer items-center gap-3 rounded-sm border p-4 transition-colors",
                   checked
-                    ? "border-teal bg-light-blue"
-                    : "border-light-grey bg-white hover:border-teal/50",
+                    ? "border-navy bg-light-blue"
+                    : "border-light-grey bg-white hover:border-navy/50",
                 )}
               >
                 <Checkbox
                   checked={checked}
                   onCheckedChange={() => onMultiToggle(option)}
-                  className="border-navy data-[state=checked]:bg-teal data-[state=checked]:text-navy"
+                  className="border-navy data-[state=checked]:bg-navy data-[state=checked]:text-primary-foreground"
                 />
                 <span className="text-base font-medium text-charcoal">{option}</span>
               </label>
@@ -341,15 +341,15 @@ function QuestionView({
           <label
             key={option}
             className={cn(
-              "flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition-colors",
+              "flex cursor-pointer items-center gap-3 rounded-sm border p-4 transition-colors",
               answers[question.key] === option
-                ? "border-teal bg-light-blue"
-                : "border-light-grey bg-white hover:border-teal/50",
+                ? "border-navy bg-light-blue"
+                : "border-light-grey bg-white hover:border-navy/50",
             )}
           >
             <RadioGroupItem
               value={option}
-              className="border-navy text-navy data-[state=checked]:border-teal"
+              className="border-navy text-navy data-[state=checked]:border-navy"
             />
             <span className="text-base font-medium text-charcoal">{option}</span>
           </label>
@@ -396,7 +396,7 @@ function SignupView({
             value={signup.name}
             onChange={(e) => setSignup((s) => ({ ...s, name: e.target.value }))}
             placeholder="Your full name"
-            className="border-light-grey text-charcoal placeholder:text-charcoal/40 focus-visible:ring-teal"
+            className="border-light-grey text-charcoal placeholder:text-charcoal/40 focus-visible:ring-navy"
           />
         </div>
         <div className="space-y-2">
@@ -409,7 +409,7 @@ function SignupView({
             value={signup.email}
             onChange={(e) => setSignup((s) => ({ ...s, email: e.target.value }))}
             placeholder="you@example.com"
-            className="border-light-grey text-charcoal placeholder:text-charcoal/40 focus-visible:ring-teal"
+            className="border-light-grey text-charcoal placeholder:text-charcoal/40 focus-visible:ring-navy"
           />
         </div>
         <div className="space-y-2">
@@ -422,7 +422,7 @@ function SignupView({
             value={signup.password}
             onChange={(e) => setSignup((s) => ({ ...s, password: e.target.value }))}
             placeholder="••••••••"
-            className="border-light-grey text-charcoal placeholder:text-charcoal/40 focus-visible:ring-teal"
+            className="border-light-grey text-charcoal placeholder:text-charcoal/40 focus-visible:ring-navy"
           />
         </div>
       </form>
@@ -443,9 +443,6 @@ function ThanksView() {
       <p className="text-charcoal/75">
         Your answers help us build resources that actually matter to students in Oman.
       </p>
-      <Button asChild variant="survey" size="lg" className="mt-2">
-        <Link to="/">Back to home</Link>
-      </Button>
     </div>
   );
 }

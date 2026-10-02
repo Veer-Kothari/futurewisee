@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ExternalLink, Globe } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -30,7 +30,7 @@ function ResourcesPage() {
 
   return (
     <>
-      <section className="bg-gradient-to-br from-light-blue via-white to-white">
+      <section className="border-b border-border bg-background">
         <div className="site-container py-20 sm:py-28">
           <div className="max-w-3xl">
             <p className="eyebrow">Get Prepared</p>
@@ -38,15 +38,14 @@ function ResourcesPage() {
               Resources
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-charcoal/80">
-              A curated list of useful external sites for exploring careers, building skills,
-              managing money, and finding Oman-based opportunities. We will keep updating this
-              directory as we discover more resources that genuinely help students.
+              Fifty-two external resources selected for students in Oman, covering career
+              research, financial literacy, practical skills, and local opportunities.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="bg-light-grey pb-24 pt-4 sm:pb-28">
+      <section className="bg-background pb-24 pt-4 sm:pb-28">
         <div className="site-container">
           <div className="flex flex-wrap gap-2 py-8">
             <FilterPill
@@ -71,7 +70,7 @@ function ResourcesPage() {
           </div>
 
           {filteredResources.length === 0 && (
-            <div className="mt-12 rounded-card bg-white py-16 text-center shadow-soft">
+            <div className="mt-12 rounded-sm border border-border bg-white py-16 text-center">
               <p className="text-charcoal/70">
                 No resources in this category yet. Check back soon or explore another filter.
               </p>
@@ -97,10 +96,10 @@ function FilterPill({
       type="button"
       onClick={onClick}
       className={cn(
-        "rounded-full px-4 py-2 text-sm font-semibold transition-colors",
+        "rounded-sm border px-4 py-2 text-sm font-semibold transition-colors",
         active
-          ? "bg-teal text-navy"
-          : "bg-white text-charcoal hover:bg-light-blue hover:text-blue",
+          ? "border-navy bg-navy text-primary-foreground"
+          : "border-border bg-white text-charcoal hover:border-navy hover:text-navy",
       )}
     >
       {label}
@@ -110,12 +109,9 @@ function FilterPill({
 
 function ResourceCard({ resource }: { resource: (typeof resources)[number] }) {
   return (
-    <article className="flex flex-col rounded-card border border-border bg-white p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-teal/60 hover:shadow-lg">
+    <article className="flex flex-col rounded-sm border border-border bg-white p-6 transition-colors hover:border-navy/50">
       <div className="flex items-start justify-between gap-4">
-        <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-light-blue text-navy">
-          <Globe aria-hidden="true" className="size-5" />
-        </div>
-        <span className="rounded-full bg-teal px-3 py-1 text-xs font-semibold text-navy">
+        <span className="border-l-2 border-blue pl-3 text-xs font-semibold text-navy">
           {resource.category}
         </span>
       </div>

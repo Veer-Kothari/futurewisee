@@ -45,7 +45,6 @@ const navItems: NavItem[] = [
     label: "About Us",
     to: "/about",
     children: [
-      { label: "Overview", to: "/about" },
       { label: "Initiative", to: "/about", hash: "project" },
       { label: "Team", to: "/about", hash: "team" },
       { label: "Oman Vision 2040", to: "/about", hash: "vision-2040" },
@@ -115,7 +114,7 @@ function DesktopNavItem({ item }: { item: NavItem }) {
         <ChevronDown aria-hidden="true" className="size-3.5 transition-transform group-hover:rotate-180" />
       </Link>
       <div className="invisible absolute left-0 top-full z-50 min-w-64 translate-y-2 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-        <div className="rounded-card border border-border bg-popover p-2 shadow-soft">
+        <div className="rounded-sm border border-border bg-popover p-2 shadow-soft">
           {item.children.map((child) =>
             child.hash ? (
               <Link
@@ -180,7 +179,7 @@ function SiteHeader() {
           <div className="mx-auto max-w-3xl space-y-1">
             {navItems.map((item) =>
               item.children ? (
-                <details key={item.to} className="group/mobile rounded-lg open:bg-light-blue">
+                <details key={item.to} className="group/mobile rounded-sm open:bg-light-blue">
                   <summary className="flex cursor-pointer list-none items-center justify-between px-3 py-3 font-medium text-navy">
                     {item.label}
                     <ChevronDown
@@ -189,9 +188,6 @@ function SiteHeader() {
                     />
                   </summary>
                   <div className="space-y-1 px-3 pb-3">
-                    <Link to={item.to} onClick={() => setMenuOpen(false)} className="mobile-sub-link">
-                      Overview
-                    </Link>
                     {item.children.map((child) =>
                       child.hash ? (
                         <Link
@@ -221,7 +217,7 @@ function SiteHeader() {
                   key={item.to}
                   to={item.to}
                   onClick={() => setMenuOpen(false)}
-                  className="block rounded-lg px-3 py-3 font-medium text-navy hover:bg-light-blue"
+                  className="block rounded-sm px-3 py-3 font-medium text-navy hover:bg-light-blue"
                 >
                   {item.label}
                 </Link>
@@ -251,7 +247,7 @@ function SiteFooter() {
             Any Questions? E-mail{" "}
             <a
               href="mailto:partners@futurewiseapp.org"
-              className="underline underline-offset-2 transition-colors hover:text-teal"
+                className="underline underline-offset-2 transition-colors hover:text-light-blue"
             >
               partners@futurewiseapp.org
             </a>
@@ -264,7 +260,7 @@ function SiteFooter() {
             <li>
               <Link
                 to="/privacy-policy"
-                className="text-sm text-primary-foreground/75 transition-colors hover:text-teal"
+                className="text-sm text-primary-foreground/75 transition-colors hover:text-light-blue"
               >
                 Privacy Policy
               </Link>
@@ -272,7 +268,7 @@ function SiteFooter() {
             <li>
               <Link
                 to="/terms-of-use"
-                className="text-sm text-primary-foreground/75 transition-colors hover:text-teal"
+                className="text-sm text-primary-foreground/75 transition-colors hover:text-light-blue"
               >
                 Terms of Use
               </Link>
@@ -289,7 +285,7 @@ function SiteFooter() {
                   <Link
                     to={link.to}
                     hash={link.hash}
-                    className="text-sm text-primary-foreground/75 transition-colors hover:text-teal"
+                    className="text-sm text-primary-foreground/75 transition-colors hover:text-light-blue"
                   >
                     {link.label}
                   </Link>
@@ -298,7 +294,7 @@ function SiteFooter() {
                 <li key={link.to}>
                   <Link
                     to={link.to}
-                    className="text-sm text-primary-foreground/75 transition-colors hover:text-teal"
+                    className="text-sm text-primary-foreground/75 transition-colors hover:text-light-blue"
                   >
                     {link.label}
                   </Link>

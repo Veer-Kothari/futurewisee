@@ -1,5 +1,4 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { FileText } from "lucide-react";
 import { useState } from "react";
 
 import { LinkedInCallout } from "@/components/blog/linkedin-callout";
@@ -7,7 +6,7 @@ import { blogPosts, type BlogCategory } from "@/data/blog-posts";
 import { cn } from "@/lib/utils";
 
 const description =
-  "Practical writing on personal finance, independent living, and the road from school to a real career.";
+  "Student-written notes on managing money, preparing to live independently, and making the move from school into further study and work.";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -35,14 +34,14 @@ function BlogHub() {
         <div className="site-container py-16 sm:py-24">
           <p className="eyebrow">FutureWise Blog</p>
           <h1 className="mt-5 max-w-3xl text-4xl font-bold text-navy sm:text-5xl">
-            Living independently, money, and my journey
+            Notes for life beyond school
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-charcoal/80">{description}</p>
 
           <div
             role="tablist"
             aria-label="Filter posts by category"
-            className="mt-9 inline-flex flex-wrap gap-2 rounded-full bg-background p-1.5 shadow-soft"
+            className="mt-9 inline-flex flex-wrap gap-2 border-b border-border pb-2"
           >
             {filters.map((item) => (
               <button
@@ -52,10 +51,10 @@ function BlogHub() {
                 aria-selected={filter === item}
                 onClick={() => setFilter(item)}
                 className={cn(
-                  "rounded-full px-5 py-2 text-sm transition-colors",
+                  "rounded-sm px-5 py-2 text-sm transition-colors",
                   filter === item
-                    ? "bg-teal text-navy"
-                    : "text-charcoal/70 hover:bg-light-blue hover:text-blue",
+                    ? "bg-navy text-primary-foreground"
+                    : "text-charcoal/70 hover:bg-light-blue hover:text-navy",
                 )}
               >
                 {item}
@@ -69,11 +68,8 @@ function BlogHub() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <Link key={post.slug} to="/blog/$slug" params={{ slug: post.slug }} className="blog-card">
-              <div className="blog-card-image">
-                <FileText aria-hidden="true" className="size-8" />
-              </div>
               <div className="p-6">
-                <span className="inline-flex rounded-full bg-teal px-3 py-1 text-xs font-semibold text-navy">
+                <span className="border-l-2 border-blue pl-3 text-xs font-semibold text-navy">
                   {post.category}
                 </span>
                 <h2 className="mt-4 text-xl font-semibold text-navy">{post.title}</h2>
