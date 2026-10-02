@@ -149,18 +149,18 @@ function Index() {
         <div className="site-container py-14 sm:py-16">
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
             <div className="max-w-3xl">
-              <h2 className="text-2xl font-semibold text-white sm:text-3xl">
+              <h2 className="text-2xl font-semibold text-primary-foreground sm:text-3xl">
                 Supporting Oman Vision 2040
               </h2>
-              <p className="mt-4 leading-7 text-white/80">
-                FutureWise empowers young Omanis with the knowledge, confidence, and practical skills
-                they need to shape a capable, competitive, and future-ready generation.
+              <p className="mt-4 leading-7 text-primary-foreground/80">
+                FutureWise supports Oman Vision 2040 by helping students understand the industries,
+                financial decisions, and practical responsibilities they will encounter after school.
               </p>
             </div>
             <Link
               to="/about"
               hash="vision-2040"
-              className="shrink-0 text-base font-semibold text-teal underline-offset-4 hover:underline"
+              className="shrink-0 text-base font-semibold text-light-blue underline-offset-4 hover:underline"
             >
               Learn more
             </Link>
@@ -178,7 +178,7 @@ function Index() {
                 Recent notes from FutureWise
               </h2>
             </div>
-            <Button asChild variant="outline" className="border-navy text-navy hover:bg-navy hover:text-white">
+            <Button asChild variant="outline" className="border-navy text-navy hover:bg-navy hover:text-primary-foreground">
               <Link to="/blog">View all posts</Link>
             </Button>
           </div>

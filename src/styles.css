@@ -202,14 +202,6 @@
   box-shadow: 0 14px 30px color-mix(in oklab, var(--blue) 24%, transparent);
 }
 
-@utility brand-gradient {
-  background-color: var(--navy);
-}
-
-@utility hero-gradient {
-  background-color: var(--background);
-}
-
 @utility wordmark {
   font-family: var(--font-display);
   background-image: linear-gradient(110deg, var(--navy), var(--blue));
@@ -332,14 +324,6 @@
   align-items: center;
   justify-content: center;
   color: var(--blue);
-}
-
-@utility blob {
-  position: absolute;
-  border-radius: 50%;
-  background-image: linear-gradient(135deg, color-mix(in oklab, var(--navy) 85%, transparent), color-mix(in oklab, var(--teal) 70%, transparent));
-  filter: blur(60px);
-  opacity: 0.22;
 }
 
 @utility vision-strip {
