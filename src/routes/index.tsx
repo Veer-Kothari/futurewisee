@@ -2,12 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
-  Briefcase,
-  Building2,
-  ClipboardList,
-  FileText,
-  Newspaper,
-  WalletCards,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -42,27 +36,23 @@ export const Route = createFileRoute("/")({
 
 const offers = [
   {
-    icon: Briefcase,
     title: "Industry Cheat Sheets",
-    description: "Quick, clear guides to different industries and careers in Oman.",
+    description: "Plain-language introductions to seven industries and the roles students can pursue within them.",
     to: "/industry-resources" as const,
   },
   {
-    icon: WalletCards,
     title: "Personal Finance & Independent Living",
-    description: "Build skills for money, decisions, and life beyond school.",
+    description: "Notes on budgeting, household responsibilities, and the decisions that arrive after school.",
     to: "/living-independently-and-personal-finance" as const,
   },
   {
-    icon: Building2,
     title: "Curated Student Resources",
-    description: "Tools, reads, and links chosen specifically for students in Oman.",
+    description: "A reviewed directory of career, finance, skills, and Oman-specific resources.",
     to: "/resources" as const,
   },
   {
-    icon: ClipboardList,
     title: "Take the Survey",
-    description: "Tell us what you need so we can build content that matters to you.",
+    description: "Tell FutureWise which decisions and responsibilities you want help understanding.",
     to: "/survey" as const,
   },
 ];
@@ -91,60 +81,37 @@ const posts = [
 function Index() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-light-blue">
-        <div
-          className="blob -right-24 -top-24 size-[28rem] lg:size-[36rem]"
-          aria-hidden="true"
-        />
-        <div
-          className="blob right-20 top-40 size-72 bg-teal opacity-30 lg:top-24"
-          aria-hidden="true"
-        />
-        <div className="site-container relative grid items-center gap-12 py-20 lg:min-h-[44rem] lg:grid-cols-[1fr_0.55fr] lg:py-28">
+      <section className="border-b border-border bg-background">
+        <div className="site-container grid gap-12 py-20 lg:min-h-[40rem] lg:grid-cols-[1fr_0.55fr] lg:items-end lg:py-28">
           <div className="max-w-3xl">
             <p className="eyebrow">For students in Oman, aged 15-19</p>
             <h1 className="mt-5 text-4xl font-bold leading-[1.08] text-navy sm:text-5xl lg:text-6xl xl:text-7xl">
-              Build the practical knowledge school doesn't teach.
+              Practical knowledge for life beyond school.
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-charcoal/80 sm:text-xl">
-              FutureWise helps high school students in Oman explore careers, industries, money,
-              and what it means to live independently as a young adult.
+              FutureWise gives students aged 15–19 in Oman clear introductions to industries,
+              personal finance, and the everyday responsibilities of independent adulthood.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Button asChild variant="survey" size="lg">
                 <Link to="/survey">Take the Survey</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-navy text-navy hover:bg-navy hover:text-white">
+              <Button asChild variant="outline" size="lg" className="border-navy text-navy hover:bg-navy hover:text-primary-foreground">
                 <Link to="/industries">Explore Industries</Link>
               </Button>
             </div>
           </div>
 
-          <div
-            className="relative hidden min-h-[24rem] items-center justify-center lg:flex"
-            aria-hidden="true"
-          >
-            <div className="relative w-full max-w-sm rounded-card bg-white p-8 shadow-soft">
-              <div className="flex items-center gap-4">
-                <span className="offer-card-icon">
-                  <FileText aria-hidden="true" className="size-5" />
-                </span>
-                <div>
-                  <div className="h-2.5 w-32 rounded-full bg-navy" />
-                  <div className="mt-2 h-2 w-20 rounded-full bg-light-blue" />
-                </div>
-              </div>
-              <div className="mt-7 space-y-3">
-                <div className="h-2 w-full rounded-full bg-light-grey" />
-                <div className="h-2 w-5/6 rounded-full bg-light-grey" />
-                <div className="h-2 w-4/5 rounded-full bg-light-grey" />
-              </div>
-              <div className="mt-8 flex gap-3">
-                <span className="inline-block h-9 flex-1 rounded-lg bg-teal" />
-                <span className="inline-block h-9 flex-1 rounded-lg border border-navy/20 bg-white" />
-              </div>
-            </div>
+          <div className="hidden border-l border-border pl-10 lg:block">
+            <p className="text-sm font-semibold text-navy">What students can use now</p>
+            <ol className="mt-8 space-y-6">
+              {offers.slice(0, 3).map((offer, index) => (
+                <li key={offer.title} className="grid grid-cols-[2rem_1fr] gap-3 border-b border-border pb-5">
+                  <span className="text-sm text-blue">0{index + 1}</span>
+                  <span className="font-medium text-charcoal">{offer.title}</span>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </section>
@@ -155,16 +122,14 @@ function Index() {
           <div className="max-w-2xl text-center sm:text-left">
             <p className="eyebrow">What we offer</p>
             <h2 className="mt-4 text-3xl font-semibold text-navy sm:text-4xl">
-              Practical guidance designed for students like you
+              Four starting points for students in Oman
             </h2>
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:gap-8">
-            {offers.map(({ icon: Icon, title, description, to }) => (
+            {offers.map(({ title, description, to }, index) => (
               <Link key={to} to={to} className="offer-card group">
-                <span className="offer-card-icon">
-                  <Icon aria-hidden="true" className="size-6" />
-                </span>
-                <h3 className="mt-6 text-xl font-semibold text-navy">{title}</h3>
+                <span className="text-sm text-blue">0{index + 1}</span>
+                <h3 className="mt-8 text-xl font-semibold text-navy">{title}</h3>
                 <p className="mt-3 leading-7 text-charcoal/75">{description}</p>
                 <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-blue">
                   Learn more
@@ -210,7 +175,7 @@ function Index() {
             <div className="max-w-2xl">
               <p className="eyebrow">Latest from the blog</p>
               <h2 className="mt-4 text-3xl font-semibold text-navy sm:text-4xl">
-                Ideas, tips, and student stories
+                Recent notes from FutureWise
               </h2>
             </div>
             <Button asChild variant="outline" className="border-navy text-navy hover:bg-navy hover:text-white">
@@ -227,12 +192,10 @@ function Index() {
                       alt={title}
                       className="h-full w-full object-cover"
                     />
-                  ) : (
-                    <Newspaper aria-hidden="true" className="size-12 opacity-60" />
-                  )}
+                  ) : null}
                 </div>
                 <div className="p-6">
-                  <span className="inline-block rounded-full bg-light-blue px-3 py-1 text-xs font-semibold text-blue">
+                  <span className="border-l-2 border-blue pl-3 text-xs font-semibold text-navy">
                     {category}
                   </span>
                   <h3 className="mt-4 text-lg font-semibold text-navy group-hover:text-blue">
@@ -250,11 +213,11 @@ function Index() {
       <section className="bg-background py-20 sm:py-24">
         <div className="site-container text-center">
           <h2 className="text-3xl font-semibold text-navy sm:text-4xl">
-            Not sure where to start?
+              Which topics should FutureWise cover next?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg leading-7 text-charcoal/75">
-            Take our short survey and tell us what topics matter most to you. It takes less than
-            two minutes.
+            Share the career, money, and independent-living questions you want answered. The
+            survey takes less than two minutes.
           </p>
           <Button asChild variant="survey" size="lg" className="mt-8">
             <Link to="/survey">Take the Survey</Link>

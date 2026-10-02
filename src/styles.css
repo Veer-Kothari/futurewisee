@@ -70,7 +70,7 @@
 }
 
 :root {
-  --radius: 1rem;
+  --radius: 0.25rem;
   --navy: oklch(0.35231 0.10114 254.02);
   --blue: oklch(0.50693 0.12448 247.6);
   --teal: oklch(0.75746 0.11184 196.52);
@@ -191,7 +191,7 @@
 }
 
 @utility rounded-card {
-  border-radius: 1.125rem;
+  border-radius: 0.25rem;
 }
 
 @utility shadow-soft {
@@ -203,26 +203,26 @@
 }
 
 @utility brand-gradient {
-  background-image: linear-gradient(135deg, var(--navy), var(--blue) 62%, var(--teal));
+  background-color: var(--navy);
 }
 
 @utility hero-gradient {
-  background-image: linear-gradient(135deg, var(--light-blue), var(--background) 58%, color-mix(in oklab, var(--teal) 14%, var(--background)));
+  background-color: var(--background);
 }
 
 @utility wordmark {
   font-family: var(--font-display);
-  background-image: linear-gradient(110deg, var(--navy), var(--blue) 55%, var(--teal));
+  background-image: linear-gradient(110deg, var(--navy), var(--blue));
   background-clip: text;
   color: transparent;
 }
 
 @utility wordmark-inverse {
-  background-image: linear-gradient(110deg, var(--background), var(--teal));
+  background-image: linear-gradient(110deg, var(--background), var(--light-blue));
 }
 
 @utility nav-link {
-  border-radius: 0.5rem;
+  border-radius: 0.125rem;
   padding: 0.65rem 0.7rem;
   color: var(--navy);
   font-size: 0.8rem;
@@ -240,7 +240,7 @@
 
 @utility dropdown-link {
   display: block;
-  border-radius: 0.65rem;
+  border-radius: 0.125rem;
   padding: 0.65rem 0.75rem;
   color: var(--charcoal);
   font-size: 0.875rem;
@@ -254,7 +254,7 @@
 
 @utility mobile-sub-link {
   display: block;
-  border-radius: 0.5rem;
+  border-radius: 0.125rem;
   padding: 0.6rem 0.75rem;
   color: color-mix(in oklab, var(--charcoal) 78%, transparent);
   font-size: 0.875rem;
@@ -271,32 +271,34 @@
   display: block;
   min-height: 19rem;
   border: 1px solid var(--border);
-  border-radius: 1.125rem;
+  border-radius: 0.25rem;
   background-color: var(--background);
   padding: 2rem;
   box-shadow: 0 16px 40px color-mix(in oklab, var(--navy) 7%, transparent);
   transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
   &:hover {
     transform: translateY(-4px);
-    border-color: color-mix(in oklab, var(--teal) 60%, var(--border));
+    border-color: color-mix(in oklab, var(--navy) 60%, var(--border));
     box-shadow: 0 22px 50px color-mix(in oklab, var(--navy) 12%, transparent);
   }
 }
 
 @utility page-intro {
   min-height: 34rem;
-  background-image: linear-gradient(135deg, var(--light-blue), var(--background) 72%);
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border);
 }
 
 @utility offer-card {
   display: block;
-  border-radius: 1.125rem;
-  background-color: var(--light-grey);
+  border-radius: 0.25rem;
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--navy);
+  background-color: var(--background);
   padding: 2rem;
   transition: transform 180ms ease, box-shadow 180ms ease;
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 22px 50px color-mix(in oklab, var(--navy) 10%, transparent);
+    border-color: color-mix(in oklab, var(--navy) 45%, var(--border));
   }
 }
 
@@ -305,7 +307,7 @@
   size: 3rem;
   align-items: center;
   justify-content: center;
-  border-radius: 0.875rem;
+  border-radius: 0.25rem;
   background-color: var(--white);
   color: var(--navy);
 }
@@ -313,20 +315,19 @@
 @utility blog-card {
   display: block;
   overflow: hidden;
-  border-radius: 1.125rem;
+  border-radius: 0.25rem;
   background-color: var(--background);
   border: 1px solid var(--border);
   box-shadow: 0 14px 36px color-mix(in oklab, var(--navy) 6%, transparent);
   transition: transform 180ms ease, box-shadow 180ms ease;
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 22px 50px color-mix(in oklab, var(--navy) 11%, transparent);
+    border-color: color-mix(in oklab, var(--navy) 45%, var(--border));
   }
 }
 
 @utility blog-card-image {
   aspect-ratio: 16 / 10;
-  background-image: linear-gradient(135deg, var(--light-blue), color-mix(in oklab, var(--teal) 30%, var(--light-blue)));
+  background-color: var(--light-blue);
   display: flex;
   align-items: center;
   justify-content: center;

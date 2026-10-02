@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep industry navigation entries in one availability-aware list so unpublished categories are filtered from both desktop and mobile menus.
+- Use a navy-led editorial visual system with squared controls, flat borders, minimal teal, and only essential icons to avoid generic template styling.
