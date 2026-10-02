@@ -5,10 +5,10 @@ import { PlaceholderPage } from "@/components/pages/placeholder-page";
 export const Route = createFileRoute("/industry-resources/")({
   head: () => ({
     meta: [
-      { title: "Industry resources | FutureWise" },
-      { name: "description", content: "Explore clear introductions to industries, roles, and career paths." },
-      { property: "og:title", content: "Industry resources | FutureWise" },
-      { property: "og:description", content: "Explore clear introductions to industries, roles, and career paths." },
+      { title: "Industry Insights | FutureWise" },
+      { name: "description", content: "Introductions to seven industries, their roles, and the routes students can take into them." },
+      { property: "og:title", content: "Industry Insights | FutureWise" },
+      { property: "og:description", content: "Introductions to seven industries, their roles, and the routes students can take into them." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -19,9 +19,9 @@ export const Route = createFileRoute("/industry-resources/")({
 function Page() {
   return (
     <PlaceholderPage
-      eyebrow="Explore Careers"
-      title="Industry resources"
-      description="Explore clear introductions to industries, roles, and career paths."
+      eyebrow="Industry Insights"
+      title="Understand an industry before choosing a path"
+      description="FutureWise is preparing introductions to seven industries, the work people do within them, and the routes students can take into each field."
     />
   );
 }

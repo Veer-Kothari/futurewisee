@@ -1,15 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  Building2,
-  GraduationCap,
-  HeartHandshake,
-  Image,
-  Lightbulb,
-  Plus,
-  Target,
-  TrendingUp,
-  Users,
-} from "lucide-react";
+import { Image, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -68,22 +58,18 @@ const stats = [
 
 const pillars = [
   {
-    icon: GraduationCap,
     title: "Education & Knowledge",
     description: "We turn complex career and life topics into clear, practical learning students can use right away.",
   },
   {
-    icon: TrendingUp,
     title: "Economic Diversification",
     description: "By introducing students to emerging industries, we help prepare a workforce ready for Oman’s future economy.",
   },
   {
-    icon: Users,
     title: "Youth Empowerment",
     description: "We give young Omanis the confidence, tools, and language to make informed decisions about their futures.",
   },
   {
-    icon: HeartHandshake,
     title: "Community Partnership",
     description: "We collaborate with educators, professionals, and families to support students beyond the classroom.",
   },
@@ -145,10 +131,10 @@ function AboutPage() {
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => selectTab(tab.id)}
-                  className={`shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors ${
+                  className={`shrink-0 rounded-sm border-b-2 px-5 py-2.5 text-sm font-semibold transition-colors ${
                     isActive
-                      ? "bg-navy text-white"
-                      : "bg-transparent text-charcoal hover:bg-light-blue hover:text-blue"
+                      ? "border-navy bg-navy text-primary-foreground"
+                      : "border-transparent bg-transparent text-charcoal hover:bg-light-blue hover:text-navy"
                   }`}
                 >
                   {tab.label}
@@ -207,27 +193,12 @@ function ProjectSection() {
             overwhelming decisions into clear, confident next steps.
           </p>
         </div>
-        <div
-          className="relative flex min-h-[22rem] items-center justify-center overflow-hidden rounded-card bg-light-blue p-8"
-          aria-hidden="true"
-        >
-          <div className="blob -right-16 -top-16 size-64 opacity-40" />
-          <div className="blob bottom-0 left-0 size-56 bg-teal opacity-30" />
-          <div className="relative rounded-2xl bg-white p-6 shadow-soft">
-            <div className="flex items-center gap-4">
-              <span className="offer-card-icon">
-                <Lightbulb aria-hidden="true" className="size-5" />
-              </span>
-              <div>
-                <div className="h-2.5 w-32 rounded-full bg-navy" />
-                <div className="mt-2 h-2 w-20 rounded-full bg-light-blue" />
-              </div>
-            </div>
-            <div className="mt-6 space-y-2.5">
-              <div className="h-2 w-full rounded-full bg-light-grey" />
-              <div className="h-2 w-5/6 rounded-full bg-light-grey" />
-              <div className="h-2 w-4/5 rounded-full bg-light-grey" />
-            </div>
+        <div className="min-h-[22rem] border-l-2 border-blue bg-light-blue p-8">
+          <p className="text-sm font-semibold text-navy">FutureWise focuses on</p>
+          <div className="mt-10 space-y-6 text-xl text-charcoal">
+            <p>Industry knowledge before choosing a path.</p>
+            <p>Financial literacy before managing money alone.</p>
+            <p>Practical skills before leaving school.</p>
           </div>
         </div>
       </div>
@@ -236,9 +207,8 @@ function ProjectSection() {
         {stats.map((stat) => (
           <span
             key={stat.label}
-            className="inline-flex items-center gap-2 rounded-full bg-light-blue px-5 py-2.5 text-sm font-semibold text-navy"
+            className="inline-flex items-center border-l-2 border-blue bg-light-blue px-5 py-2.5 text-sm font-semibold text-navy"
           >
-            <Target aria-hidden="true" className="size-4 text-blue" />
             {stat.label}
           </span>
         ))}
@@ -328,12 +298,10 @@ function VisionSection() {
         diversified economy.
       </p>
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {pillars.map(({ icon: Icon, title, description }) => (
-          <div key={title} className="rounded-card bg-light-blue p-6">
-            <div className="flex size-12 items-center justify-center rounded-xl bg-white text-navy shadow-sm">
-              <Icon aria-hidden="true" className="size-6" />
-            </div>
-            <h3 className="mt-5 text-lg font-semibold text-navy">{title}</h3>
+        {pillars.map(({ title, description }, index) => (
+          <div key={title} className="rounded-sm border-t-2 border-navy bg-light-blue p-6">
+            <span className="text-xs text-blue">0{index + 1}</span>
+            <h3 className="mt-8 text-lg font-semibold text-navy">{title}</h3>
             <p className="mt-2 text-sm leading-6 text-charcoal/75">{description}</p>
           </div>
         ))}

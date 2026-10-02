@@ -1,5 +1,5 @@
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
-import { ArrowLeft, FileText } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 import { LinkedInCallout } from "@/components/blog/linkedin-callout";
 import { getPostBySlug, getRelatedPosts } from "@/data/blog-posts";
@@ -54,18 +54,13 @@ function BlogPostPage() {
       <section className="page-intro">
         <div className="site-container py-16 sm:py-20">
           <div className="mx-auto max-w-[700px]">
-            <span className="inline-flex rounded-full bg-teal px-3 py-1 text-xs font-semibold text-navy">
+            <span className="border-l-2 border-blue pl-3 text-xs font-semibold text-navy">
               {post.category}
             </span>
             <h1 className="mt-5 text-3xl font-bold text-navy sm:text-4xl">{post.title}</h1>
             <p className="mt-4 text-sm text-charcoal/60">
               By {post.author} · <time dateTime={post.date}>{post.displayDate}</time>
             </p>
-          </div>
-          <div className="mx-auto mt-10 max-w-[860px]">
-            <div className="blog-card-image rounded-card">
-              <FileText aria-hidden="true" className="size-10" />
-            </div>
           </div>
         </div>
       </section>
@@ -92,11 +87,8 @@ function BlogPostPage() {
                   params={{ slug: item.slug }}
                   className="blog-card"
                 >
-                  <div className="blog-card-image">
-                    <FileText aria-hidden="true" className="size-8" />
-                  </div>
                   <div className="p-6">
-                    <span className="inline-flex rounded-full bg-teal px-3 py-1 text-xs font-semibold text-navy">
+                    <span className="border-l-2 border-blue pl-3 text-xs font-semibold text-navy">
                       {item.category}
                     </span>
                     <h3 className="mt-4 text-lg font-semibold text-navy">{item.title}</h3>
