@@ -1,10 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ExternalLink } from "lucide-react";
 import { useMemo, useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { resourceSections, resources, type ResourceSection } from "@/data/resources";
 import { cn } from "@/lib/utils";
+
+type ResourceLogoAsset = {
+  default: { url: string };
+};
+
+const resourceLogoModules = import.meta.glob<ResourceLogoAsset>(
+  "/src/assets/resource-logos/*.asset.json",
+  { eager: true },
+);
+
+const resourceLogos = Object.fromEntries(
+  Object.entries(resourceLogoModules).map(([path, module]) => {
+    const filename = path.split("/").at(-1) ?? "";
+    const resourceId = filename.replace(/\.(?:png|ico)\.asset\.json$/, "");
+    return [resourceId, module.default.url];
+  }),
+);
 
 export const Route = createFileRoute("/resources")({
   head: () => ({
@@ -108,33 +123,44 @@ function FilterPill({
 }
 
 function ResourceCard({ resource }: { resource: (typeof resources)[number] }) {
+  const logoUrl = resourceLogos[resource.id];
+  const visibleUrl = new URL(resource.url).hostname.replace(/^www\./, "");
+
   return (
-    <article className="flex flex-col rounded-sm border border-border bg-white p-6 transition-colors hover:border-navy/50">
-      <div className="flex items-start justify-between gap-4">
-        <span className="border-l-2 border-blue pl-3 text-xs font-semibold text-navy">
-          {resource.category}
-        </span>
+    <article className="flex flex-col rounded-sm border border-border bg-white p-6">
+      <div className="flex items-center gap-4">
+        <div className="relative grid size-12 shrink-0 place-items-center overflow-hidden rounded-sm border border-border bg-light-grey text-sm font-bold text-navy">
+          <span aria-hidden="true">{resource.name.slice(0, 2).toUpperCase()}</span>
+          {logoUrl && (
+            <img
+              src={logoUrl}
+              alt={`${resource.name} logo`}
+              className="absolute inset-0 size-full bg-white object-contain p-2"
+              loading="lazy"
+              onError={(event) => {
+                event.currentTarget.hidden = true;
+              }}
+            />
+          )}
+        </div>
+        <div className="min-w-0">
+          <h2 className="text-lg font-semibold text-navy">{resource.name}</h2>
+          <p className="mt-1 text-xs font-medium text-charcoal/60">{resource.category}</p>
+        </div>
       </div>
 
-      <h2 className="mt-5 text-lg font-semibold text-navy">{resource.name}</h2>
-      <p className="mt-2 flex-1 text-sm leading-6 text-charcoal/80">{resource.description}</p>
+      <p className="mt-5 flex-1 text-sm leading-6 text-charcoal/80">{resource.description}</p>
 
-      <Button
-        asChild
-        variant="survey"
-        size="sm"
-        className="mt-6 w-full"
+      <a
+        href={resource.url}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-6 inline-flex w-fit items-center border-b border-navy pb-1 text-sm font-semibold text-navy transition-colors hover:border-blue hover:text-blue"
+        aria-label={`Visit ${resource.name} at ${visibleUrl} (opens in a new tab)`}
       >
-        <a
-          href={resource.url}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center justify-center gap-2"
-        >
-          Visit Site
-          <ExternalLink aria-hidden="true" className="size-3.5" />
-        </a>
-      </Button>
+        {visibleUrl}
+        <span aria-hidden="true" className="ml-1.5">↗</span>
+      </a>
     </article>
   );
 }
