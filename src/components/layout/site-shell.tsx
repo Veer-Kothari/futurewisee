@@ -53,7 +53,7 @@ const navItems: NavItem[] = [
   {
     label: "Industry Insights",
     to: "/industry-resources",
-    children: publishedIndustryNavItems.length > 0 ? publishedIndustryNavItems : undefined,
+    ...(publishedIndustryNavItems.length > 0 ? { children: publishedIndustryNavItems } : {}),
   },
   {
     label: "Blog",
