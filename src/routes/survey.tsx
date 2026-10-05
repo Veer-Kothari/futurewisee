@@ -243,7 +243,7 @@ function Page() {
               disabled={!canProceed()}
               className="min-w-[6.5rem]"
             >
-              {isSignupStep ? "Sign Up" : "OK"}
+              {isSignupStep ? "Sign Up" : isIntroStep ? "Get started" : "OK"}
             </Button>
           </div>
         )}
