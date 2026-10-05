@@ -136,19 +136,21 @@ function Page() {
   });
   const [signup, setSignup] = useState<SignupInfo>({ name: "", email: "", password: "" });
 
-  const totalSteps = questions.length + 1;
-  const isSignupStep = step === questions.length;
+  const totalSteps = questions.length + 2;
+  const isIntroStep = step === 0;
+  const isSignupStep = step === questions.length + 1;
   const isThanksStep = step === totalSteps;
 
   const currentAnswer = (() => {
-    if (step >= questions.length) return undefined;
-    const q = questions[step];
+    if (step < 1 || step > questions.length) return undefined;
+    const q = questions[step - 1];
     if (!q) return undefined;
     if (q.type === "multi") return answers[q.key];
     return answers[q.key];
   })();
 
   const canProceed = () => {
+    if (isIntroStep) return true;
     if (isSignupStep) {
       return Boolean(signup.name.trim() && signup.email.trim() && signup.password.trim());
     }
@@ -166,8 +168,8 @@ function Page() {
   };
 
   const updateSingle = (value: string) => {
-    if (step >= questions.length) return;
-    const q = questions[step];
+    if (step < 1 || step > questions.length) return;
+    const q = questions[step - 1];
     if (!q) return;
     if (q.type === "single" || q.type === "scale") {
       setAnswers((prev) => ({ ...prev, [q.key]: value } as SurveyAnswers));
@@ -175,8 +177,8 @@ function Page() {
   };
 
   const toggleMulti = (value: string) => {
-    if (step >= questions.length) return;
-    const q = questions[step];
+    if (step < 1 || step > questions.length) return;
+    const q = questions[step - 1];
     if (!q || q.type !== "multi") return;
     setAnswers((prev) => {
       const key = q.key;
@@ -212,6 +214,8 @@ function Page() {
         >
           {isThanksStep ? (
             <ThanksView />
+          ) : isIntroStep ? (
+            <IntroView />
           ) : isSignupStep ? (
             <SignupView
               signup={signup}
@@ -221,7 +225,7 @@ function Page() {
             />
           ) : (
             <QuestionView
-              question={questions[step]!}
+              question={questions[step - 1]!}
               answers={answers}
               onSingleChange={updateSingle}
               onMultiToggle={toggleMulti}
@@ -239,7 +243,7 @@ function Page() {
               disabled={!canProceed()}
               className="min-w-[6.5rem]"
             >
-              {isSignupStep ? "Sign Up" : "OK"}
+              {isSignupStep ? "Sign Up" : isIntroStep ? "Get started" : "OK"}
             </Button>
           </div>
         )}
@@ -355,6 +359,31 @@ function QuestionView({
           </label>
         ))}
       </RadioGroup>
+    </div>
+  );
+}
+
+function IntroView() {
+  return (
+    <div className="space-y-6">
+      <h2 className="text-2xl font-semibold leading-snug text-navy sm:text-3xl">
+        Before we start.
+      </h2>
+      <p className="text-charcoal/75">
+        FutureWise is a free resource built for high school students in Oman. We're still early, so
+        what we make next — the industry guides, the practical skills content, everything — should
+        be shaped by the people actually using it.
+      </p>
+      <p className="text-charcoal/75">
+        This survey has five quick questions, about two minutes in total. Your answers tell us
+        which industries to cover first, what students find hardest to figure out, and how
+        confident you already feel about your next steps. There are no right answers, and you can
+        share as much or as little as you like.
+      </p>
+      <p className="text-sm text-charcoal/60">
+        Every response goes straight to the FutureWise team and is used only to build better
+        resources for students.
+      </p>
     </div>
   );
 }
