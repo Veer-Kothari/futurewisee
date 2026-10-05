@@ -363,6 +363,31 @@ function QuestionView({
   );
 }
 
+function IntroView() {
+  return (
+    <div className="space-y-6">
+      <h2 className="text-2xl font-semibold leading-snug text-navy sm:text-3xl">
+        Before we start.
+      </h2>
+      <p className="text-charcoal/75">
+        FutureWise is a free resource built for high school students in Oman. We're still early, so
+        what we make next — the industry guides, the practical skills content, everything — should
+        be shaped by the people actually using it.
+      </p>
+      <p className="text-charcoal/75">
+        This survey has five quick questions, about two minutes in total. Your answers tell us
+        which industries to cover first, what students find hardest to figure out, and how
+        confident you already feel about your next steps. There are no right answers, and you can
+        share as much or as little as you like.
+      </p>
+      <p className="text-sm text-charcoal/60">
+        Every response goes straight to the FutureWise team and is used only to build better
+        resources for students.
+      </p>
+    </div>
+  );
+}
+
 function SignupView({
   signup,
   setSignup,
