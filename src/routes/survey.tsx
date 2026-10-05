@@ -136,19 +136,21 @@ function Page() {
   });
   const [signup, setSignup] = useState<SignupInfo>({ name: "", email: "", password: "" });
 
-  const totalSteps = questions.length + 1;
-  const isSignupStep = step === questions.length;
+  const totalSteps = questions.length + 2;
+  const isIntroStep = step === 0;
+  const isSignupStep = step === questions.length + 1;
   const isThanksStep = step === totalSteps;
 
   const currentAnswer = (() => {
-    if (step >= questions.length) return undefined;
-    const q = questions[step];
+    if (step < 1 || step > questions.length) return undefined;
+    const q = questions[step - 1];
     if (!q) return undefined;
     if (q.type === "multi") return answers[q.key];
     return answers[q.key];
   })();
 
   const canProceed = () => {
+    if (isIntroStep) return true;
     if (isSignupStep) {
       return Boolean(signup.name.trim() && signup.email.trim() && signup.password.trim());
     }
