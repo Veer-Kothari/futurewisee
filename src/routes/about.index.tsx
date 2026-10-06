@@ -50,6 +50,8 @@ const team = [
   {
     name: "William Darker",
     role: "Blog Writing",
+    photo: null,
+    photoAlt: null,
     bio: [],
   },
 ];
