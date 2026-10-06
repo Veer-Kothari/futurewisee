@@ -237,12 +237,21 @@ function TeamSection() {
 
           return (
             <article key={member.name} className="min-w-0">
-              <div className="flex aspect-[4/3] items-center justify-center bg-light-grey">
-                <div className="flex flex-col items-center gap-3 text-blue/60">
-                  <Image aria-hidden="true" className="size-10" strokeWidth={1.5} />
-                  <span className="text-sm font-medium text-charcoal/55">Photo coming soon</span>
+              {member.photo ? (
+                <img
+                  src={member.photo}
+                  alt={member.photoAlt ?? member.name}
+                  loading="lazy"
+                  className="aspect-[4/3] w-full object-cover object-top"
+                />
+              ) : (
+                <div className="flex aspect-[4/3] items-center justify-center bg-light-grey">
+                  <div className="flex flex-col items-center gap-3 text-blue/60">
+                    <Image aria-hidden="true" className="size-10" strokeWidth={1.5} />
+                    <span className="text-sm font-medium text-charcoal/55">Photo coming soon</span>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className="flex items-start justify-between gap-4 border-b border-border py-5">
                 <div>
