@@ -241,10 +241,10 @@ function TeamSection() {
                   src={member.photo}
                   alt={member.name}
                   loading="lazy"
-                  className="aspect-[4/3] w-full object-cover object-top"
+                  className="aspect-[6/5] w-full object-cover object-top"
                 />
               ) : (
-                <div className="flex aspect-[4/3] items-center justify-center bg-light-grey">
+                <div className="flex aspect-[6/5] items-center justify-center bg-light-grey">
                   <div className="flex flex-col items-center gap-3 text-blue/60">
                     <Image aria-hidden="true" className="size-10" strokeWidth={1.5} />
                     <span className="text-sm font-medium text-charcoal/55">Photo coming soon</span>
