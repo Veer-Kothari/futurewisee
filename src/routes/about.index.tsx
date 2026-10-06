@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Image, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import veerKothariPhoto from "@/assets/team/veer-kothari.png.asset.json";
+
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/about/")({
@@ -36,6 +38,7 @@ const team = [
   {
     name: "Veer Kothari",
     role: "Founder & Project Lead",
+    photo: veerKothariPhoto.url,
     bio: [
       "I am Veer Kothari, a Year 12 student at British School Muscat in Muscat, Oman. I have a strong interest in mathematics, economics, careers and practical education, and I am particularly interested in business and finance. I am in the high school graduating class of 2028, and look to apply to the UK, the United States and wider Europe to pursue a career in finance.",
       "Through my academic and extracurricular experiences, including the Harvard Secondary School Program in Microeconomics, an internship at one of the largest college investment funds globally, and articulating essays to answer economic queries far beyond the classroom, I have developed an interest in understanding how education can better prepare young people for the world beyond school and exams.",
@@ -46,6 +49,7 @@ const team = [
   {
     name: "William Darker",
     role: "Blog Writing",
+    photo: null,
     bio: [],
   },
 ];
@@ -231,12 +235,21 @@ function TeamSection() {
 
           return (
             <article key={member.name} className="min-w-0">
-              <div className="flex aspect-[4/3] items-center justify-center bg-light-grey">
-                <div className="flex flex-col items-center gap-3 text-blue/60">
-                  <Image aria-hidden="true" className="size-10" strokeWidth={1.5} />
-                  <span className="text-sm font-medium text-charcoal/55">Photo coming soon</span>
+              {member.photo ? (
+                <img
+                  src={member.photo}
+                  alt={member.name}
+                  loading="lazy"
+                  className="aspect-[4/3] w-full object-cover object-top"
+                />
+              ) : (
+                <div className="flex aspect-[4/3] items-center justify-center bg-light-grey">
+                  <div className="flex flex-col items-center gap-3 text-blue/60">
+                    <Image aria-hidden="true" className="size-10" strokeWidth={1.5} />
+                    <span className="text-sm font-medium text-charcoal/55">Photo coming soon</span>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className="flex items-start justify-between gap-4 border-b border-border py-5">
                 <div>
