@@ -3,6 +3,7 @@ import { Image, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import veerKothariPhoto from "@/assets/team/veer-kothari.png.asset.json";
+import williamDarkerPhoto from "@/assets/team/william-darker.png.asset.json";
 
 import { Button } from "@/components/ui/button";
 
@@ -49,7 +50,7 @@ const team = [
   {
     name: "William Darker",
     role: "Blog Writing",
-    photo: null,
+    photo: williamDarkerPhoto.url,
     bio: [],
   },
 ];
