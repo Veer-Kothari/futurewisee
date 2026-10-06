@@ -240,7 +240,7 @@ function TeamSection() {
               {member.photo ? (
                 <img
                   src={member.photo}
-                  alt={member.photoAlt ?? member.name}
+                  alt={member.name}
                   loading="lazy"
                   className="aspect-[4/3] w-full object-cover object-top"
                 />
