@@ -49,9 +49,13 @@ const team = [
   },
   {
     name: "William Darker",
-    role: "Blog Writing",
+    role: "Head of Content Creation",
     photo: williamDarkerPhoto.url,
-    bio: [],
+    bio: [
+      "My name is William Darker, a Year 12 student with a passionate interest in economic and personal wellbeing. Having composed numerous essays on both analytical philosophy & practical ethics, I aim to eventually refine & contribute my interests to the world through a degree of Physics & Philosophy.",
+      "My primary role in FutureWise is as the foremost columnist for The Practical Skills Guide; a personal project I had previously created out of frustration at the lack of resources provided for soon-to-be solo living students.",
+      "As a result, I orchestrated this guidebook for independent living to provide students like myself with a clear, concise, all in one place manual for everything one may need to fulfill their independent lives to the greatest extent.",
+    ],
   },
 ];
 
