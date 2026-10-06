@@ -45,7 +45,7 @@ const team = [
   },
   {
     name: "William Darker",
-    role: "Blog Writing Lead",
+    role: "Blog Writing",
     bio: [],
   },
 ];
