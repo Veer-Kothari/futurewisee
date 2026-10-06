@@ -39,7 +39,6 @@ const team = [
     name: "Veer Kothari",
     role: "Founder & Project Lead",
     photo: veerKothariPhoto.url,
-    photoAlt: "Veer Kothari, Founder and Project Lead of FutureWise",
     bio: [
       "I am Veer Kothari, a Year 12 student at British School Muscat in Muscat, Oman. I have a strong interest in mathematics, economics, careers and practical education, and I am particularly interested in business and finance. I am in the high school graduating class of 2028, and look to apply to the UK, the United States and wider Europe to pursue a career in finance.",
       "Through my academic and extracurricular experiences, including the Harvard Secondary School Program in Microeconomics, an internship at one of the largest college investment funds globally, and articulating essays to answer economic queries far beyond the classroom, I have developed an interest in understanding how education can better prepare young people for the world beyond school and exams.",
