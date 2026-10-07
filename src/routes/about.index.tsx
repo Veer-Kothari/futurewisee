@@ -76,7 +76,7 @@ const pillars = [
   },
   {
     title: "Youth Empowerment",
-    description: "We give young Omanis the confidence, tools, and language to make informed decisions about their futures.",
+    description: "We give young students in Oman the confidence, tools, and language to make informed decisions about their futures.",
   },
   {
     title: "Community Partnership",
@@ -311,7 +311,7 @@ function VisionSection() {
       </h2>
       <p className="mt-4 max-w-3xl text-lg leading-8 text-charcoal/80">
         Oman Vision 2040 places people, knowledge, and economic resilience at the heart of the
-        country’s future. FutureWise supports that vision by preparing young Omanis with the
+        country’s future. FutureWise supports that vision by preparing young students in Oman with the
         practical skills, career awareness, and confidence they need to participate in a
         diversified economy.
       </p>
