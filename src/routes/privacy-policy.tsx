@@ -1,27 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { PlaceholderPage } from "@/components/pages/placeholder-page";
+import { LegalPage } from "@/components/pages/legal-page";
+import { privacyPolicy } from "@/content/legal";
+import { pageTitle, seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/privacy-policy")({
-  head: () => ({
-    meta: [
-      { title: "Privacy Policy | FutureWise" },
-      { name: "description", content: "FutureWise privacy policy." },
-      { property: "og:title", content: "Privacy Policy | FutureWise" },
-      { property: "og:description", content: "FutureWise privacy policy." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Page,
+  head: () =>
+    seo(
+      "/privacy-policy",
+      pageTitle("Privacy Policy"),
+      "What FutureWise collects (accounts, survey answers, resource clicks, optional emails and analytics), why, and how to download or delete your data.",
+    ),
+  component: () => <LegalPage doc={privacyPolicy} />,
 });
-
-function Page() {
-  return (
-    <PlaceholderPage
-      eyebrow="Legal"
-      title="Privacy Policy"
-      description="Our privacy policy will be published here soon."
-    />
-  );
-}

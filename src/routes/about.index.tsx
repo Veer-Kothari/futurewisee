@@ -1,31 +1,32 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Image, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import veerKothariPhoto from "@/assets/team/veer-kothari.png.asset.json";
 import williamDarkerPhoto from "@/assets/team/william-darker.png.asset.json";
 
 import { Button } from "@/components/ui/button";
+import { site } from "@/data/site";
+import { pageTitle, seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/about/")({
-  head: () => ({
-    meta: [
-      { title: "About FutureWise | FutureWise" },
+  head: () =>
+    seo(
+      "/about",
+      pageTitle("About Us"),
+      "Meet the team behind FutureWise, learn about the project, and see how we support Oman Vision 2040.",
       {
-        name: "description",
-        content:
-          "Meet the team behind FutureWise, learn about the project, and see how we support Oman Vision 2040.",
+        crumbs: [{ name: "About Us", path: "/about" }],
+        jsonLd: [
+          {
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            name: "About FutureWise",
+            about: { "@id": `${site.siteUrl}/#organization` },
+          },
+        ],
       },
-      { property: "og:title", content: "About FutureWise | FutureWise" },
-      {
-        property: "og:description",
-        content:
-          "Meet the team behind FutureWise, learn about the project, and see how we support Oman Vision 2040.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+    ),
   component: AboutPage,
 });
 
@@ -68,19 +69,23 @@ const stats = [
 const pillars = [
   {
     title: "Education & Knowledge",
-    description: "We turn complex career and life topics into clear, practical learning students can use right away.",
+    description:
+      "We turn complex career and life topics into clear, practical learning students can use right away.",
   },
   {
     title: "Economic Diversification",
-    description: "By introducing students to emerging industries, we help prepare a workforce ready for Oman’s future economy.",
+    description:
+      "By introducing students to emerging industries, we help prepare a workforce ready for Oman’s future economy.",
   },
   {
     title: "Youth Empowerment",
-    description: "We give young students in Oman the confidence, tools, and language to make informed decisions about their futures.",
+    description:
+      "We give young students in Oman the confidence, tools, and language to make informed decisions about their futures.",
   },
   {
     title: "Community Partnership",
-    description: "We collaborate with educators, professionals, and families to support students beyond the classroom.",
+    description:
+      "We collaborate with educators, professionals, and families to support students beyond the classroom.",
   },
 ];
 
@@ -112,14 +117,10 @@ function AboutPage() {
       {/* Intro */}
       <section className="page-intro">
         <div className="site-container py-16 sm:py-20">
-          <p className="eyebrow">About Us</p>
-          <h1 className="mt-4 text-4xl font-bold text-navy sm:text-5xl lg:text-6xl">
-            About FutureWise
-          </h1>
+          <h1 className="text-4xl font-bold text-navy sm:text-5xl lg:text-6xl">About FutureWise</h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-charcoal/80">
             FutureWise is an educational platform built to help high school students in Oman
-            navigate careers, industries, money, and independent life with clarity and
-            confidence.
+            navigate careers, industries, money, and independent life with clarity and confidence.
           </p>
         </div>
       </section>
@@ -140,7 +141,7 @@ function AboutPage() {
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => selectTab(tab.id)}
-                  className={`shrink-0 rounded-sm border-b-2 px-5 py-2.5 text-sm font-semibold transition-colors ${
+                  className={`min-h-11 shrink-0 border-b-2 px-5 py-2.5 text-sm font-semibold transition-colors ${
                     isActive
                       ? "border-navy bg-navy text-primary-foreground"
                       : "border-transparent bg-transparent text-charcoal hover:bg-light-blue hover:text-navy"
@@ -188,8 +189,8 @@ function ProjectSection() {
         <div className="space-y-6 text-lg leading-8 text-charcoal/80">
           <p>
             FutureWise was created to answer a question we kept hearing from students: “School
-            teaches me subjects, but who teaches me how to choose a career, manage money, or live
-            on my own?”
+            teaches me subjects, but who teaches me how to choose a career, manage money, or live on
+            my own?”
           </p>
           <p>
             Our platform brings together practical industry guides, personal finance basics,
@@ -231,8 +232,7 @@ function TeamSection() {
 
   return (
     <section id="team" className="scroll-mt-32">
-      <p className="eyebrow">Our People</p>
-      <h2 className="mt-3 text-3xl font-semibold text-navy sm:text-4xl">The Team</h2>
+      <h2 className="text-3xl font-semibold text-navy sm:text-4xl">The Team</h2>
       <div className="mt-10 grid gap-x-9 gap-y-12 sm:grid-cols-2">
         {team.map((member) => {
           const isExpanded = expandedMember === member.name;
@@ -249,10 +249,7 @@ function TeamSection() {
                 />
               ) : (
                 <div className="flex aspect-[6/5] items-center justify-center bg-light-grey">
-                  <div className="flex flex-col items-center gap-3 text-blue/60">
-                    <Image aria-hidden="true" className="size-10" strokeWidth={1.5} />
-                    <span className="text-sm font-medium text-charcoal/55">Photo coming soon</span>
-                  </div>
+                  <span className="text-sm font-medium text-charcoal/60">Photo coming soon</span>
                 </div>
               )}
 
@@ -311,8 +308,8 @@ function VisionSection() {
       </h2>
       <p className="mt-4 max-w-3xl text-lg leading-8 text-charcoal/80">
         Oman Vision 2040 places people, knowledge, and economic resilience at the heart of the
-        country’s future. FutureWise supports that vision by preparing young students in Oman with the
-        practical skills, career awareness, and confidence they need to participate in a
+        country’s future. FutureWise supports that vision by preparing young students in Oman with
+        the practical skills, career awareness, and confidence they need to participate in a
         diversified economy.
       </p>
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

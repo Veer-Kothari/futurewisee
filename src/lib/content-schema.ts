@@ -41,25 +41,40 @@ export const INSIGHT_KIND_VALUES = INSIGHT_KINDS.map((k) => k.value) as [
 
 export const SLUG_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
+/** A real https address with a host name (rejects "https://?", spaces, other schemes). */
+export function isHttpsUrl(value: string): boolean {
+  if (/\s/.test(value)) return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && /^[a-z0-9-]+(\.[a-z0-9-]+)+$/i.test(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
 /** Optional https URL: "" / whitespace → null; anything else must be https:// and ≤ 500 chars. */
 const optionalHttpsUrl = z
   .string()
   .trim()
   .max(500)
   .transform((value) => (value === "" ? null : value))
-  .refine((value) => value === null || /^https:\/\/[^\s]+$/.test(value), {
+  .refine((value) => value === null || isHttpsUrl(value), {
     message: "Use a full https:// link",
   })
   .nullable()
   .transform((value) => value ?? null);
 
 export const postInputSchema = z.object({
-  slug: z.string().trim().max(100).regex(SLUG_PATTERN, "Lowercase letters, numbers and dashes only"),
+  slug: z
+    .string()
+    .trim()
+    .max(100)
+    .regex(SLUG_PATTERN, "Lowercase letters, numbers and dashes only"),
   title: z.string().trim().min(1).max(160),
   category: z.enum(BLOG_CATEGORY_SLUGS),
   author_name: z.string().trim().min(1).max(80),
   excerpt: z.string().trim().max(300),
-  body: z.string().max(50000),
+  body: z.string().trim().max(50000),
   cover_image_url: optionalHttpsUrl,
   cover_image_alt: z.string().trim().max(200),
   video_url: optionalHttpsUrl,
@@ -73,7 +88,7 @@ export const insightInputSchema = z
     kind: z.enum(INSIGHT_KIND_VALUES),
     title: z.string().trim().min(1).max(160),
     summary: z.string().trim().max(500),
-    body: z.string().max(30000),
+    body: z.string().trim().max(30000),
     video_url: optionalHttpsUrl,
     link_url: optionalHttpsUrl,
     file_url: optionalHttpsUrl,
@@ -88,7 +103,11 @@ export const insightInputSchema = z
   })
   .superRefine((item, ctx) => {
     if (item.kind === "video" && !item.video_url) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["video_url"], message: "Add the video link" });
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["video_url"],
+        message: "Add the video link",
+      });
     }
     if (item.kind === "course" && !item.file_url && !item.link_url) {
       ctx.addIssue({
@@ -101,7 +120,11 @@ export const insightInputSchema = z
       ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["link_url"], message: "Add the link" });
     }
     if (item.kind === "guide" && item.body.trim() === "") {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["body"], message: "Write the guide text" });
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["body"],
+        message: "Write the guide text",
+      });
     }
   });
 export type InsightInput = z.infer<typeof insightInputSchema>;

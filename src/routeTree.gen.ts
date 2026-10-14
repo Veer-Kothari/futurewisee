@@ -11,25 +11,28 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AccountRouteImport } from './routes/account'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as IndustryResourcesRouteImport } from './routes/industry-resources'
 import { Route as LivingIndependentlyAndPersonalFinanceRouteImport } from './routes/living-independently-and-personal-finance'
+import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SurveyRouteImport } from './routes/survey'
 import { Route as TermsOfUseRouteImport } from './routes/terms-of-use'
 import { Route as AboutIndexRouteImport } from './routes/about.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as IndustryResourcesIndexRouteImport } from './routes/industry-resources.index'
-import { Route as IndustryResourcesEconomicsRouteImport } from './routes/industry-resources.economics'
-import { Route as IndustryResourcesEntrepreneurshipRouteImport } from './routes/industry-resources.entrepreneurship'
-import { Route as IndustryResourcesInvestmentBankingAndTradingRouteImport } from './routes/industry-resources.investment-banking-and-trading'
-import { Route as IndustryResourcesLawRouteImport } from './routes/industry-resources.law'
-import { Route as IndustryResourcesOperationsRouteImport } from './routes/industry-resources.operations'
-import { Route as IndustryResourcesOtherFinanceRouteImport } from './routes/industry-resources.other-finance'
-import { Route as IndustryResourcesTaxRouteImport } from './routes/industry-resources.tax'
+import { Route as IndustryResourcesIndustryRouteImport } from './routes/industry-resources.$industry'
 import { Route as LivingIndependentlyAndPersonalFinanceIndexRouteImport } from './routes/living-independently-and-personal-finance.index'
 import { Route as LivingIndependentlyAndPersonalFinanceLinkedinRouteImport } from './routes/living-independently-and-personal-finance.linkedin'
 import { Route as LivingIndependentlyAndPersonalFinanceMyJourneyBlogRouteImport } from './routes/living-independently-and-personal-finance.my-journey-blog'
@@ -46,9 +49,24 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndustriesRoute = IndustriesRouteImport.update({
@@ -67,14 +85,44 @@ const LivingIndependentlyAndPersonalFinanceRoute =
     path: '/living-independently-and-personal-finance',
     getParentRoute: () => rootRouteImport,
   } as any)
+const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
+  id: '/llms.txt',
+  path: '/llms.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResourcesRoute = ResourcesRouteImport.update({
   id: '/resources',
   path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SurveyRoute = SurveyRouteImport.update({
@@ -107,46 +155,12 @@ const IndustryResourcesIndexRoute = IndustryResourcesIndexRouteImport.update({
   path: '/',
   getParentRoute: () => IndustryResourcesRoute,
 } as any)
-const IndustryResourcesEconomicsRoute =
-  IndustryResourcesEconomicsRouteImport.update({
-    id: '/economics',
-    path: '/economics',
+const IndustryResourcesIndustryRoute =
+  IndustryResourcesIndustryRouteImport.update({
+    id: '/$industry',
+    path: '/$industry',
     getParentRoute: () => IndustryResourcesRoute,
   } as any)
-const IndustryResourcesEntrepreneurshipRoute =
-  IndustryResourcesEntrepreneurshipRouteImport.update({
-    id: '/entrepreneurship',
-    path: '/entrepreneurship',
-    getParentRoute: () => IndustryResourcesRoute,
-  } as any)
-const IndustryResourcesInvestmentBankingAndTradingRoute =
-  IndustryResourcesInvestmentBankingAndTradingRouteImport.update({
-    id: '/investment-banking-and-trading',
-    path: '/investment-banking-and-trading',
-    getParentRoute: () => IndustryResourcesRoute,
-  } as any)
-const IndustryResourcesLawRoute = IndustryResourcesLawRouteImport.update({
-  id: '/law',
-  path: '/law',
-  getParentRoute: () => IndustryResourcesRoute,
-} as any)
-const IndustryResourcesOperationsRoute =
-  IndustryResourcesOperationsRouteImport.update({
-    id: '/operations',
-    path: '/operations',
-    getParentRoute: () => IndustryResourcesRoute,
-  } as any)
-const IndustryResourcesOtherFinanceRoute =
-  IndustryResourcesOtherFinanceRouteImport.update({
-    id: '/other-finance',
-    path: '/other-finance',
-    getParentRoute: () => IndustryResourcesRoute,
-  } as any)
-const IndustryResourcesTaxRoute = IndustryResourcesTaxRouteImport.update({
-  id: '/tax',
-  path: '/tax',
-  getParentRoute: () => IndustryResourcesRoute,
-} as any)
 const LivingIndependentlyAndPersonalFinanceIndexRoute =
   LivingIndependentlyAndPersonalFinanceIndexRouteImport.update({
     id: '/',
@@ -183,22 +197,25 @@ const LivingIndependentlyAndPersonalFinanceThePracticalSkillsGuideRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRouteWithChildren
+  '/account': typeof AccountRoute
+  '/admin': typeof AdminRoute
   '/blog': typeof BlogRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
   '/industries': typeof IndustriesRoute
   '/industry-resources': typeof IndustryResourcesRouteWithChildren
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
+  '/llms.txt': typeof LlmsDottxtRoute
+  '/login': typeof LoginRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/resources': typeof ResourcesRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/survey': typeof SurveyRoute
   '/terms-of-use': typeof TermsOfUseRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
-  '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
-  '/industry-resources/investment-banking-and-trading': typeof IndustryResourcesInvestmentBankingAndTradingRoute
-  '/industry-resources/law': typeof IndustryResourcesLawRoute
-  '/industry-resources/operations': typeof IndustryResourcesOperationsRoute
-  '/industry-resources/other-finance': typeof IndustryResourcesOtherFinanceRoute
-  '/industry-resources/tax': typeof IndustryResourcesTaxRoute
+  '/industry-resources/$industry': typeof IndustryResourcesIndustryRoute
   '/living-independently-and-personal-finance/linkedin': typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
   '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
@@ -210,19 +227,22 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
+  '/admin': typeof AdminRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/industries': typeof IndustriesRoute
+  '/llms.txt': typeof LlmsDottxtRoute
+  '/login': typeof LoginRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/resources': typeof ResourcesRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/survey': typeof SurveyRoute
   '/terms-of-use': typeof TermsOfUseRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
-  '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
-  '/industry-resources/investment-banking-and-trading': typeof IndustryResourcesInvestmentBankingAndTradingRoute
-  '/industry-resources/law': typeof IndustryResourcesLawRoute
-  '/industry-resources/operations': typeof IndustryResourcesOperationsRoute
-  '/industry-resources/other-finance': typeof IndustryResourcesOtherFinanceRoute
-  '/industry-resources/tax': typeof IndustryResourcesTaxRoute
+  '/industry-resources/$industry': typeof IndustryResourcesIndustryRoute
   '/living-independently-and-personal-finance/linkedin': typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
   '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
@@ -236,22 +256,25 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRouteWithChildren
+  '/account': typeof AccountRoute
+  '/admin': typeof AdminRoute
   '/blog': typeof BlogRouteWithChildren
+  '/forgot-password': typeof ForgotPasswordRoute
   '/industries': typeof IndustriesRoute
   '/industry-resources': typeof IndustryResourcesRouteWithChildren
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
+  '/llms.txt': typeof LlmsDottxtRoute
+  '/login': typeof LoginRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/resources': typeof ResourcesRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/signup': typeof SignupRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/survey': typeof SurveyRoute
   '/terms-of-use': typeof TermsOfUseRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/industry-resources/economics': typeof IndustryResourcesEconomicsRoute
-  '/industry-resources/entrepreneurship': typeof IndustryResourcesEntrepreneurshipRoute
-  '/industry-resources/investment-banking-and-trading': typeof IndustryResourcesInvestmentBankingAndTradingRoute
-  '/industry-resources/law': typeof IndustryResourcesLawRoute
-  '/industry-resources/operations': typeof IndustryResourcesOperationsRoute
-  '/industry-resources/other-finance': typeof IndustryResourcesOtherFinanceRoute
-  '/industry-resources/tax': typeof IndustryResourcesTaxRoute
+  '/industry-resources/$industry': typeof IndustryResourcesIndustryRoute
   '/living-independently-and-personal-finance/linkedin': typeof LivingIndependentlyAndPersonalFinanceLinkedinRoute
   '/living-independently-and-personal-finance/my-journey-blog': typeof LivingIndependentlyAndPersonalFinanceMyJourneyBlogRoute
   '/living-independently-and-personal-finance/personal-finance-blog': typeof LivingIndependentlyAndPersonalFinancePersonalFinanceBlogRoute
@@ -266,22 +289,25 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/account'
+    | '/admin'
     | '/blog'
+    | '/forgot-password'
     | '/industries'
     | '/industry-resources'
     | '/living-independently-and-personal-finance'
+    | '/llms.txt'
+    | '/login'
     | '/privacy-policy'
+    | '/reset-password'
     | '/resources'
+    | '/robots.txt'
+    | '/signup'
+    | '/sitemap.xml'
     | '/survey'
     | '/terms-of-use'
     | '/blog/$slug'
-    | '/industry-resources/economics'
-    | '/industry-resources/entrepreneurship'
-    | '/industry-resources/investment-banking-and-trading'
-    | '/industry-resources/law'
-    | '/industry-resources/operations'
-    | '/industry-resources/other-finance'
-    | '/industry-resources/tax'
+    | '/industry-resources/$industry'
     | '/living-independently-and-personal-finance/linkedin'
     | '/living-independently-and-personal-finance/my-journey-blog'
     | '/living-independently-and-personal-finance/personal-finance-blog'
@@ -293,19 +319,22 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/account'
+    | '/admin'
+    | '/forgot-password'
     | '/industries'
+    | '/llms.txt'
+    | '/login'
     | '/privacy-policy'
+    | '/reset-password'
     | '/resources'
+    | '/robots.txt'
+    | '/signup'
+    | '/sitemap.xml'
     | '/survey'
     | '/terms-of-use'
     | '/blog/$slug'
-    | '/industry-resources/economics'
-    | '/industry-resources/entrepreneurship'
-    | '/industry-resources/investment-banking-and-trading'
-    | '/industry-resources/law'
-    | '/industry-resources/operations'
-    | '/industry-resources/other-finance'
-    | '/industry-resources/tax'
+    | '/industry-resources/$industry'
     | '/living-independently-and-personal-finance/linkedin'
     | '/living-independently-and-personal-finance/my-journey-blog'
     | '/living-independently-and-personal-finance/personal-finance-blog'
@@ -318,22 +347,25 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/account'
+    | '/admin'
     | '/blog'
+    | '/forgot-password'
     | '/industries'
     | '/industry-resources'
     | '/living-independently-and-personal-finance'
+    | '/llms.txt'
+    | '/login'
     | '/privacy-policy'
+    | '/reset-password'
     | '/resources'
+    | '/robots.txt'
+    | '/signup'
+    | '/sitemap.xml'
     | '/survey'
     | '/terms-of-use'
     | '/blog/$slug'
-    | '/industry-resources/economics'
-    | '/industry-resources/entrepreneurship'
-    | '/industry-resources/investment-banking-and-trading'
-    | '/industry-resources/law'
-    | '/industry-resources/operations'
-    | '/industry-resources/other-finance'
-    | '/industry-resources/tax'
+    | '/industry-resources/$industry'
     | '/living-independently-and-personal-finance/linkedin'
     | '/living-independently-and-personal-finance/my-journey-blog'
     | '/living-independently-and-personal-finance/personal-finance-blog'
@@ -347,12 +379,21 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRouteWithChildren
+  AccountRoute: typeof AccountRoute
+  AdminRoute: typeof AdminRoute
   BlogRoute: typeof BlogRouteWithChildren
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   IndustriesRoute: typeof IndustriesRoute
   IndustryResourcesRoute: typeof IndustryResourcesRouteWithChildren
   LivingIndependentlyAndPersonalFinanceRoute: typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
+  LlmsDottxtRoute: typeof LlmsDottxtRoute
+  LoginRoute: typeof LoginRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ResourcesRoute: typeof ResourcesRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SignupRoute: typeof SignupRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SurveyRoute: typeof SurveyRoute
   TermsOfUseRoute: typeof TermsOfUseRoute
 }
@@ -373,11 +414,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog': {
       id: '/blog'
       path: '/blog'
       fullPath: '/blog'
       preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/industries': {
@@ -401,6 +463,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LivingIndependentlyAndPersonalFinanceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/llms.txt': {
+      id: '/llms.txt'
+      path: '/llms.txt'
+      fullPath: '/llms.txt'
+      preLoaderRoute: typeof LlmsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy-policy': {
       id: '/privacy-policy'
       path: '/privacy-policy'
@@ -408,11 +484,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/resources': {
       id: '/resources'
       path: '/resources'
       fullPath: '/resources'
       preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/survey': {
@@ -457,53 +561,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndustryResourcesIndexRouteImport
       parentRoute: typeof IndustryResourcesRoute
     }
-    '/industry-resources/economics': {
-      id: '/industry-resources/economics'
-      path: '/economics'
-      fullPath: '/industry-resources/economics'
-      preLoaderRoute: typeof IndustryResourcesEconomicsRouteImport
-      parentRoute: typeof IndustryResourcesRoute
-    }
-    '/industry-resources/entrepreneurship': {
-      id: '/industry-resources/entrepreneurship'
-      path: '/entrepreneurship'
-      fullPath: '/industry-resources/entrepreneurship'
-      preLoaderRoute: typeof IndustryResourcesEntrepreneurshipRouteImport
-      parentRoute: typeof IndustryResourcesRoute
-    }
-    '/industry-resources/investment-banking-and-trading': {
-      id: '/industry-resources/investment-banking-and-trading'
-      path: '/investment-banking-and-trading'
-      fullPath: '/industry-resources/investment-banking-and-trading'
-      preLoaderRoute: typeof IndustryResourcesInvestmentBankingAndTradingRouteImport
-      parentRoute: typeof IndustryResourcesRoute
-    }
-    '/industry-resources/law': {
-      id: '/industry-resources/law'
-      path: '/law'
-      fullPath: '/industry-resources/law'
-      preLoaderRoute: typeof IndustryResourcesLawRouteImport
-      parentRoute: typeof IndustryResourcesRoute
-    }
-    '/industry-resources/operations': {
-      id: '/industry-resources/operations'
-      path: '/operations'
-      fullPath: '/industry-resources/operations'
-      preLoaderRoute: typeof IndustryResourcesOperationsRouteImport
-      parentRoute: typeof IndustryResourcesRoute
-    }
-    '/industry-resources/other-finance': {
-      id: '/industry-resources/other-finance'
-      path: '/other-finance'
-      fullPath: '/industry-resources/other-finance'
-      preLoaderRoute: typeof IndustryResourcesOtherFinanceRouteImport
-      parentRoute: typeof IndustryResourcesRoute
-    }
-    '/industry-resources/tax': {
-      id: '/industry-resources/tax'
-      path: '/tax'
-      fullPath: '/industry-resources/tax'
-      preLoaderRoute: typeof IndustryResourcesTaxRouteImport
+    '/industry-resources/$industry': {
+      id: '/industry-resources/$industry'
+      path: '/$industry'
+      fullPath: '/industry-resources/$industry'
+      preLoaderRoute: typeof IndustryResourcesIndustryRouteImport
       parentRoute: typeof IndustryResourcesRoute
     }
     '/living-independently-and-personal-finance/': {
@@ -567,26 +629,12 @@ const BlogRouteChildren: BlogRouteChildren = {
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
 interface IndustryResourcesRouteChildren {
-  IndustryResourcesEconomicsRoute: typeof IndustryResourcesEconomicsRoute
-  IndustryResourcesEntrepreneurshipRoute: typeof IndustryResourcesEntrepreneurshipRoute
-  IndustryResourcesInvestmentBankingAndTradingRoute: typeof IndustryResourcesInvestmentBankingAndTradingRoute
-  IndustryResourcesLawRoute: typeof IndustryResourcesLawRoute
-  IndustryResourcesOperationsRoute: typeof IndustryResourcesOperationsRoute
-  IndustryResourcesOtherFinanceRoute: typeof IndustryResourcesOtherFinanceRoute
-  IndustryResourcesTaxRoute: typeof IndustryResourcesTaxRoute
+  IndustryResourcesIndustryRoute: typeof IndustryResourcesIndustryRoute
   IndustryResourcesIndexRoute: typeof IndustryResourcesIndexRoute
 }
 
 const IndustryResourcesRouteChildren: IndustryResourcesRouteChildren = {
-  IndustryResourcesEconomicsRoute: IndustryResourcesEconomicsRoute,
-  IndustryResourcesEntrepreneurshipRoute:
-    IndustryResourcesEntrepreneurshipRoute,
-  IndustryResourcesInvestmentBankingAndTradingRoute:
-    IndustryResourcesInvestmentBankingAndTradingRoute,
-  IndustryResourcesLawRoute: IndustryResourcesLawRoute,
-  IndustryResourcesOperationsRoute: IndustryResourcesOperationsRoute,
-  IndustryResourcesOtherFinanceRoute: IndustryResourcesOtherFinanceRoute,
-  IndustryResourcesTaxRoute: IndustryResourcesTaxRoute,
+  IndustryResourcesIndustryRoute: IndustryResourcesIndustryRoute,
   IndustryResourcesIndexRoute: IndustryResourcesIndexRoute,
 }
 
@@ -623,13 +671,22 @@ const LivingIndependentlyAndPersonalFinanceRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRouteWithChildren,
+  AccountRoute: AccountRoute,
+  AdminRoute: AdminRoute,
   BlogRoute: BlogRouteWithChildren,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   IndustriesRoute: IndustriesRoute,
   IndustryResourcesRoute: IndustryResourcesRouteWithChildren,
   LivingIndependentlyAndPersonalFinanceRoute:
     LivingIndependentlyAndPersonalFinanceRouteWithChildren,
+  LlmsDottxtRoute: LlmsDottxtRoute,
+  LoginRoute: LoginRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ResourcesRoute: ResourcesRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SignupRoute: SignupRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SurveyRoute: SurveyRoute,
   TermsOfUseRoute: TermsOfUseRoute,
 }

@@ -19,13 +19,15 @@
  */
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+  /* Squared editorial style: every rounded-* utility is square (rounded-full stays for radio dots). */
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -61,7 +63,6 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-navy: var(--navy);
   --color-blue: var(--blue);
-  --color-teal: var(--teal);
   --color-light-blue: var(--light-blue);
   --color-charcoal: var(--charcoal);
   --color-light-grey: var(--light-grey);
@@ -70,10 +71,9 @@
 }
 
 :root {
-  --radius: 0.25rem;
+  --radius: 0px;
   --navy: oklch(0.35231 0.10114 254.02);
   --blue: oklch(0.50693 0.12448 247.6);
-  --teal: oklch(0.75746 0.11184 196.52);
   --light-blue: oklch(0.96535 0.01381 219.62);
   --charcoal: oklch(0.27955 0.03806 242.27);
   --light-grey: oklch(0.97518 0.00342 247.86);
@@ -183,6 +183,14 @@
   nav {
     font-weight: 500;
   }
+
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible,
+  [role="tab"]:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
 }
 
 @utility site-container {
@@ -190,16 +198,8 @@
   margin-inline: auto;
 }
 
-@utility rounded-card {
-  border-radius: 0.25rem;
-}
-
 @utility shadow-soft {
   box-shadow: 0 18px 50px color-mix(in oklab, var(--navy) 10%, transparent);
-}
-
-@utility shadow-brand {
-  box-shadow: 0 14px 30px color-mix(in oklab, var(--blue) 24%, transparent);
 }
 
 @utility wordmark {
@@ -214,7 +214,9 @@
 }
 
 @utility nav-link {
-  border-radius: 0.125rem;
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
   padding: 0.65rem 0.7rem;
   color: var(--navy);
   font-size: 0.8rem;
@@ -232,7 +234,6 @@
 
 @utility dropdown-link {
   display: block;
-  border-radius: 0.125rem;
   padding: 0.65rem 0.75rem;
   color: var(--charcoal);
   font-size: 0.875rem;
@@ -245,90 +246,105 @@
 }
 
 @utility mobile-sub-link {
-  display: block;
-  border-radius: 0.125rem;
+  display: flex;
+  min-height: 2.75rem;
+  align-items: center;
   padding: 0.6rem 0.75rem;
-  color: color-mix(in oklab, var(--charcoal) 78%, transparent);
+  color: color-mix(in oklab, var(--charcoal) 85%, transparent);
   font-size: 0.875rem;
   &:hover {
     color: var(--blue);
   }
 }
 
-@utility eyebrow {
-  display: none;
-}
-
-@utility resource-card {
-  display: block;
-  min-height: 19rem;
-  border: 1px solid var(--border);
-  border-radius: 0.25rem;
-  background-color: var(--background);
-  padding: 2rem;
-  box-shadow: 0 16px 40px color-mix(in oklab, var(--navy) 7%, transparent);
-  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
-  &:hover {
-    transform: translateY(-4px);
-    border-color: color-mix(in oklab, var(--navy) 60%, var(--border));
-    box-shadow: 0 22px 50px color-mix(in oklab, var(--navy) 12%, transparent);
-  }
-}
-
 @utility page-intro {
-  min-height: 34rem;
   background-color: var(--background);
   border-bottom: 1px solid var(--border);
 }
 
-@utility offer-card {
+@utility card-flat {
   display: block;
-  border-radius: 0.25rem;
   border: 1px solid var(--border);
   border-top: 2px solid var(--navy);
   background-color: var(--background);
   padding: 2rem;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition: border-color 160ms ease;
   &:hover {
     border-color: color-mix(in oklab, var(--navy) 45%, var(--border));
+    border-top-color: var(--navy);
   }
-}
-
-@utility offer-card-icon {
-  display: flex;
-  size: 3rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.25rem;
-  background-color: var(--white);
-  color: var(--navy);
-}
-
-@utility blog-card {
-  display: block;
-  overflow: hidden;
-  border-radius: 0.25rem;
-  background-color: var(--background);
-  border: 1px solid var(--border);
-  box-shadow: 0 14px 36px color-mix(in oklab, var(--navy) 6%, transparent);
-  transition: transform 180ms ease, box-shadow 180ms ease;
-  &:hover {
-    border-color: color-mix(in oklab, var(--navy) 45%, var(--border));
-  }
-}
-
-@utility blog-card-image {
-  aspect-ratio: 16 / 10;
-  background-color: var(--light-blue);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--blue);
 }
 
 @utility vision-strip {
   background-color: var(--navy);
-  color: var(--white);
+  color: var(--primary-foreground);
+}
+
+@utility text-link {
+  display: inline-flex;
+  align-items: center;
+  border-bottom: 1px solid var(--navy);
+  padding-bottom: 0.125rem;
+  color: var(--navy);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: color 160ms ease, border-color 160ms ease;
+  &:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+}
+
+/* Text Veer writes in /admin (blog posts, guides), rendered by <Markdown>. */
+@utility prose-fw {
+  color: color-mix(in oklab, var(--charcoal) 90%, transparent);
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  & > * + * {
+    margin-top: 1.25rem;
+  }
+  & h2 {
+    margin-top: 2.5rem;
+    color: var(--navy);
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+  & h3 {
+    margin-top: 2rem;
+    color: var(--navy);
+    font-size: 1.2rem;
+    line-height: 1.35;
+  }
+  & ul {
+    list-style: square;
+    padding-left: 1.4rem;
+  }
+  & ol {
+    list-style: decimal;
+    padding-left: 1.4rem;
+  }
+  & li + li {
+    margin-top: 0.4rem;
+  }
+  & blockquote {
+    border-left: 2px solid var(--blue);
+    background-color: var(--light-blue);
+    padding: 1rem 1.25rem;
+    color: var(--navy);
+  }
+  & a {
+    color: var(--navy);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  & a:hover {
+    color: var(--blue);
+  }
+  & strong {
+    color: var(--charcoal);
+    font-weight: 600;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
