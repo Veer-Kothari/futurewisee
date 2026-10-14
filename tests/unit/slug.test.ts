@@ -8,7 +8,7 @@ test("slug lowercases ASCII and strips composed and combining accents", () => {
 });
 test("slug replaces ampersands and collapses punctuation or whitespace", () => {
   assert.equal(slugify("  Investment Banking & Trading!  "), "investment-banking-and-trading");
-  assert.equal(slugify("A&B"), "aandb");
+  assert.equal(slugify("A&B"), "a-and-b");
   assert.equal(slugify("--Skills__for / 2026---"), "skills-for-2026");
 });
 test("slug is empty when nothing usable remains", () => {

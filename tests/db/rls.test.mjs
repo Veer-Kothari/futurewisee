@@ -790,5 +790,54 @@ if (files.length === 0) {
         assert.equal(rows[0].user_id, null);
       },
     );
+    await t.test("visitors can't read or write the content-media bucket directly", async () => {
+      await db.query(
+        "insert into storage.objects (bucket_id,name,owner) values ('content-media','anon-probe.pdf',$1)",
+        [ADMIN],
+      );
+      const seen = await queryAs("anon", null, "select * from storage.objects where bucket_id='content-media'");
+      assert.deepEqual(seen.rows, []);
+      await denied(
+        "anon",
+        null,
+        "insert into storage.objects (bucket_id,name) values ('content-media','anon.pdf')",
+      );
+      await denied(
+        "anon",
+        null,
+        "update storage.objects set name='x.pdf' where bucket_id='content-media'",
+        [],
+        true,
+      );
+      await denied("anon", null, "delete from storage.objects where bucket_id='content-media'", [], true);
+    });
+    await t.test("optional marketing metadata never blocks sign-up and only 'true' opts in", async () => {
+      const cases = [false, "yes", 1, null, "TRUE"];
+      for (const [index, value] of cases.entries()) {
+        const id = `00000000-0000-4000-8000-0000000001${String(index).padStart(2, "0")}`;
+        await signup(id, `optin${index}@example.org`, {
+          age_confirmed: true,
+          full_name: "Case",
+          marketing_opt_in: value,
+        });
+        const row = (await db.query("select marketing_opt_in from public.profiles where id=$1", [id]))
+          .rows[0];
+        assert.equal(row.marketing_opt_in, false, JSON.stringify(value));
+      }
+    });
+    await t.test("re-applying the migrations on a populated database keeps every row", async () => {
+      const before = (
+        await db.query(
+          "select (select count(*)::int from public.posts) as posts, (select count(*)::int from public.profiles) as profiles, (select count(*)::int from public.survey_responses) as responses, (select count(*)::int from public.user_roles) as roles, (select row_to_json(b)::text from storage.buckets b where id='content-media') as bucket",
+        )
+      ).rows[0];
+      for (const sql of migrations) await db.exec(sql);
+      const after = (
+        await db.query(
+          "select (select count(*)::int from public.posts) as posts, (select count(*)::int from public.profiles) as profiles, (select count(*)::int from public.survey_responses) as responses, (select count(*)::int from public.user_roles) as roles, (select row_to_json(b)::text from storage.buckets b where id='content-media') as bucket",
+        )
+      ).rows[0];
+      assert.deepEqual(after, before);
+    });
   });
 }

@@ -4,7 +4,7 @@ const MAX_SLUG = 100;
 export function slugify(input: string): string {
   const base = input
     .normalize("NFKD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/&/g, " and ")
     .replace(/[^a-z0-9]+/g, "-")

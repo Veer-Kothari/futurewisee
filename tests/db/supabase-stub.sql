@@ -37,7 +37,8 @@ alter table storage.objects enable row level security;
 grant usage on schema storage to anon, authenticated, service_role;
 grant select on storage.buckets to anon, authenticated;
 grant all on storage.buckets to service_role;
-grant all on storage.objects to authenticated, service_role;
+-- Supabase grants storage.objects to anon too; RLS is what keeps visitors out.
+grant all on storage.objects to anon, authenticated, service_role;
 
 grant usage on schema public to anon, authenticated, service_role;
 alter default privileges in schema public grant all on tables to anon, authenticated, service_role;
