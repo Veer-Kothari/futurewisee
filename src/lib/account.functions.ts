@@ -17,7 +17,7 @@ const DeleteInput = z.object({ confirm: z.literal("DELETE") });
  */
 export const updateMarketingPreference = createServerFn({ method: "POST" })
   .middleware([attachAuthToken, resolveUser])
-  .inputValidator((data: unknown) => data)
+  .validator((data: unknown) => data)
   .handler(async ({ data, context }): Promise<AccountResult> => {
     const parsed = PreferenceInput.safeParse(data);
     if (!parsed.success || !context.userId) return { ok: false, reason: "invalid" };
@@ -77,7 +77,7 @@ export const reconcileMarketing = createServerFn({ method: "POST" })
  */
 export const deleteMyAccount = createServerFn({ method: "POST" })
   .middleware([attachAuthToken, resolveUser])
-  .inputValidator((data: unknown) => data)
+  .validator((data: unknown) => data)
   .handler(async ({ data, context }): Promise<AccountResult> => {
     const parsed = DeleteInput.safeParse(data);
     if (!parsed.success || !context.userId) return { ok: false, reason: "invalid" };

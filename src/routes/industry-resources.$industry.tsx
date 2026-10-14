@@ -57,15 +57,7 @@ function IndustryPage() {
     <>
       <section className="page-intro">
         <div className="site-container py-16 sm:py-24">
-          <Link
-            to="/industry-resources"
-            className="text-sm font-semibold text-blue hover:underline"
-          >
-            Industry Insights
-          </Link>
-          <h1 className="mt-4 text-4xl font-bold text-navy sm:text-5xl lg:text-6xl">
-            {industry.name}
-          </h1>
+          <h1 className="text-4xl font-bold text-navy sm:text-5xl lg:text-6xl">{industry.name}</h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-charcoal/80">
             {industry.description}
           </p>

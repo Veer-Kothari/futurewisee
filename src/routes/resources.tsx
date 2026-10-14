@@ -144,6 +144,10 @@ function ResourceCard({ resource }: { resource: Resource }) {
               alt=""
               className="absolute inset-0 size-full bg-background object-contain p-2"
               loading="lazy"
+              // A logo that failed before the page became interactive never fires onError.
+              ref={(image) => {
+                if (image && image.complete && image.naturalWidth === 0) image.hidden = true;
+              }}
               onError={(event) => {
                 event.currentTarget.hidden = true;
               }}

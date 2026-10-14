@@ -17,7 +17,7 @@ export type NewsletterResult =
  * address was already on the list, so the form never reveals who is.
  */
 export const subscribeNewsletter = createServerFn({ method: "POST" })
-  .inputValidator((data: unknown) => data)
+  .validator((data: unknown) => data)
   .handler(async ({ data }): Promise<NewsletterResult> => {
     const parsed = Input.safeParse(data);
     if (!parsed.success) return { ok: false, reason: "invalid" };

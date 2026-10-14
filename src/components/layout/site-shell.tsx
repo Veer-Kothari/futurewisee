@@ -144,6 +144,53 @@ function AccountButton({ className, onNavigate }: { className?: string; onNaviga
   );
 }
 
+/**
+ * A phone-menu section: the name is a link to the section itself (no separate
+ * "Overview" item) and the chevron button shows or hides its pages.
+ */
+function MobileGroup({ item, onNavigate }: { item: NavItem; onNavigate: () => void }) {
+  const [open, setOpen] = useState(false);
+  const listId = `mobile-group-${item.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+  return (
+    <div className={cn(open && "bg-light-blue")}>
+      <div className="flex items-center">
+        <Link
+          to={item.to}
+          onClick={onNavigate}
+          className="flex min-h-11 flex-1 items-center px-3 py-3 font-medium text-navy"
+        >
+          {item.label}
+        </Link>
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-controls={listId}
+          aria-label={`${open ? "Hide" : "Show"} ${item.label} pages`}
+          onClick={() => setOpen((value) => !value)}
+          className="grid size-11 shrink-0 place-items-center text-navy"
+        >
+          <ChevronDown
+            aria-hidden="true"
+            className={cn("size-4 transition-transform", open && "rotate-180")}
+          />
+        </button>
+      </div>
+      {open ? (
+        <div id={listId} className="space-y-1 px-3 pb-3">
+          {item.children?.map((child) => (
+            <ChildLink
+              key={`${child.label}-${child.to}`}
+              child={child}
+              className="mobile-sub-link"
+              onNavigate={onNavigate}
+            />
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = useRouterState({ select: (state) => state.location.pathname });
@@ -161,7 +208,7 @@ function SiteHeader() {
     const root = document.documentElement;
     const previous = root.style.overflow;
     root.style.overflow = "hidden";
-    panelRef.current?.querySelector<HTMLElement>("a, summary, button")?.focus();
+    panelRef.current?.querySelector<HTMLElement>("a, button")?.focus();
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setMenuOpen(false);
@@ -227,28 +274,7 @@ function SiteHeader() {
           <div className="mx-auto max-w-3xl space-y-1 pb-10">
             {navItems.map((item) =>
               item.children ? (
-                <details key={item.label} className="group/mobile open:bg-light-blue">
-                  <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between px-3 py-3 font-medium text-navy">
-                    {item.label}
-                    <ChevronDown
-                      aria-hidden="true"
-                      className="size-4 transition-transform group-open/mobile:rotate-180"
-                    />
-                  </summary>
-                  <div className="space-y-1 px-3 pb-3">
-                    <Link to={item.to} onClick={close} className="mobile-sub-link font-semibold">
-                      All of {item.label}
-                    </Link>
-                    {item.children.map((child) => (
-                      <ChildLink
-                        key={`${child.label}-${child.to}`}
-                        child={child}
-                        className="mobile-sub-link"
-                        onNavigate={close}
-                      />
-                    ))}
-                  </div>
-                </details>
+                <MobileGroup key={item.label} item={item} onNavigate={close} />
               ) : (
                 <Link
                   key={item.label}

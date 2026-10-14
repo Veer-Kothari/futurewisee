@@ -19,7 +19,7 @@ const Input = z.object({
  */
 export const trackResourceClick = createServerFn({ method: "POST" })
   .middleware([attachAuthToken, resolveUser])
-  .inputValidator((data: unknown) => data)
+  .validator((data: unknown) => data)
   .handler(async ({ data, context }): Promise<{ ok: boolean }> => {
     const parsed = Input.safeParse(data);
     if (!parsed.success || !knownResourceIds.has(parsed.data.resourceId)) return { ok: false };

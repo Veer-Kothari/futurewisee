@@ -21,7 +21,7 @@ const CLAIM_WINDOW_MS = 7 * 86_400_000;
  */
 export const submitSurvey = createServerFn({ method: "POST" })
   .middleware([attachAuthToken, resolveUser])
-  .inputValidator((data: unknown) => data)
+  .validator((data: unknown) => data)
   .handler(async ({ data, context }): Promise<SubmitSurveyResult> => {
     const parsed = surveySubmissionSchema.safeParse(data);
     if (!parsed.success) return { ok: false, reason: "invalid" };
@@ -68,7 +68,7 @@ export const submitSurvey = createServerFn({ method: "POST" })
 /** Attaches an anonymous response to the signed-in account (once, within 7 days). */
 export const claimSurveyResponse = createServerFn({ method: "POST" })
   .middleware([attachAuthToken, resolveUser])
-  .inputValidator((data: unknown) => data)
+  .validator((data: unknown) => data)
   .handler(async ({ data, context }): Promise<ClaimResult> => {
     const parsed = claimSchema.safeParse(data);
     if (!parsed.success || !context.userId) return { ok: false, reason: "invalid" };

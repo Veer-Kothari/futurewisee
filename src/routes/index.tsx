@@ -186,6 +186,19 @@ function Index() {
                 </li>
               );
             })}
+            <li>
+              <Link
+                to="/survey"
+                className="flex h-full flex-col border border-dashed border-navy/40 bg-light-blue p-6 hover:border-navy"
+              >
+                <h3 className="text-lg font-semibold text-navy">Not sure where to start?</h3>
+                <p className="mt-2 text-sm leading-6 text-charcoal/75">
+                  Tell FutureWise which industry to cover first. The survey takes less than two
+                  minutes.
+                </p>
+                <p className="mt-auto pt-5 text-xs font-semibold text-blue">Take the Survey</p>
+              </Link>
+            </li>
           </ul>
         </div>
       </section>
