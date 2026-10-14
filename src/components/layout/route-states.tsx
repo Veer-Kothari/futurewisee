@@ -27,13 +27,21 @@ function OnwardLinks() {
   );
 }
 
-/** 404 inside the site layout (header and footer stay, so there's always a way on). */
+/**
+ * 404 inside the site layout (header and footer stay, so there's always a way
+ * on). The server already answers with status 404; the title is corrected
+ * once the page is interactive, and the noindex tag is hoisted by React.
+ */
 export function NotFoundState() {
+  useEffect(() => {
+    document.title = "Page not found — FutureWise";
+  }, []);
+
   return (
     <section className="page-intro">
+      <meta name="robots" content="noindex" />
       <div className="site-container py-20 sm:py-28">
-        <p className="text-sm font-semibold text-blue">404</p>
-        <h1 className="mt-4 text-4xl font-bold text-navy sm:text-5xl">Page not found</h1>
+        <h1 className="text-4xl font-bold text-navy sm:text-5xl">Page not found</h1>
         <p className="mt-5 max-w-xl text-lg leading-8 text-charcoal/80">
           This page doesn't exist or has moved. These sections are a good place to continue:
         </p>

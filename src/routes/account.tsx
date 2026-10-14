@@ -35,7 +35,8 @@ function AccountPage() {
   if (auth.status === "loading") {
     return (
       <div className="site-container py-24">
-        <p role="status" className="text-charcoal/75">
+        <h1 className="text-3xl font-bold text-navy">Your account</h1>
+        <p role="status" className="mt-4 text-charcoal/75">
           Loading your account…
         </p>
       </div>
@@ -44,6 +45,7 @@ function AccountPage() {
   if (auth.status === "unavailable") {
     return (
       <div className="site-container max-w-2xl py-24">
+        <h1 className="mb-6 text-3xl font-bold text-navy">Your account</h1>
         <AccountsUnavailable />
       </div>
     );

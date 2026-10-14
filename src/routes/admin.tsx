@@ -34,7 +34,8 @@ function AdminPage() {
   if (auth.status === "loading") {
     return (
       <div className="site-container py-24">
-        <p role="status" className="text-charcoal/75">
+        <h1 className="text-3xl font-bold text-navy">Editor</h1>
+        <p role="status" className="mt-4 text-charcoal/75">
           Checking your access…
         </p>
       </div>
