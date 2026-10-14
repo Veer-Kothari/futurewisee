@@ -50,6 +50,11 @@ as $$
   );
 $$;
 
+-- Visitors never need it (their read policies don't call it), so they can't
+-- call it either; signed-in users need it inside their RLS policies.
+revoke all on function public.has_role(uuid, public.app_role) from public, anon;
+grant execute on function public.has_role(uuid, public.app_role) to authenticated, service_role;
+
 drop policy if exists "user_roles: read own" on public.user_roles;
 create policy "user_roles: read own" on public.user_roles
   for select to authenticated
@@ -136,6 +141,8 @@ begin
   return new;
 end;
 $$;
+
+revoke all on function public.handle_new_user() from public, anon, authenticated;
 
 drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
@@ -250,9 +257,14 @@ alter table public.posts enable row level security;
 grant select on public.posts to anon, authenticated;
 grant insert, update, delete on public.posts to authenticated;
 
+drop policy if exists "posts: read published (visitors)" on public.posts;
+create policy "posts: read published (visitors)" on public.posts
+  for select to anon
+  using (published);
+
 drop policy if exists "posts: read published or admin" on public.posts;
 create policy "posts: read published or admin" on public.posts
-  for select to anon, authenticated
+  for select to authenticated
   using (published or public.has_role(auth.uid(), 'admin'));
 
 drop policy if exists "posts: admin insert" on public.posts;
@@ -325,9 +337,14 @@ alter table public.insight_items enable row level security;
 grant select on public.insight_items to anon, authenticated;
 grant insert, update, delete on public.insight_items to authenticated;
 
+drop policy if exists "insight_items: read published (visitors)" on public.insight_items;
+create policy "insight_items: read published (visitors)" on public.insight_items
+  for select to anon
+  using (published);
+
 drop policy if exists "insight_items: read published or admin" on public.insight_items;
 create policy "insight_items: read published or admin" on public.insight_items
-  for select to anon, authenticated
+  for select to authenticated
   using (published or public.has_role(auth.uid(), 'admin'));
 
 drop policy if exists "insight_items: admin insert" on public.insight_items;

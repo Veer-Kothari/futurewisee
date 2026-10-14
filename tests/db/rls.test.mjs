@@ -825,6 +825,15 @@ if (files.length === 0) {
         assert.equal(row.marketing_opt_in, false, JSON.stringify(value));
       }
     });
+    await t.test("visitors can't call the role helper; signed-in users can", async () => {
+      await denied("anon", null, "select public.has_role($1::uuid, 'admin')", [ADMIN]);
+      const own = await queryAs("authenticated", A, "select public.has_role($1::uuid, 'admin') as is_admin", [A]);
+      assert.equal(own.rows[0].is_admin, false);
+      await denied("anon", null, "select public.handle_new_user()");
+      await denied("authenticated", A, "select public.handle_new_user()");
+      const visible = await queryAs("anon", null, "select count(*)::int as n from public.posts where not published");
+      assert.equal(visible.rows[0].n, 0);
+    });
     await t.test("re-applying the migrations on a populated database keeps every row", async () => {
       const before = (
         await db.query(
