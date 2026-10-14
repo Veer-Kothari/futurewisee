@@ -795,7 +795,11 @@ if (files.length === 0) {
         "insert into storage.objects (bucket_id,name,owner) values ('content-media','anon-probe.pdf',$1)",
         [ADMIN],
       );
-      const seen = await queryAs("anon", null, "select * from storage.objects where bucket_id='content-media'");
+      const seen = await queryAs(
+        "anon",
+        null,
+        "select * from storage.objects where bucket_id='content-media'",
+      );
       assert.deepEqual(seen.rows, []);
       await denied(
         "anon",
@@ -809,29 +813,48 @@ if (files.length === 0) {
         [],
         true,
       );
-      await denied("anon", null, "delete from storage.objects where bucket_id='content-media'", [], true);
+      await denied(
+        "anon",
+        null,
+        "delete from storage.objects where bucket_id='content-media'",
+        [],
+        true,
+      );
     });
-    await t.test("optional marketing metadata never blocks sign-up and only 'true' opts in", async () => {
-      const cases = [false, "yes", 1, null, "TRUE"];
-      for (const [index, value] of cases.entries()) {
-        const id = `00000000-0000-4000-8000-0000000001${String(index).padStart(2, "0")}`;
-        await signup(id, `optin${index}@example.org`, {
-          age_confirmed: true,
-          full_name: "Case",
-          marketing_opt_in: value,
-        });
-        const row = (await db.query("select marketing_opt_in from public.profiles where id=$1", [id]))
-          .rows[0];
-        assert.equal(row.marketing_opt_in, false, JSON.stringify(value));
-      }
-    });
+    await t.test(
+      "optional marketing metadata never blocks sign-up and only 'true' opts in",
+      async () => {
+        const cases = [false, "yes", 1, null, "TRUE"];
+        for (const [index, value] of cases.entries()) {
+          const id = `00000000-0000-4000-8000-0000000001${String(index).padStart(2, "0")}`;
+          await signup(id, `optin${index}@example.org`, {
+            age_confirmed: true,
+            full_name: "Case",
+            marketing_opt_in: value,
+          });
+          const row = (
+            await db.query("select marketing_opt_in from public.profiles where id=$1", [id])
+          ).rows[0];
+          assert.equal(row.marketing_opt_in, false, JSON.stringify(value));
+        }
+      },
+    );
     await t.test("visitors can't call the role helper; signed-in users can", async () => {
       await denied("anon", null, "select public.has_role($1::uuid, 'admin')", [ADMIN]);
-      const own = await queryAs("authenticated", A, "select public.has_role($1::uuid, 'admin') as is_admin", [A]);
+      const own = await queryAs(
+        "authenticated",
+        A,
+        "select public.has_role($1::uuid, 'admin') as is_admin",
+        [A],
+      );
       assert.equal(own.rows[0].is_admin, false);
       await denied("anon", null, "select public.handle_new_user()");
       await denied("authenticated", A, "select public.handle_new_user()");
-      const visible = await queryAs("anon", null, "select count(*)::int as n from public.posts where not published");
+      const visible = await queryAs(
+        "anon",
+        null,
+        "select count(*)::int as n from public.posts where not published",
+      );
       assert.equal(visible.rows[0].n, 0);
     });
     await t.test("re-applying the migrations on a populated database keeps every row", async () => {
