@@ -1,91 +1,166 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 
 import { LinkedInCallout } from "@/components/blog/linkedin-callout";
-import { blogPosts, type BlogCategory } from "@/data/blog-posts";
+import { BLOG_CATEGORIES, type BlogCategorySlug } from "@/lib/content-schema";
+import { formatDate, listPublishedPosts } from "@/lib/content";
+import { pageTitle, seo } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 const description =
   "Student-written notes on managing money, preparing to live independently, and making the move from school into further study and work.";
 
+const categoryTitles: Record<BlogCategorySlug, { title: string; description: string }> = {
+  "personal-finance": {
+    title: "Personal Finance Blog",
+    description:
+      "Practical perspectives to help students understand, manage, and plan their money.",
+  },
+  "practical-skills": {
+    title: "The Practical Skills Guide",
+    description:
+      "Hands-on guidance for everyday skills that help students live more independently.",
+  },
+  "my-journey": {
+    title: "My Journey",
+    description: "Real reflections on learning, growth, and preparing for the next chapter.",
+  },
+};
+
+function isCategory(value: unknown): value is BlogCategorySlug {
+  return BLOG_CATEGORIES.some((category) => category.slug === value);
+}
+
 export const Route = createFileRoute("/blog/")({
-  head: () => ({
-    meta: [
-      { title: "Blog — Personal Finance & My Journey | FutureWise" },
-      { name: "description", content: description },
-      { property: "og:title", content: "Blog — Personal Finance & My Journey | FutureWise" },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
+  validateSearch: (search: Record<string, unknown>): { category?: BlogCategorySlug } =>
+    isCategory(search["category"]) ? { category: search["category"] } : {},
+  loaderDeps: ({ search }) => ({ category: search.category }),
+  loader: async ({ deps }) => ({
+    posts: await listPublishedPosts(deps.category ? { category: deps.category } : {}),
   }),
+  head: ({ match }) => {
+    const category = match.search.category;
+    const heading = category ? categoryTitles[category] : null;
+    return seo(
+      "/blog",
+      pageTitle(heading ? heading.title : "Blog"),
+      heading ? heading.description : description,
+      { crumbs: [{ name: "Blog", path: "/blog" }] },
+    );
+  },
   component: BlogHub,
 });
 
-const filters: Array<"All" | BlogCategory> = ["All", "Personal Finance", "My Journey"];
-
 function BlogHub() {
-  const [filter, setFilter] = useState<"All" | BlogCategory>("All");
-  const posts = filter === "All" ? blogPosts : blogPosts.filter((p) => p.category === filter);
+  const { posts } = Route.useLoaderData();
+  const { category } = Route.useSearch();
+  const heading = category ? categoryTitles[category] : null;
 
   return (
     <>
       <section className="page-intro">
         <div className="site-container py-16 sm:py-24">
-          <p className="eyebrow">FutureWise Blog</p>
-          <h1 className="mt-5 max-w-3xl text-4xl font-bold text-navy sm:text-5xl">
-            Notes for life beyond school
+          <h1 className="max-w-3xl text-4xl font-bold text-navy sm:text-5xl">
+            {heading ? heading.title : "Notes for life beyond school"}
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-charcoal/80">{description}</p>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-charcoal/80">
+            {heading ? heading.description : description}
+          </p>
 
-          <div
-            role="tablist"
-            aria-label="Filter posts by category"
-            className="mt-9 inline-flex flex-wrap gap-2 border-b border-border pb-2"
+          <nav
+            aria-label="Blog sections"
+            className="mt-9 flex flex-wrap gap-2 border-b border-border pb-2"
           >
-            {filters.map((item) => (
-              <button
-                key={item}
-                type="button"
-                role="tab"
-                aria-selected={filter === item}
-                onClick={() => setFilter(item)}
-                className={cn(
-                  "rounded-sm px-5 py-2 text-sm transition-colors",
-                  filter === item
-                    ? "bg-navy text-primary-foreground"
-                    : "text-charcoal/70 hover:bg-light-blue hover:text-navy",
-                )}
-              >
-                {item}
-              </button>
+            <FilterLink active={!category} label="All posts" />
+            {BLOG_CATEGORIES.map((entry) => (
+              <FilterLink
+                key={entry.slug}
+                active={category === entry.slug}
+                label={entry.label}
+                category={entry.slug}
+              />
             ))}
-          </div>
+          </nav>
         </div>
       </section>
 
       <section className="site-container py-16 sm:py-20">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => (
-            <Link key={post.slug} to="/blog/$slug" params={{ slug: post.slug }} className="blog-card">
-              <div className="p-6">
-                <span className="border-l-2 border-blue pl-3 text-xs font-semibold text-navy">
-                  {post.category}
-                </span>
-                <h2 className="mt-4 text-xl font-semibold text-navy">{post.title}</h2>
-                <p className="mt-2 text-sm text-charcoal/60">
-                  {post.author} · {post.displayDate}
-                </p>
-                <p className="mt-3 text-sm leading-6 text-charcoal/80">{post.excerpt}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
+        {posts.length === 0 ? (
+          <div className="max-w-2xl border border-border border-t-2 border-t-navy p-8">
+            <h2 className="text-2xl font-semibold text-navy">
+              {heading ? `${heading.title}: first posts coming soon` : "First posts coming soon"}
+            </h2>
+            <p className="mt-3 leading-7 text-charcoal/75">
+              New posts appear here as soon as they're published. Follow FutureWise on LinkedIn to
+              hear when they go up.
+            </p>
+          </div>
+        ) : (
+          <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post) => (
+              <li key={post.id}>
+                <Link
+                  to="/blog/$slug"
+                  params={{ slug: post.slug }}
+                  className="group flex h-full flex-col border border-border bg-background hover:border-navy/50"
+                >
+                  {post.cover_image_url ? (
+                    <img
+                      src={post.cover_image_url}
+                      alt={post.cover_image_alt}
+                      loading="lazy"
+                      className="aspect-[16/10] w-full object-cover"
+                    />
+                  ) : null}
+                  <div className="flex flex-1 flex-col p-6">
+                    <span className="border-l-2 border-blue pl-3 text-xs font-semibold text-navy">
+                      {BLOG_CATEGORIES.find((entry) => entry.slug === post.category)?.label}
+                    </span>
+                    <h2 className="mt-4 text-xl font-semibold text-navy group-hover:text-blue">
+                      {post.title}
+                    </h2>
+                    <p className="mt-2 text-sm text-charcoal/65">
+                      {post.author_name} · {formatDate(post.published_at)}
+                    </p>
+                    {post.excerpt ? (
+                      <p className="mt-3 text-sm leading-6 text-charcoal/80">{post.excerpt}</p>
+                    ) : null}
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
 
         <div className="mt-16">
           <LinkedInCallout />
         </div>
       </section>
     </>
+  );
+}
+
+function FilterLink({
+  active,
+  label,
+  category,
+}: {
+  active: boolean;
+  label: string;
+  category?: BlogCategorySlug;
+}) {
+  return (
+    <Link
+      to="/blog"
+      search={category ? { category } : {}}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "inline-flex min-h-11 items-center px-5 text-sm transition-colors",
+        active
+          ? "bg-navy text-primary-foreground"
+          : "text-charcoal/75 hover:bg-light-blue hover:text-navy",
+      )}
+    >
+      {label}
+    </Link>
   );
 }

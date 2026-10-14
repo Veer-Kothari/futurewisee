@@ -1,7 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { Link, createFileRoute } from "@tanstack/react-router";
 
-import { resourceSections, resources, type ResourceSection } from "@/data/resources";
+import { resourceSections, resources, type Resource, type ResourceSection } from "@/data/resources";
+import { trackEvent } from "@/lib/consent";
+import { pageTitle, seo } from "@/lib/seo";
+import { trackResourceClick } from "@/lib/tracking.functions";
+import { resourceHref } from "@/lib/utm";
 import { cn } from "@/lib/utils";
 
 type ResourceLogoAsset = {
@@ -21,75 +24,69 @@ const resourceLogos = Object.fromEntries(
   }),
 );
 
+const description =
+  "A curated directory of useful external sites for students and young people in Oman.";
+
+function isSection(value: unknown): value is ResourceSection {
+  return resourceSections.includes(value as ResourceSection);
+}
+
 export const Route = createFileRoute("/resources")({
-  head: () => ({
-    meta: [
-      { title: "Resources | FutureWise" },
-      { name: "description", content: "A curated directory of useful external sites for students and young people in Oman." },
-      { property: "og:title", content: "Resources | FutureWise" },
-      { property: "og:description", content: "A curated directory of useful external sites for students and young people in Oman." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  validateSearch: (search: Record<string, unknown>): { section?: ResourceSection } =>
+    isSection(search["section"]) ? { section: search["section"] } : {},
+  head: () =>
+    seo("/resources", pageTitle("Resources"), description, {
+      crumbs: [{ name: "Resources", path: "/resources" }],
+    }),
   component: ResourcesPage,
 });
 
-function ResourcesPage() {
-  const [activeCategory, setActiveCategory] = useState<ResourceSection | "All">("All");
+const hasReferralLinks = resources.some((resource) => resource.affiliateUrl);
 
-  const filteredResources = useMemo(() => {
-    if (activeCategory === "All") return resources;
-    return resources.filter((resource) => resource.sections.includes(activeCategory));
-  }, [activeCategory]);
+function ResourcesPage() {
+  const { section } = Route.useSearch();
+  const shown = section
+    ? resources.filter((resource) => resource.sections.includes(section))
+    : resources;
 
   return (
     <>
-      <section className="border-b border-border bg-background">
-        <div className="site-container py-20 sm:py-28">
-          <div className="max-w-3xl">
-            <p className="eyebrow">Get Prepared</p>
-            <h1 className="mt-5 text-4xl font-bold text-navy sm:text-5xl lg:text-6xl">
-              Resources
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-charcoal/80">
-              Fifty-two external resources selected for students in Oman, covering career
-              research, financial literacy, practical skills, and local opportunities.
+      <section className="page-intro">
+        <div className="site-container py-16 sm:py-24">
+          <h1 className="text-4xl font-bold text-navy sm:text-5xl lg:text-6xl">Resources</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-charcoal/80">
+            Fifty-two external resources selected for students in Oman, covering career research,
+            financial literacy, practical skills, and local opportunities.
+          </p>
+          {hasReferralLinks ? (
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-charcoal/70">
+              Some links are referral links: FutureWise may be credited if you sign up through them.
             </p>
-          </div>
+          ) : null}
         </div>
       </section>
 
       <section className="bg-background pb-24 pt-4 sm:pb-28">
         <div className="site-container">
-          <div className="flex flex-wrap gap-2 py-8">
-            <FilterPill
-              label="All"
-              active={activeCategory === "All"}
-              onClick={() => setActiveCategory("All")}
-            />
-            {resourceSections.map((category) => (
-              <FilterPill
-                key={category}
-                label={category}
-                active={activeCategory === category}
-                onClick={() => setActiveCategory(category)}
-              />
+          <nav aria-label="Resource sections" className="flex flex-wrap gap-2 py-8">
+            <SectionLink label="All" active={!section} />
+            {resourceSections.map((entry) => (
+              <SectionLink key={entry} label={entry} section={entry} active={section === entry} />
             ))}
-          </div>
+          </nav>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredResources.map((resource) => (
-              <ResourceCard key={resource.id} resource={resource} />
-            ))}
-          </div>
-
-          {filteredResources.length === 0 && (
-            <div className="mt-12 rounded-sm border border-border bg-white py-16 text-center">
-              <p className="text-charcoal/70">
-                No resources in this category yet. Check back soon or explore another filter.
-              </p>
-            </div>
+          {shown.length === 0 ? (
+            <p className="border border-border py-16 text-center text-charcoal/70">
+              No resources in this section yet.
+            </p>
+          ) : (
+            <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {shown.map((resource) => (
+                <li key={resource.id}>
+                  <ResourceCard resource={resource} />
+                </li>
+              ))}
+            </ul>
           )}
         </div>
       </section>
@@ -97,69 +94,77 @@ function ResourcesPage() {
   );
 }
 
-function FilterPill({
+function SectionLink({
   label,
+  section,
   active,
-  onClick,
 }: {
   label: string;
+  section?: ResourceSection;
   active: boolean;
-  onClick: () => void;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
+    <Link
+      to="/resources"
+      search={section ? { section } : {}}
+      replace
+      resetScroll={false}
+      aria-current={active ? "page" : undefined}
       className={cn(
-        "rounded-sm border px-4 py-2 text-sm font-semibold transition-colors",
+        "inline-flex min-h-11 items-center border px-4 text-sm font-semibold transition-colors",
         active
           ? "border-navy bg-navy text-primary-foreground"
-          : "border-border bg-white text-charcoal hover:border-navy hover:text-navy",
+          : "border-border bg-background text-charcoal hover:border-navy hover:text-navy",
       )}
     >
       {label}
-    </button>
+    </Link>
   );
 }
 
-function ResourceCard({ resource }: { resource: (typeof resources)[number] }) {
+function ResourceCard({ resource }: { resource: Resource }) {
   const logoUrl = resourceLogos[resource.id];
   const visibleUrl = new URL(resource.url).hostname.replace(/^www\./, "");
 
+  const onClick = () => {
+    trackEvent("resource_click", { resource_id: resource.id });
+    void trackResourceClick({
+      data: { resourceId: resource.id, path: window.location.pathname },
+    }).catch(() => undefined);
+  };
+
   return (
-    <article className="flex flex-col rounded-sm border border-border bg-white p-6">
+    <article className="flex h-full flex-col border border-border bg-background p-6">
       <div className="flex items-center gap-4">
-        <div className="relative grid size-12 shrink-0 place-items-center overflow-hidden rounded-sm border border-border bg-light-grey text-sm font-bold text-navy">
+        <div className="relative grid size-12 shrink-0 place-items-center overflow-hidden border border-border bg-light-grey text-sm font-bold text-navy">
           <span aria-hidden="true">{resource.name.slice(0, 2).toUpperCase()}</span>
-          {logoUrl && (
+          {logoUrl ? (
             <img
               src={logoUrl}
-              alt={`${resource.name} logo`}
-              className="absolute inset-0 size-full bg-white object-contain p-2"
+              alt=""
+              className="absolute inset-0 size-full bg-background object-contain p-2"
               loading="lazy"
               onError={(event) => {
                 event.currentTarget.hidden = true;
               }}
             />
-          )}
+          ) : null}
         </div>
-        <div className="min-w-0">
-          <h2 className="text-lg font-semibold text-navy">{resource.name}</h2>
-          <p className="mt-1 text-xs font-medium text-charcoal/60">{resource.category}</p>
-        </div>
+        <h2 className="min-w-0 text-lg font-semibold text-navy">{resource.name}</h2>
       </div>
 
       <p className="mt-5 flex-1 text-sm leading-6 text-charcoal/80">{resource.description}</p>
 
       <a
-        href={resource.url}
+        href={resourceHref(resource)}
         target="_blank"
-        rel="noreferrer"
-        className="mt-6 inline-flex w-fit items-center border-b border-navy pb-1 text-sm font-semibold text-navy transition-colors hover:border-blue hover:text-blue"
-        aria-label={`Visit ${resource.name} at ${visibleUrl} (opens in a new tab)`}
+        rel="noopener"
+        onClick={onClick}
+        onAuxClick={onClick}
+        className="text-link mt-6 w-fit"
+        aria-label={`${resource.name}: ${visibleUrl} (opens in a new tab)`}
       >
         {visibleUrl}
-        <span aria-hidden="true" className="ml-1.5">↗</span>
       </a>
     </article>
   );
