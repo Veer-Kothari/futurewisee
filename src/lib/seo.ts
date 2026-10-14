@@ -1,6 +1,8 @@
 import { absoluteUrl, site } from "@/data/site";
+import { jsonLdText } from "@/lib/json-ld";
 
-const ld = (value: unknown) => ({ type: "application/ld+json", children: JSON.stringify(value) });
+// Escaped: post and insight titles come from /admin (see json-ld.ts).
+const ld = (value: unknown) => ({ type: "application/ld+json", children: jsonLdText(value) });
 
 /** Cut to ≤ 155 characters at a word boundary. */
 export function clip(text: string, max = 155): string {

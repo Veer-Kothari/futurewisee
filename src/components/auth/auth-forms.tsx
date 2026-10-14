@@ -63,7 +63,7 @@ function FormAlert({ message }: { message: string }) {
   );
 }
 
-export type SignUpOutcome = { needsConfirmation: boolean };
+export type SignUpOutcome = { needsConfirmation: boolean; email: string };
 
 /**
  * Create an account: name, email, password, the age confirmation (16+, or a
@@ -145,7 +145,7 @@ export function SignUpForm({
         setFormError(authErrorMessage(error));
         return;
       }
-      onSuccess({ needsConfirmation: !data.session });
+      onSuccess({ needsConfirmation: !data.session, email: email.trim() });
     } catch {
       setFormError("That didn't work. Please try again.");
     } finally {
@@ -269,7 +269,7 @@ export function LogInForm({
   footer,
 }: {
   submitLabel?: string;
-  onSuccess: () => void | Promise<void>;
+  onSuccess: (signedIn: { email: string }) => void | Promise<void>;
   footer?: ReactNode;
 }) {
   const id = useId();
@@ -305,7 +305,7 @@ export function LogInForm({
         setFormError(authErrorMessage(error));
         return;
       }
-      await onSuccess();
+      await onSuccess({ email: email.trim() });
     } catch {
       setFormError("That didn't work. Please try again.");
     } finally {

@@ -76,7 +76,7 @@ export const privacyPolicy: LegalDoc = {
       heading: "Who can see records?",
       paragraphs: [
         "Only FutureWise administrators can see survey answers and resource-click records.",
-        "We use IP addresses briefly to stop spam and abuse. Attempt records are deleted after about a day.",
+        "To stop spam and abuse we briefly keep a record of attempts, linked to your connection’s IP address, your account (for account actions) or a scrambled form of your email address (for email sign-ups). These records are deleted after about a day.",
       ],
     },
     {

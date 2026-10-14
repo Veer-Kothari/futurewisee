@@ -29,7 +29,9 @@ export const updateMarketingPreference = createServerFn({ method: "POST" })
     if (!db) return { ok: false, reason: "unavailable" };
 
     try {
-      if (await guard.overLimit("account", 30, 60)) return { ok: false, reason: "error" };
+      if (await guard.overLimit("account", 30, 60, `user:${context.userId}`)) {
+        return { ok: false, reason: "error" };
+      }
       const { error } = await db
         .from("profiles")
         .update({ marketing_opt_in: parsed.data.optIn })
@@ -60,7 +62,9 @@ export const reconcileMarketing = createServerFn({ method: "POST" })
       if (!getSupabaseAdmin()) return { ok: false, reason: "unavailable" };
 
       try {
-        if (await guard.overLimit("account", 30, 60)) return { ok: false, reason: "error" };
+        if (await guard.overLimit("account", 30, 60, `user:${context.userId}`)) {
+          return { ok: false, reason: "error" };
+        }
         const { reconcileForUser } = await import("@/lib/marketing.server");
         const { synced } = await reconcileForUser(context.userId);
         return { ok: true, synced };
@@ -89,13 +93,15 @@ export const deleteMyAccount = createServerFn({ method: "POST" })
     if (!db) return { ok: false, reason: "unavailable" };
 
     try {
-      if (await guard.overLimit("account", 30, 60)) return { ok: false, reason: "error" };
+      if (await guard.overLimit("account", 30, 60, `user:${context.userId}`)) {
+        return { ok: false, reason: "error" };
+      }
       const { data: profile } = await db
         .from("profiles")
-        .select("mailchimp_synced_at")
+        .select("mailchimp_member")
         .eq("id", context.userId)
         .maybeSingle();
-      if ((profile as { mailchimp_synced_at: string | null } | null)?.mailchimp_synced_at) {
+      if ((profile as { mailchimp_member: boolean } | null)?.mailchimp_member) {
         const { data: userData } = await db.auth.admin.getUserById(context.userId);
         const email = userData?.user?.email;
         if (email) {

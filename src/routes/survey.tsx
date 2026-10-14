@@ -16,7 +16,7 @@ import {
   surveyAnswersSchema,
   type SurveyAnswers,
 } from "@/lib/survey";
-import { submitSurvey, type SubmitSurveyResult } from "@/lib/survey.functions";
+import { claimSurveyResponse, submitSurvey, type SubmitSurveyResult } from "@/lib/survey.functions";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/survey")({
@@ -150,6 +150,23 @@ function SurveyPage() {
     }
     setOutcome(nextOutcome);
     setStep(THANKS_STEP);
+  }
+
+  /**
+   * Links answers saved without an account to the account that just signed up
+   * or in. Signed in now → claimed straight away; waiting for email
+   * confirmation (or a failed attempt) → kept in this browser for that email only.
+   */
+  async function attachAnswers(email: string, signedInNow: boolean) {
+    const saved = submitted.current;
+    if (!saved?.claimToken) return;
+    if (signedInNow) {
+      const claimed = await claimSurveyResponse({
+        data: { id: saved.id, claimToken: saved.claimToken },
+      }).catch(() => null);
+      if (claimed?.ok || (claimed && !claimed.ok && claimed.reason === "not_found")) return;
+    }
+    savePendingClaim(saved.id, saved.claimToken, email);
   }
 
   const toggleMulti = (key: "industries" | "needs", value: string) =>
@@ -290,11 +307,12 @@ function SurveyPage() {
                   submitLabel="Sign up and submit"
                   beforeSignUp={async () => {
                     const result = await submitOnce();
-                    if (typeof result === "string") return { ok: false, message: result };
-                    if (result.claimToken) savePendingClaim(result.id, result.claimToken);
-                    return { ok: true };
+                    return typeof result === "string"
+                      ? { ok: false, message: result }
+                      : { ok: true };
                   }}
-                  onSuccess={({ needsConfirmation }) => {
+                  onSuccess={async ({ needsConfirmation, email }) => {
+                    await attachAnswers(email, !needsConfirmation);
                     setOutcome(needsConfirmation ? "confirm-email" : "account");
                     setStep(THANKS_STEP);
                   }}
@@ -323,14 +341,14 @@ function SurveyPage() {
                 </div>
                 <LogInForm
                   submitLabel="Log in and submit"
-                  onSuccess={async () => {
+                  onSuccess={async ({ email }) => {
                     const result = await submitOnce();
                     if (typeof result === "string") {
                       setError(result);
                       return;
                     }
-                    // An earlier anonymous save is attached by the sign-in follow-up.
-                    if (result.claimToken) savePendingClaim(result.id, result.claimToken);
+                    // Answers saved before this sign-in (e.g. after a sign-up attempt) are attached now.
+                    await attachAnswers(email, true);
                     setOutcome("account");
                     setStep(THANKS_STEP);
                   }}

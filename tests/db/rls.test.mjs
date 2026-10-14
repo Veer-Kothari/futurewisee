@@ -311,6 +311,7 @@ if (files.length === 0) {
         "marketing_opt_in",
         "mailchimp_synced_at",
         "mailchimp_survey_tagged",
+        "mailchimp_member",
         "created_at",
         "updated_at",
       ]) {

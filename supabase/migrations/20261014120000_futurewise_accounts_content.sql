@@ -86,11 +86,15 @@ create table if not exists public.profiles (
   -- synced to Mailchimp, and whether its survey-completed tag was added.
   mailchimp_synced_at timestamptz,
   mailchimp_survey_tagged boolean not null default false,
+  -- true once this account has created a Mailchimp member (kept after an
+  -- opt-out), so deleting the account also deletes that member.
+  mailchimp_member boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 alter table public.profiles add column if not exists mailchimp_synced_at timestamptz;
 alter table public.profiles add column if not exists mailchimp_survey_tagged boolean not null default false;
+alter table public.profiles add column if not exists mailchimp_member boolean not null default false;
 alter table public.profiles enable row level security;
 revoke all on public.profiles from anon;
 revoke insert, update, delete, truncate on public.profiles from authenticated;

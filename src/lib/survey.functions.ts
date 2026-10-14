@@ -35,7 +35,8 @@ export const submitSurvey = createServerFn({ method: "POST" })
     if (!db) return { ok: false, reason: "unavailable" };
 
     try {
-      if (await guard.overLimit("survey", 10, 60)) return { ok: false, reason: "busy" };
+      // A whole class can share one school address, so the per-connection limit is generous.
+      if (await guard.overLimit("survey", 40, 60)) return { ok: false, reason: "busy" };
       const userId = context.userId;
       const claimToken = userId ? null : guard.randomToken();
       const answers = parsed.data.answers;
@@ -71,7 +72,9 @@ export const claimSurveyResponse = createServerFn({ method: "POST" })
   .validator((data: unknown) => data)
   .handler(async ({ data, context }): Promise<ClaimResult> => {
     const parsed = claimSchema.safeParse(data);
-    if (!parsed.success || !context.userId) return { ok: false, reason: "invalid" };
+    if (!parsed.success) return { ok: false, reason: "invalid" };
+    // Sign-in couldn't be verified this time: retryable, so the browser keeps the claim.
+    if (!context.userId) return { ok: false, reason: "unavailable" };
 
     const guard = await import("@/lib/guard.server");
     if (!guard.sameOrigin()) return { ok: false, reason: "invalid" };
@@ -80,7 +83,9 @@ export const claimSurveyResponse = createServerFn({ method: "POST" })
     if (!db) return { ok: false, reason: "unavailable" };
 
     try {
-      if (await guard.overLimit("claim", 20, 60)) return { ok: false, reason: "error" };
+      if (await guard.overLimit("claim", 20, 60, `user:${context.userId}`)) {
+        return { ok: false, reason: "error" };
+      }
       const { data: rows, error } = await db
         .from("survey_responses")
         .update({ user_id: context.userId, claim_token_hash: null })

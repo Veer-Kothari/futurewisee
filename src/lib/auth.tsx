@@ -48,10 +48,25 @@ const SIGNED_OUT: AuthState = {
   isAdmin: false,
 };
 
-/** Attaches an anonymous survey kept in this browser, then syncs the email choice. */
-async function afterSignIn(profile: Profile | null) {
+/** Once per browser session per account, the Mailchimp sync runs after sign-in. */
+function firstSyncThisSession(userId: string): boolean {
+  try {
+    const key = `fw-mailchimp-sync-${userId}`;
+    if (window.sessionStorage.getItem(key)) return false;
+    window.sessionStorage.setItem(key, "1");
+  } catch {
+    // Storage blocked: sync anyway (the server skips when nothing changed).
+  }
+  return true;
+}
+
+/**
+ * Attaches an anonymous survey kept in this browser (only when it belongs to
+ * this account's email), then syncs the email choice.
+ */
+async function afterSignIn(session: Session, profile: Profile | null) {
   const pending = readPendingClaim();
-  if (pending) {
+  if (pending && pending.email === (session.user.email ?? "").trim().toLowerCase()) {
     const result = await claimSurveyResponse({
       data: { id: pending.id, claimToken: pending.claimToken },
     }).catch(() => null);
@@ -60,7 +75,11 @@ async function afterSignIn(profile: Profile | null) {
       clearPendingClaim();
     }
   }
-  if (profile && (profile.marketing_opt_in || profile.mailchimp_synced_at)) {
+  if (
+    profile &&
+    (profile.marketing_opt_in || profile.mailchimp_synced_at) &&
+    firstSyncThisSession(session.user.id)
+  ) {
     await reconcileMarketing().catch(() => null);
   }
 }
@@ -131,7 +150,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           void load(session).then((profile) => {
             if (event === "SIGNED_IN" && session && followedUp.current !== session.user.id) {
               followedUp.current = session.user.id;
-              void afterSignIn(profile);
+              void afterSignIn(session, profile);
             }
           });
         }

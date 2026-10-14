@@ -13,6 +13,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { NotFoundState } from "@/components/layout/route-states";
 import { site } from "@/data/site";
 import { AuthProvider } from "@/lib/auth";
+import { jsonLdText } from "@/lib/json-ld";
 import { rootGraph } from "@/lib/seo";
 import { getIntegrationStatus, type IntegrationStatus } from "@/lib/status.functions";
 import appCss from "../styles.css?url";
@@ -92,7 +93,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "manifest", href: "/site.webmanifest" },
     ],
-    scripts: [{ type: "application/ld+json", children: JSON.stringify(rootGraph()) }],
+    scripts: [{ type: "application/ld+json", children: jsonLdText(rootGraph()) }],
   }),
   shellComponent: RootShell,
   component: RootComponent,

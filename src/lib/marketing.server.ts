@@ -68,6 +68,7 @@ export async function reconcileForUser(
     .update({
       mailchimp_synced_at: new Date().toISOString(),
       mailchimp_survey_tagged: hasSurvey || profile.mailchimp_survey_tagged,
+      mailchimp_member: true,
     })
     .eq("id", userId);
   return { synced: true };

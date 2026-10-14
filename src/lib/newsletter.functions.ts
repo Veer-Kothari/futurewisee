@@ -30,6 +30,9 @@ export const subscribeNewsletter = createServerFn({ method: "POST" })
 
     try {
       if (await guard.overLimit("newsletter", 5, 15)) return { ok: false, reason: "busy" };
+      // At most 3 confirmation emails a day to any one address, whoever asks.
+      const emailKey = `email:${(await guard.sha256Hex(parsed.data.email)).slice(0, 40)}`;
+      if (await guard.overLimit("newsletter", 3, 1440, emailKey)) return { ok: true };
       const ok = await mailchimp.mailchimpOptIn(
         parsed.data.email,
         [mailchimp.MAILCHIMP_TAGS.website],

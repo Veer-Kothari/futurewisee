@@ -6,6 +6,7 @@
  */
 import { getRequest } from "@tanstack/react-start/server";
 
+import { rateLimitAddress } from "@/lib/ip";
 import { getSupabaseAdmin } from "@/lib/supabase/admin.server";
 
 export type LimitKind = "survey" | "claim" | "click" | "newsletter" | "account";
@@ -13,14 +14,14 @@ export type LimitKind = "survey" | "claim" | "click" | "newsletter" | "account";
 export function clientIp(): string {
   const req = getRequest();
   const cf = req.headers.get("cf-connecting-ip");
-  if (cf) return cf.trim().slice(0, 100);
+  if (cf) return rateLimitAddress(cf);
   const xff = req.headers.get("x-forwarded-for");
   const last = xff
     ?.split(",")
     .map((part) => part.trim())
     .filter(Boolean)
     .at(-1);
-  return (last || "unknown").slice(0, 100);
+  return rateLimitAddress(last || "unknown");
 }
 
 /** Same-origin requests only: browsers send Origin on these POSTs; scheme, host and port must match. */
@@ -51,17 +52,23 @@ async function sweep() {
 }
 
 /**
- * True when this IP already has `max` attempts of this kind in the last
- * `minutes` (public.rate_attempt, one locked step that also records an
- * allowed attempt). Fails closed: any database error counts as over the limit.
+ * True when this connection (IPv4 address or IPv6 /64) — or the given key,
+ * e.g. an account or an email hash — already has `max` attempts of this kind
+ * in the last `minutes` (public.rate_attempt, one locked step that also
+ * records an allowed attempt). Fails closed: a database error counts as over.
  */
-export async function overLimit(kind: LimitKind, max: number, minutes: number): Promise<boolean> {
+export async function overLimit(
+  kind: LimitKind,
+  max: number,
+  minutes: number,
+  key?: string,
+): Promise<boolean> {
   const db = getSupabaseAdmin();
   if (!db) return true;
   if (Math.random() < 0.05) await sweep().catch(() => undefined);
   const { data, error } = await db.rpc("rate_attempt", {
     p_kind: kind,
-    p_ip: clientIp(),
+    p_ip: (key ?? clientIp()).slice(0, 100),
     p_max: max,
     p_minutes: minutes,
     p_record: true,
