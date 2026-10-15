@@ -56,6 +56,7 @@ export function Analytics() {
     const startedAt = Date.now();
     const start = () => {
       if (cancelled) return;
+      if (readConsent() !== "granted") return;
       if (hasAuthTokensInUrl()) {
         if (Date.now() - startedAt < 15_000) timer = window.setTimeout(start, 250);
         return;
@@ -72,10 +73,13 @@ export function Analytics() {
 
   useEffect(() => {
     if (!id || consent !== "granted") return;
-    return router.subscribe("onResolved", ({ toLocation, pathChanged }) => {
+    const timers = new Set<number>();
+    const unsubscribe = router.subscribe("onResolved", ({ toLocation, pathChanged }) => {
       if (!pathChanged) return;
       // Let the new page's <title> land first.
-      window.setTimeout(() => {
+      const timer = window.setTimeout(() => {
+        timers.delete(timer);
+        if (readConsent() !== "granted") return;
         // If the first page still had sign-in tokens when the wait ran out,
         // start on the first clean page instead.
         if (!isGoogleAnalyticsLoaded()) {
@@ -84,7 +88,12 @@ export function Analytics() {
         }
         trackPageView(toLocation.pathname, document.title);
       }, 0);
+      timers.add(timer);
     });
+    return () => {
+      unsubscribe();
+      for (const timer of timers) window.clearTimeout(timer);
+    };
   }, [id, consent, router]);
 
   if (!id || !bannerOpen) return null;

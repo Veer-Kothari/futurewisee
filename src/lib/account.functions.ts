@@ -34,7 +34,11 @@ export const updateMarketingPreference = createServerFn({ method: "POST" })
       }
       const { error } = await db
         .from("profiles")
-        .update({ marketing_opt_in: parsed.data.optIn })
+        .update({
+          marketing_opt_in: parsed.data.optIn,
+          // An explicit "yes" may re-subscribe; it stays pending until Mailchimp confirms it.
+          mailchimp_resubscribe_pending: parsed.data.optIn,
+        })
         .eq("id", context.userId);
       if (error) return { ok: false, reason: "error" };
 

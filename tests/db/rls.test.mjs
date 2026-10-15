@@ -314,6 +314,9 @@ if (files.length === 0) {
         "mailchimp_member",
         "mailchimp_synced_choice",
         "marketing_version",
+        "mailchimp_resubscribe_pending",
+        "mailchimp_lock_until",
+        "mailchimp_lock_owner",
         "created_at",
         "updated_at",
       ]) {
@@ -859,6 +862,38 @@ if (files.length === 0) {
         "select count(*)::int as n from public.posts where not published",
       );
       assert.equal(visible.rows[0].n, 0);
+    });
+    await t.test("one Mailchimp sync per account at a time (lease)", async () => {
+      const one = "11111111-1111-4111-8111-111111111111";
+      const two = "22222222-2222-4222-8222-222222222222";
+      const lock = (owner) =>
+        db.query("select public.acquire_mailchimp_lock($1::uuid, $2::uuid, 90) as ok", [A, owner]);
+      assert.equal((await lock(one)).rows[0].ok, true);
+      assert.equal((await lock(two)).rows[0].ok, false);
+      assert.equal((await lock(one)).rows[0].ok, true);
+      await db.query("select public.release_mailchimp_lock($1::uuid, $2::uuid)", [A, two]);
+      assert.equal((await lock(two)).rows[0].ok, false);
+      await db.query("select public.release_mailchimp_lock($1::uuid, $2::uuid)", [A, one]);
+      assert.equal((await lock(two)).rows[0].ok, true);
+      await db.query("select public.release_mailchimp_lock($1::uuid, $2::uuid)", [A, two]);
+      await denied(
+        "authenticated",
+        A,
+        "select public.acquire_mailchimp_lock($1::uuid, $2::uuid, 90)",
+        [A, one],
+      );
+      await denied("anon", null, "select public.release_mailchimp_lock($1::uuid, $2::uuid)", [
+        A,
+        one,
+      ]);
+      const optedIn = (
+        await db.query(
+          "select marketing_opt_in, mailchimp_resubscribe_pending from public.profiles where id=$1",
+          [A],
+        )
+      ).rows[0];
+      assert.equal(optedIn.marketing_opt_in, true);
+      assert.equal(optedIn.mailchimp_resubscribe_pending, true);
     });
     await t.test(
       "a change of email choice bumps the version, so a stale sync can't record itself",

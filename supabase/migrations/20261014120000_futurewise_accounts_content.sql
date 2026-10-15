@@ -94,6 +94,12 @@ create table if not exists public.profiles (
   -- Bumped by a trigger whenever marketing_opt_in changes, so a sync that
   -- read an older choice can't record itself as the current state.
   marketing_version integer not null default 0,
+  -- An explicit "email me" that Mailchimp hasn't confirmed yet (re-subscribe
+  -- is retried until it works; plain sign-ins never re-subscribe on their own).
+  mailchimp_resubscribe_pending boolean not null default false,
+  -- Short lease so only one Mailchimp sync per account runs at a time.
+  mailchimp_lock_until timestamptz,
+  mailchimp_lock_owner uuid,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -102,6 +108,9 @@ alter table public.profiles add column if not exists mailchimp_survey_tagged boo
 alter table public.profiles add column if not exists mailchimp_member boolean not null default false;
 alter table public.profiles add column if not exists mailchimp_synced_choice boolean;
 alter table public.profiles add column if not exists marketing_version integer not null default 0;
+alter table public.profiles add column if not exists mailchimp_resubscribe_pending boolean not null default false;
+alter table public.profiles add column if not exists mailchimp_lock_until timestamptz;
+alter table public.profiles add column if not exists mailchimp_lock_owner uuid;
 alter table public.profiles enable row level security;
 revoke all on public.profiles from anon;
 revoke insert, update, delete, truncate on public.profiles from authenticated;
@@ -146,6 +155,44 @@ create trigger profiles_bump_marketing_version
   before update on public.profiles
   for each row execute function public.bump_marketing_version();
 
+-- One Mailchimp sync per account at a time (service role only). The lease
+-- expires on its own, so a crashed run can't block the account for long.
+create or replace function public.acquire_mailchimp_lock(_user uuid, _owner uuid, _seconds integer)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  got uuid;
+begin
+  update public.profiles
+     set mailchimp_lock_until = now() + make_interval(secs => greatest(1, least(_seconds, 300))),
+         mailchimp_lock_owner = _owner
+   where id = _user
+     and (mailchimp_lock_until is null or mailchimp_lock_until < now()
+          or mailchimp_lock_owner = _owner)
+  returning id into got;
+  return got is not null;
+end;
+$$;
+
+create or replace function public.release_mailchimp_lock(_user uuid, _owner uuid)
+returns void
+language sql
+security definer
+set search_path = public
+as $$
+  update public.profiles
+     set mailchimp_lock_until = null, mailchimp_lock_owner = null
+   where id = _user and mailchimp_lock_owner = _owner;
+$$;
+
+revoke all on function public.acquire_mailchimp_lock(uuid, uuid, integer) from public, anon, authenticated;
+revoke all on function public.release_mailchimp_lock(uuid, uuid) from public, anon, authenticated;
+grant execute on function public.acquire_mailchimp_lock(uuid, uuid, integer) to service_role;
+grant execute on function public.release_mailchimp_lock(uuid, uuid) to service_role;
+
 -- Sign-up: the age confirmation is required here, on the server, not only in
 -- the form (16 or older, or a parent/guardian agreed).
 create or replace function public.handle_new_user()
@@ -159,12 +206,15 @@ begin
     raise exception 'age_confirmation_required' using errcode = 'P0001';
   end if;
 
-  insert into public.profiles (id, full_name, marketing_opt_in, age_confirmed)
+  -- Ticking "email me" at sign-up is an explicit choice, so it may re-subscribe
+  -- an address that had unsubscribed before.
+  insert into public.profiles (id, full_name, marketing_opt_in, age_confirmed, mailchimp_resubscribe_pending)
   values (
     new.id,
     left(btrim(coalesce(new.raw_user_meta_data ->> 'full_name', '')), 120),
     coalesce(new.raw_user_meta_data ->> 'marketing_opt_in', '') = 'true',
-    true
+    true,
+    coalesce(new.raw_user_meta_data ->> 'marketing_opt_in', '') = 'true'
   )
   on conflict (id) do nothing;
 

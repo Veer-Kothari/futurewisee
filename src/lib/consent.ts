@@ -35,10 +35,19 @@ export function writeConsent(choice: ConsentChoice) {
   window.dispatchEvent(new CustomEvent<ConsentChoice>(CHANGE_EVENT, { detail: choice }));
 }
 
+/** Consent changes in this tab and in other tabs of the site. */
 export function onConsentChange(listener: (choice: ConsentChoice) => void): () => void {
   const handler = (event: Event) => listener((event as CustomEvent<ConsentChoice>).detail);
+  const fromOtherTab = (event: StorageEvent) => {
+    if (event.key !== KEY) return;
+    listener(event.newValue === "granted" ? "granted" : "denied");
+  };
   window.addEventListener(CHANGE_EVENT, handler);
-  return () => window.removeEventListener(CHANGE_EVENT, handler);
+  window.addEventListener("storage", fromOtherTab);
+  return () => {
+    window.removeEventListener(CHANGE_EVENT, handler);
+    window.removeEventListener("storage", fromOtherTab);
+  };
 }
 
 /** The footer's "Cookie settings" button reopens the banner. */
@@ -68,6 +77,8 @@ export function hasAuthTokensInUrl(): boolean {
 }
 
 export function loadGoogleAnalytics(id: string) {
+  // The stored choice is checked here too, whoever calls: no consent, no Google Analytics.
+  if (readConsent() !== "granted") return;
   const w = window as unknown as GaWindow;
   w[`ga-disable-${id}`] = false;
   if (w.__fwGaLoaded) return;
