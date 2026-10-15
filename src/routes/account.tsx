@@ -5,7 +5,11 @@ import { AccountsUnavailable } from "@/components/auth/auth-card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { deleteMyAccount, updateMarketingPreference } from "@/lib/account.functions";
+import {
+  deleteMyAccount,
+  reconcileMarketing,
+  updateMarketingPreference,
+} from "@/lib/account.functions";
 import { useAuth } from "@/lib/auth";
 import { formatDate } from "@/lib/content";
 import { fetchAll } from "@/lib/fetch-all";
@@ -178,6 +182,18 @@ function EmailSection() {
       return;
     }
     await auth.refresh();
+    if (!result.configured) {
+      // Mailchimp isn't connected yet: the choice is stored and applied once it is.
+      setMessage("Saved.");
+      return;
+    }
+    if (!result.synced) {
+      // Saved, but the email list wasn't updated yet (busy or briefly
+      // unreachable): try once more shortly; later sign-ins keep retrying.
+      setMessage("Saved. Our email list will be updated in a moment.");
+      window.setTimeout(() => void reconcileMarketing().catch(() => null), 6000);
+      return;
+    }
     setMessage(
       next
         ? "Saved. If this is new, check your inbox to confirm your email address."

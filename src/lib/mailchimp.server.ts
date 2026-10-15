@@ -76,20 +76,23 @@ const memberPath = (email: string) => `/${md5Hex(email.trim().toLowerCase())}`;
  * or archived → pending again only with `resubscribe` (an explicit new
  * choice), otherwise left alone. Then adds the tags.
  *
- * `member` says whether a member exists for this address afterwards — true
- * even when a later step (tags) failed, so the caller can still record it and
- * unsubscribe or delete it later. `ok` is true only when every step worked.
+ * `member`: a member exists for this address afterwards (true even when a
+ * later step failed, or when a reply was lost after creating it).
+ * `statusDone`: the member is subscribed or pending now (a requested
+ * re-subscribe has happened), whatever happens with the tags.
+ * `ok`: every step worked.
  */
 export async function mailchimpOptIn(
   email: string,
   tags: string[],
   opts: { resubscribe: boolean },
-): Promise<{ member: boolean; ok: boolean }> {
+): Promise<{ member: boolean; statusDone: boolean; ok: boolean }> {
   const cfg = config();
-  if (!cfg) return { member: false, ok: false };
+  if (!cfg) return { member: false, statusDone: false, ok: false };
   const path = memberPath(email);
   const current = await call(cfg, "GET", path);
   const status = typeof current.json?.["status"] === "string" ? current.json["status"] : null;
+  let statusDone = false;
 
   if (current.status === 404) {
     const created = await call(cfg, "PUT", path, {
@@ -98,21 +101,25 @@ export async function mailchimpOptIn(
     });
     // No answer at all: the member may have been created anyway, so count it
     // (an extra unsubscribe or delete later is harmless; a missed one isn't).
-    if (!created.ok) return { member: created.status === 0, ok: false };
+    if (!created.ok) return { member: created.status === 0, statusDone: false, ok: false };
+    statusDone = true;
   } else if (!current.ok || !status) {
-    return { member: false, ok: false };
-  } else if (status !== "subscribed" && status !== "pending" && opts.resubscribe) {
+    return { member: false, statusDone: false, ok: false };
+  } else if (status === "subscribed" || status === "pending") {
+    statusDone = true;
+  } else if (opts.resubscribe) {
     const updated = await call(cfg, "PATCH", path, { status: "pending" });
-    if (!updated.ok) return { member: true, ok: false };
+    if (!updated.ok) return { member: true, statusDone: false, ok: false };
+    statusDone = true;
   }
 
   if (tags.length) {
     const tagged = await call(cfg, "POST", `${path}/tags`, {
       tags: tags.map((name) => ({ name, status: "active" })),
     });
-    if (!tagged.ok) return { member: true, ok: false };
+    if (!tagged.ok) return { member: true, statusDone, ok: false };
   }
-  return { member: true, ok: true };
+  return { member: true, statusDone, ok: true };
 }
 
 /** Unsubscribes an existing member; a missing member counts as done. */

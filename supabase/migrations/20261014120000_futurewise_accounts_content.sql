@@ -173,7 +173,14 @@ begin
      and (mailchimp_lock_until is null or mailchimp_lock_until < now()
           or mailchimp_lock_owner = _owner)
   returning id into got;
-  return got is not null;
+  if got is not null then
+    return true;
+  end if;
+  -- No profile at all: null, so the caller stops instead of waiting.
+  if not exists (select 1 from public.profiles where id = _user) then
+    return null;
+  end if;
+  return false;
 end;
 $$;
 

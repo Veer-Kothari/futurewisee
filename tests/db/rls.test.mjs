@@ -894,6 +894,20 @@ if (files.length === 0) {
       ).rows[0];
       assert.equal(optedIn.marketing_opt_in, true);
       assert.equal(optedIn.mailchimp_resubscribe_pending, true);
+      // No profile at all: null, so a sync stops instead of waiting for a lease.
+      assert.equal(
+        (
+          await db.query("select public.acquire_mailchimp_lock($1::uuid, $2::uuid, 45) as ok", [
+            "99999999-9999-4999-8999-999999999999",
+            one,
+          ])
+        ).rows[0].ok,
+        null,
+      );
+      // The holder can renew its own lease.
+      assert.equal((await lock(one)).rows[0].ok, true);
+      assert.equal((await lock(one)).rows[0].ok, true);
+      await db.query("select public.release_mailchimp_lock($1::uuid, $2::uuid)", [A, one]);
     });
     await t.test(
       "a change of email choice bumps the version, so a stale sync can't record itself",

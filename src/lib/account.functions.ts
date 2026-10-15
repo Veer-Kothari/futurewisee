@@ -7,6 +7,16 @@ import { resolveUser } from "@/lib/supabase/auth-resolve";
 export type AccountResult =
   { ok: true } | { ok: false; reason: "invalid" | "unavailable" | "error" };
 
+export type PreferenceResult =
+  | {
+      ok: true;
+      /** Mailchimp already reflects the new choice. */
+      synced: boolean;
+      /** Mailchimp isn't connected: the choice is only stored. */
+      configured: boolean;
+    }
+  | { ok: false; reason: "invalid" | "unavailable" | "error" };
+
 const PreferenceInput = z.object({ optIn: z.boolean() });
 const DeleteInput = z.object({ confirm: z.literal("DELETE") });
 
@@ -18,7 +28,7 @@ const DeleteInput = z.object({ confirm: z.literal("DELETE") });
 export const updateMarketingPreference = createServerFn({ method: "POST" })
   .middleware([attachAuthToken, resolveUser])
   .validator((data: unknown) => data)
-  .handler(async ({ data, context }): Promise<AccountResult> => {
+  .handler(async ({ data, context }): Promise<PreferenceResult> => {
     const parsed = PreferenceInput.safeParse(data);
     if (!parsed.success || !context.userId) return { ok: false, reason: "invalid" };
 
@@ -43,10 +53,11 @@ export const updateMarketingPreference = createServerFn({ method: "POST" })
       if (error) return { ok: false, reason: "error" };
 
       const { reconcileForUser } = await import("@/lib/marketing.server");
-      await reconcileForUser(context.userId, { resubscribe: parsed.data.optIn }).catch(
-        () => undefined,
+      const { mailchimpConfigured } = await import("@/lib/mailchimp.server");
+      const sync = await reconcileForUser(context.userId, { resubscribe: parsed.data.optIn }).catch(
+        () => ({ synced: false }),
       );
-      return { ok: true };
+      return { ok: true, synced: sync.synced, configured: mailchimpConfigured() };
     } catch {
       return { ok: false, reason: "error" };
     }

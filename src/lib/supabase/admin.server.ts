@@ -15,8 +15,12 @@ export function getSupabaseAdmin(): SupabaseClient | null {
   const serviceKey = env?.["SUPABASE_SERVICE_ROLE_KEY"];
   if (!url || !serviceKey) return null;
 
+  const baseFetch = supabaseFetch(url, serviceKey);
+  // Server-side database calls never hang a request (or a sync lease) for long.
+  const timedFetch: typeof fetch = (input, init) =>
+    baseFetch(input, { ...init, signal: init?.signal ?? AbortSignal.timeout(10_000) });
   adminClient ??= createClient(url, serviceKey, {
-    global: { fetch: supabaseFetch(url, serviceKey) },
+    global: { fetch: timedFetch },
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
   });
   return adminClient;

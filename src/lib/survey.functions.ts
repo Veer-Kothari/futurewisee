@@ -58,7 +58,8 @@ export const submitSurvey = createServerFn({ method: "POST" })
 
       if (userId) {
         const { reconcileForUser } = await import("@/lib/marketing.server");
-        await reconcileForUser(userId).catch(() => undefined);
+        // One try for the lease: if another sync is running, the next one adds the tag.
+        await reconcileForUser(userId, { wait: false }).catch(() => undefined);
       }
       return { ok: true, id, claimToken };
     } catch {
@@ -98,7 +99,7 @@ export const claimSurveyResponse = createServerFn({ method: "POST" })
       if (!rows || rows.length === 0) return { ok: false, reason: "not_found" };
 
       const { reconcileForUser } = await import("@/lib/marketing.server");
-      await reconcileForUser(context.userId).catch(() => undefined);
+      await reconcileForUser(context.userId, { wait: false }).catch(() => undefined);
       return { ok: true };
     } catch {
       return { ok: false, reason: "error" };
