@@ -41,7 +41,9 @@ https://futurewiseapp.org once that domain is connected — see "Domain" below).
 
 | What | Who | How |
 |---|---|---|
-| Database tables and storage | Herdy | Lovable prompt (run once). Until then accounts, the survey and /admin show "not available yet". |
+| Database tables | Done (15 Oct 2026) | Applied by Lovable. Its copy is `drizzle/migrations/0000_futurewise_accounts_content.sql` (Lovable keeps its migrations in `drizzle/`); `supabase/migrations/` holds the original. |
+| File storage for /admin uploads | Veer, then Herdy | Your Lovable workspace blocks public storage. As the workspace owner: Workspace Settings → Privacy & Security → allow public storage, then tell Herdy, and Lovable creates the `content-media` storage (its access rules already exist). Until then image and PDF uploads in /admin don't work; text, videos and links do. |
+| Sign-in settings | Herdy (or Veer) | Lovable Cloud → Users → Auth settings: minimum password length 8. Authentication → URL configuration: Site URL `https://futurewisee.lovable.app`; redirect URLs `https://futurewisee.lovable.app/**` and `https://id-preview--4c1a7ebd-204f-4da3-b753-94978f4a4506.lovable.app/**`. Check that Google and other providers are off. |
 | Make your account the editor | Herdy | After you sign up, one database command with your sign-up email. |
 | Mailchimp | Veer | In Mailchimp: Account → Extras → API keys → create a key; Audience → Settings → Audience name and defaults → copy the Audience ID. Send both to Herdy privately (never in a deck or chat group) — they go into Lovable Cloud → Secrets as `MAILCHIMP_API_KEY` and `MAILCHIMP_AUDIENCE_ID`. Then in Mailchimp create a Customer Journey that starts when the tag `survey-completed` is added (your follow-up emails after the survey). Mailchimp's free plan may limit journeys to one email; a longer drip may need a paid plan. |
 | Google Analytics | Veer | Create a GA4 property for the site and copy the Measurement ID (starts with `G-`). Paste it into `googleAnalyticsId` in `src/data/site.ts` (or ask Lovable: "Set googleAnalyticsId in src/data/site.ts to G-…"). The cookie bar appears from then on. |
