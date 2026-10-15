@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { deleteMyAccount, updateMarketingPreference } from "@/lib/account.functions";
 import { useAuth } from "@/lib/auth";
 import { formatDate } from "@/lib/content";
+import { fetchAll } from "@/lib/fetch-all";
 import { privateHead } from "@/lib/seo";
 import { getSupabase } from "@/lib/supabase/client";
 
@@ -277,39 +278,56 @@ function DataSection() {
     const supabase = getSupabase();
     if (!supabase || !auth.session) return;
     setBusy("export");
+    setMessage("");
     const userId = auth.session.user.id;
-    const [profile, responses, clicks] = await Promise.all([
-      supabase
-        .from("profiles")
-        .select("full_name, marketing_opt_in, age_confirmed, created_at")
-        .eq("id", userId)
-        .maybeSingle(),
-      supabase
-        .from("survey_responses")
-        .select("created_at, source, respondent_role, industries, needs, confidence")
-        .eq("user_id", userId),
-      supabase
-        .from("resource_clicks")
-        .select("resource_id, source_path, created_at")
-        .eq("user_id", userId),
-    ]);
-    setBusy(null);
-    const file = new Blob(
-      [
-        JSON.stringify(
-          {
-            exported_at: new Date().toISOString(),
-            email: auth.session.user.email,
-            profile: profile.data,
-            survey_responses: responses.data ?? [],
-            resource_clicks: clicks.data ?? [],
-          },
-          null,
-          2,
+    let exported: Record<string, unknown>;
+    try {
+      // Every record, page by page; any failed read stops the download.
+      const [profile, responses, clicks] = await Promise.all([
+        supabase
+          .from("profiles")
+          .select("full_name, marketing_opt_in, age_confirmed, created_at")
+          .eq("id", userId)
+          .maybeSingle()
+          .then(({ data, error }) => {
+            if (error || !data) throw new Error("profile");
+            return data;
+          }),
+        fetchAll((from, to) =>
+          supabase
+            .from("survey_responses")
+            .select("id, created_at, source, respondent_role, industries, needs, confidence")
+            .eq("user_id", userId)
+            .order("created_at", { ascending: true })
+            .order("id", { ascending: true })
+            .range(from, to),
         ),
-      ],
-      { type: "application/json" },
-    );
+        fetchAll((from, to) =>
+          supabase
+            .from("resource_clicks")
+            .select("id, resource_id, source_path, created_at")
+            .eq("user_id", userId)
+            .order("created_at", { ascending: true })
+            .order("id", { ascending: true })
+            .range(from, to),
+        ),
+      ]);
+      exported = {
+        exported_at: new Date().toISOString(),
+        email: auth.session.user.email,
+        profile,
+        survey_responses: responses,
+        resource_clicks: clicks,
+      };
+    } catch {
+      setBusy(null);
+      setMessage(
+        "Your data couldn't be collected completely, so nothing was downloaded. Please try again.",
+      );
+      return;
+    }
+    setBusy(null);
+    const file = new Blob([JSON.stringify(exported, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(file);
     const link = document.createElement("a");
     link.href = url;

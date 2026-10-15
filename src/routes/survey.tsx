@@ -99,6 +99,10 @@ function SurveyPage() {
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  // True while the sign-up or log-in form is working: the other finish-step
+  // actions wait, so one click can't start a second save or sign-in.
+  const [formBusy, setFormBusy] = useState(false);
+  const inFlight = useRef<Promise<{ id: string; claimToken: string | null } | string> | null>(null);
   const submitted = useRef<{ id: string; claimToken: string | null } | null>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -127,16 +131,31 @@ function SurveyPage() {
   }
 
   /** Saves the answers once; later calls return the same result. */
-  async function submitOnce(): Promise<{ id: string; claimToken: string | null } | string> {
-    if (submitted.current) return submitted.current;
+  /**
+   * Saves the answers once. Every finish-step action shares the same save:
+   * a second call while the first is still running waits for it instead of
+   * storing the answers twice; a failed save can be tried again.
+   */
+  function submitOnce(): Promise<{ id: string; claimToken: string | null } | string> {
+    if (submitted.current) return Promise.resolve(submitted.current);
+    if (inFlight.current) return inFlight.current;
     const answers = finalAnswers();
-    if (!answers) return "Some answers are missing. Go back and answer every question.";
-    const result = await submitSurvey({
-      data: { answers, website: honeypotRef.current?.value ?? "" },
-    }).catch(() => null);
-    if (!result || !result.ok) return failureMessage(result);
-    submitted.current = { id: result.id, claimToken: result.claimToken };
-    return submitted.current;
+    if (!answers) {
+      return Promise.resolve("Some answers are missing. Go back and answer every question.");
+    }
+    const run = (async () => {
+      const result = await submitSurvey({
+        data: { answers, website: honeypotRef.current?.value ?? "" },
+      }).catch(() => null);
+      if (!result || !result.ok) return failureMessage(result);
+      submitted.current = { id: result.id, claimToken: result.claimToken };
+      return submitted.current;
+    })();
+    inFlight.current = run;
+    void run.finally(() => {
+      inFlight.current = null;
+    });
+    return run;
   }
 
   async function submitDirectly(nextOutcome: Outcome) {
@@ -305,6 +324,7 @@ function SurveyPage() {
                 </div>
                 <SignUpForm
                   submitLabel="Sign up and submit"
+                  onBusyChange={setFormBusy}
                   beforeSignUp={async () => {
                     const result = await submitOnce();
                     return typeof result === "string"
@@ -321,7 +341,7 @@ function SurveyPage() {
                   onSwitch={() => setMode("login")}
                   switchLabel="Already have an account? Log in"
                   onSkip={() => submitDirectly("anonymous")}
-                  busy={busy}
+                  busy={busy || formBusy}
                   error={error}
                 />
               </>
@@ -341,6 +361,7 @@ function SurveyPage() {
                 </div>
                 <LogInForm
                   submitLabel="Log in and submit"
+                  onBusyChange={setFormBusy}
                   onSuccess={async ({ email }) => {
                     const result = await submitOnce();
                     if (typeof result === "string") {
@@ -357,7 +378,7 @@ function SurveyPage() {
                   onSwitch={() => setMode("signup")}
                   switchLabel="New here? Create an account"
                   onSkip={() => submitDirectly("anonymous")}
-                  busy={busy}
+                  busy={busy || formBusy}
                   error={error}
                 />
               </>
@@ -416,7 +437,8 @@ function FinishLinks({
       <button
         type="button"
         onClick={onSwitch}
-        className="min-h-6 font-semibold text-navy underline-offset-2 hover:underline"
+        disabled={busy}
+        className="min-h-6 font-semibold text-navy underline-offset-2 hover:underline disabled:opacity-50"
       >
         {switchLabel}
       </button>
@@ -427,7 +449,7 @@ function FinishLinks({
           disabled={busy}
           className="min-h-6 text-charcoal/75 underline underline-offset-2 hover:text-navy disabled:opacity-50"
         >
-          {busy ? "Saving…" : "Submit without an account"}
+          Submit without an account
         </button>
       </div>
       {error ? (

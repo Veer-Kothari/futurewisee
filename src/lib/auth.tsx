@@ -48,16 +48,46 @@ const SIGNED_OUT: AuthState = {
   isAdmin: false,
 };
 
-/** Once per browser session per account, the Mailchimp sync runs after sign-in. */
-function firstSyncThisSession(userId: string): boolean {
+const SYNC_MARKER = "fw-mailchimp-synced-";
+const syncsInFlight = new Set<string>();
+
+/**
+ * The Mailchimp sync after sign-in runs at most once per tab session per
+ * account — but only a run that worked is remembered, so a failed one is
+ * retried on the next sign-in. Two sign-in events at once share one run.
+ */
+async function syncMarketingOnce(userId: string) {
+  let done = false;
   try {
-    const key = `fw-mailchimp-sync-${userId}`;
-    if (window.sessionStorage.getItem(key)) return false;
-    window.sessionStorage.setItem(key, "1");
+    done = window.sessionStorage.getItem(SYNC_MARKER + userId) === "1";
   } catch {
-    // Storage blocked: sync anyway (the server skips when nothing changed).
+    // Storage blocked: run it (the server skips when nothing changed).
   }
-  return true;
+  if (done || syncsInFlight.has(userId)) return;
+  syncsInFlight.add(userId);
+  try {
+    const result = await reconcileMarketing().catch(() => null);
+    if (result?.ok && (result.synced || !result.configured)) {
+      try {
+        window.sessionStorage.setItem(SYNC_MARKER + userId, "1");
+      } catch {
+        // nothing to remember it in
+      }
+    }
+  } finally {
+    syncsInFlight.delete(userId);
+  }
+}
+
+function clearSyncMarkers() {
+  try {
+    for (let i = window.sessionStorage.length - 1; i >= 0; i--) {
+      const key = window.sessionStorage.key(i);
+      if (key?.startsWith(SYNC_MARKER)) window.sessionStorage.removeItem(key);
+    }
+  } catch {
+    // nothing stored
+  }
 }
 
 /**
@@ -75,12 +105,8 @@ async function afterSignIn(session: Session, profile: Profile | null) {
       clearPendingClaim();
     }
   }
-  if (
-    profile &&
-    (profile.marketing_opt_in || profile.mailchimp_synced_at) &&
-    firstSyncThisSession(session.user.id)
-  ) {
-    await reconcileMarketing().catch(() => null);
+  if (profile && (profile.marketing_opt_in || profile.mailchimp_synced_at)) {
+    await syncMarketingOnce(session.user.id);
   }
 }
 
@@ -93,35 +119,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   });
   const queryClient = useQueryClient();
   const followedUp = useRef<string | null>(null);
+  // Bumped by every sign-out: a load that was still waiting for the database
+  // when the person signed out can never put the old session back.
+  const signOuts = useRef(0);
 
-  const load = useCallback(async (session: Session | null): Promise<Profile | null> => {
-    const supabase = getSupabase();
-    if (!supabase) {
-      setState({ ...SIGNED_OUT, status: "unavailable" });
-      return null;
-    }
-    if (!session) {
-      setState(SIGNED_OUT);
-      return null;
-    }
-    const [profileResult, rolesResult] = await Promise.all([
-      supabase
-        .from("profiles")
-        .select("id, full_name, marketing_opt_in, age_confirmed, mailchimp_synced_at, created_at")
-        .eq("id", session.user.id)
-        .maybeSingle(),
-      supabase.from("user_roles").select("role").eq("user_id", session.user.id),
-    ]);
-    const profile = (profileResult.data as Profile | null) ?? null;
-    const roles = (rolesResult.data as { role: string }[] | null) ?? [];
-    setState({
-      status: "signed-in",
-      session,
-      profile,
-      isAdmin: roles.some((row) => row.role === "admin"),
-    });
-    return profile;
-  }, []);
+  const load = useCallback(
+    async (session: Session | null): Promise<{ current: boolean; profile: Profile | null }> => {
+      const ticket = signOuts.current;
+      const supabase = getSupabase();
+      if (!supabase) {
+        setState({ ...SIGNED_OUT, status: "unavailable" });
+        return { current: true, profile: null };
+      }
+      if (!session) {
+        setState(SIGNED_OUT);
+        return { current: true, profile: null };
+      }
+      const [profileResult, rolesResult] = await Promise.all([
+        supabase
+          .from("profiles")
+          .select("id, full_name, marketing_opt_in, age_confirmed, mailchimp_synced_at, created_at")
+          .eq("id", session.user.id)
+          .maybeSingle(),
+        supabase.from("user_roles").select("role").eq("user_id", session.user.id),
+      ]);
+      if (ticket !== signOuts.current) return { current: false, profile: null };
+      const profile = (profileResult.data as Profile | null) ?? null;
+      const roles = (rolesResult.data as { role: string }[] | null) ?? [];
+      setState({
+        status: "signed-in",
+        session,
+        profile,
+        isAdmin: roles.some((row) => row.role === "admin"),
+      });
+      return { current: true, profile };
+    },
+    [],
+  );
 
   useEffect(() => {
     const supabase = getSupabase();
@@ -138,17 +172,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       window.setTimeout(() => {
         if (!active) return;
         if (event === "SIGNED_OUT") {
+          signOuts.current += 1;
           followedUp.current = null;
           setState(SIGNED_OUT);
           return;
         }
         if (event === "TOKEN_REFRESHED") {
-          setState((previous) => ({ ...previous, session }));
+          setState((previous) =>
+            previous.status === "signed-in" ? { ...previous, session } : previous,
+          );
           return;
         }
         if (event === "SIGNED_IN" || event === "USER_UPDATED") {
-          void load(session).then((profile) => {
-            if (event === "SIGNED_IN" && session && followedUp.current !== session.user.id) {
+          void load(session).then(({ current, profile }) => {
+            if (
+              current &&
+              event === "SIGNED_IN" &&
+              session &&
+              followedUp.current !== session.user.id
+            ) {
               followedUp.current = session.user.id;
               void afterSignIn(session, profile);
             }
@@ -171,7 +213,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = useCallback(async () => {
     const supabase = getSupabase();
+    signOuts.current += 1;
     clearPendingClaim();
+    clearSyncMarkers();
     queryClient.clear();
     if (supabase) await supabase.auth.signOut().catch(() => undefined);
     followedUp.current = null;

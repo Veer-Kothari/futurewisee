@@ -81,6 +81,7 @@ Everything is still editable with Lovable prompts. Useful ones:
 
 - "Add a resource to `src/data/resources.ts`: name …, description …, section …, url …" (and add its logo to `src/assets/resource-logos/<id>.png`).
 - "Change the homepage hero paragraph in `src/routes/index.tsx` to: …"
+- "Hide the Tax industry from the menus: set `inMenu: false` for tax in `src/data/industries.ts`" (its page keeps working).
 - Please don't ask Lovable to rebuild the survey, the account pages or /admin — they are wired to the database and its access rules; ask Herdy instead.
 
 ## Removing developer access

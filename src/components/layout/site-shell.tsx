@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Analytics } from "@/components/analytics/analytics";
 import { NewsletterForm } from "@/components/newsletter/newsletter-form";
 import { Button } from "@/components/ui/button";
-import { industries } from "@/data/industries";
+import { menuIndustries } from "@/data/industries";
 import { site } from "@/data/site";
 import { useAuth } from "@/lib/auth";
 import { analyticsId, openCookieSettings } from "@/lib/consent";
@@ -28,7 +28,7 @@ const navItems: NavItem[] = [
   {
     label: "Industry Insights",
     to: "/industry-resources",
-    children: industries.map((industry) => ({
+    children: menuIndustries.map((industry) => ({
       label: industry.navLabel,
       to: `/industry-resources/${industry.slug}`,
     })),

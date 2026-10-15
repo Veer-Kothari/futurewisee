@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   analyticsId,
   disableGoogleAnalytics,
+  hasAuthTokensInUrl,
   loadGoogleAnalytics,
   onConsentChange,
   onOpenCookieSettings,
@@ -43,12 +44,29 @@ export function Analytics() {
 
   useEffect(() => {
     if (!id || consent === null) return;
-    if (consent === "granted") {
+    if (consent !== "granted") {
+      disableGoogleAnalytics(id);
+      return;
+    }
+    // An emailed sign-in or reset link arrives with tokens in the address
+    // bar; Google Analytics only starts once Supabase has removed them.
+    let cancelled = false;
+    let timer: number | undefined;
+    const startedAt = Date.now();
+    const start = () => {
+      if (cancelled) return;
+      if (hasAuthTokensInUrl()) {
+        if (Date.now() - startedAt < 15_000) timer = window.setTimeout(start, 250);
+        return;
+      }
       loadGoogleAnalytics(id);
       trackPageView(window.location.pathname, document.title);
-    } else {
-      disableGoogleAnalytics(id);
-    }
+    };
+    start();
+    return () => {
+      cancelled = true;
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
   }, [id, consent]);
 
   useEffect(() => {

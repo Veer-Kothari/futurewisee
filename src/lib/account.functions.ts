@@ -54,7 +54,10 @@ export const reconcileMarketing = createServerFn({ method: "POST" })
   .handler(
     async ({
       context,
-    }): Promise<{ ok: true; synced: boolean } | { ok: false; reason: "unavailable" | "error" }> => {
+    }): Promise<
+      | { ok: true; synced: boolean; configured: boolean }
+      | { ok: false; reason: "unavailable" | "error" }
+    > => {
       if (!context.userId) return { ok: false, reason: "error" };
       const guard = await import("@/lib/guard.server");
       if (!guard.sameOrigin()) return { ok: false, reason: "error" };
@@ -66,8 +69,9 @@ export const reconcileMarketing = createServerFn({ method: "POST" })
           return { ok: false, reason: "error" };
         }
         const { reconcileForUser } = await import("@/lib/marketing.server");
+        const { mailchimpConfigured } = await import("@/lib/mailchimp.server");
         const { synced } = await reconcileForUser(context.userId);
-        return { ok: true, synced };
+        return { ok: true, synced, configured: mailchimpConfigured() };
       } catch {
         return { ok: false, reason: "error" };
       }

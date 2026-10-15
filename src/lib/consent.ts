@@ -1,4 +1,5 @@
 import { site } from "@/data/site";
+import { analyticsUrl, hasAuthTokens } from "@/lib/analytics-url";
 
 /**
  * The visitor's cookie choice for Google Analytics, kept in localStorage
@@ -56,6 +57,16 @@ type GaWindow = Window & { dataLayer?: unknown[]; gtag?: Gtag; __fwGaLoaded?: bo
     unknown
   >;
 
+/** The clean page address for Google Analytics (see analytics-url.ts). */
+export function analyticsLocation(): { page_location: string; page_path: string } {
+  return analyticsUrl(window.location.href);
+}
+
+/** True while an emailed sign-in or reset link's tokens are still in the address bar. */
+export function hasAuthTokensInUrl(): boolean {
+  return hasAuthTokens(`${window.location.hash}${window.location.search}`);
+}
+
 export function loadGoogleAnalytics(id: string) {
   const w = window as unknown as GaWindow;
   w[`ga-disable-${id}`] = false;
@@ -68,7 +79,7 @@ export function loadGoogleAnalytics(id: string) {
     w.dataLayer?.push(arguments);
   };
   w.gtag("js", new Date());
-  w.gtag("config", id, { send_page_view: false });
+  w.gtag("config", id, { send_page_view: false, ...analyticsLocation() });
   const script = document.createElement("script");
   script.async = true;
   script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
@@ -93,16 +104,15 @@ export function disableGoogleAnalytics(id: string) {
 export function trackPageView(path: string, title: string) {
   const w = window as unknown as GaWindow;
   const id = analyticsId();
-  if (!id || !w.gtag || readConsent() !== "granted") return;
-  w.gtag("event", "page_view", {
-    page_path: path,
-    page_title: title,
-    page_location: window.location.href,
-  });
+  if (!id || !w.gtag || readConsent() !== "granted" || hasAuthTokensInUrl()) return;
+  const location = analyticsLocation();
+  // Every later hit (resource clicks too) reports this clean address.
+  w.gtag("set", { page_location: location.page_location });
+  w.gtag("event", "page_view", { ...location, page_path: path, page_title: title });
 }
 
 export function trackEvent(name: string, params: Record<string, string | number>) {
   const w = window as unknown as GaWindow;
-  if (!analyticsId() || !w.gtag || readConsent() !== "granted") return;
-  w.gtag("event", name, params);
+  if (!analyticsId() || !w.gtag || readConsent() !== "granted" || hasAuthTokensInUrl()) return;
+  w.gtag("event", name, { ...params, page_location: analyticsLocation().page_location });
 }

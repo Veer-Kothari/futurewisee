@@ -1,6 +1,6 @@
 import type { AuthError } from "@supabase/supabase-js";
 import { Link } from "@tanstack/react-router";
-import { useId, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -74,9 +74,12 @@ export function SignUpForm({
   submitLabel = "Create account",
   beforeSignUp,
   onSuccess,
+  onBusyChange,
   footer,
 }: {
   submitLabel?: string;
+  /** Tells the page while the form is saving, so other actions can wait. */
+  onBusyChange?: (busy: boolean) => void;
   beforeSignUp?: () => Promise<{ ok: true } | { ok: false; message: string }>;
   onSuccess: (outcome: SignUpOutcome) => void;
   footer?: ReactNode;
@@ -90,6 +93,11 @@ export function SignUpForm({
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState("");
   const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    onBusyChange?.(busy);
+  }, [busy, onBusyChange]);
+  // If the form disappears mid-request (the page switches view), it's no longer busy.
+  useEffect(() => () => onBusyChange?.(false), [onBusyChange]);
   const refs = {
     name: useRef<HTMLInputElement>(null),
     email: useRef<HTMLInputElement>(null),
@@ -266,9 +274,12 @@ export function SignUpForm({
 export function LogInForm({
   submitLabel = "Log in",
   onSuccess,
+  onBusyChange,
   footer,
 }: {
   submitLabel?: string;
+  /** Tells the page while the form is signing in, so other actions can wait. */
+  onBusyChange?: (busy: boolean) => void;
   onSuccess: (signedIn: { email: string }) => void | Promise<void>;
   footer?: ReactNode;
 }) {
@@ -278,6 +289,11 @@ export function LogInForm({
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState("");
   const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    onBusyChange?.(busy);
+  }, [busy, onBusyChange]);
+  // If the form disappears mid-request (the page switches view), it's no longer busy.
+  useEffect(() => () => onBusyChange?.(false), [onBusyChange]);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 

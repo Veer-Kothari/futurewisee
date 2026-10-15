@@ -66,14 +66,18 @@ const memberPath = (email: string) => `/${md5Hex(email.trim().toLowerCase())}`;
  * them to confirm); subscribed or pending → unchanged; unsubscribed, cleaned
  * or archived → pending again only with `resubscribe` (an explicit new
  * choice), otherwise left alone. Then adds the tags.
+ *
+ * `member` says whether a member exists for this address afterwards — true
+ * even when a later step (tags) failed, so the caller can still record it and
+ * unsubscribe or delete it later. `ok` is true only when every step worked.
  */
 export async function mailchimpOptIn(
   email: string,
   tags: string[],
   opts: { resubscribe: boolean },
-): Promise<boolean> {
+): Promise<{ member: boolean; ok: boolean }> {
   const cfg = config();
-  if (!cfg) return false;
+  if (!cfg) return { member: false, ok: false };
   const path = memberPath(email);
   const current = await call(cfg, "GET", path);
   const status = typeof current.json?.["status"] === "string" ? current.json["status"] : null;
@@ -83,21 +87,21 @@ export async function mailchimpOptIn(
       email_address: email.trim().toLowerCase(),
       status_if_new: "pending",
     });
-    if (created.status >= 300) return false;
+    if (created.status >= 300) return { member: false, ok: false };
   } else if (current.status >= 300 || !status) {
-    return false;
+    return { member: false, ok: false };
   } else if (status !== "subscribed" && status !== "pending" && opts.resubscribe) {
     const updated = await call(cfg, "PATCH", path, { status: "pending" });
-    if (updated.status >= 300) return false;
+    if (updated.status >= 300) return { member: true, ok: false };
   }
 
   if (tags.length) {
     const tagged = await call(cfg, "POST", `${path}/tags`, {
       tags: tags.map((name) => ({ name, status: "active" })),
     });
-    if (tagged.status >= 300) return false;
+    if (tagged.status >= 300) return { member: true, ok: false };
   }
-  return true;
+  return { member: true, ok: true };
 }
 
 /** Unsubscribes an existing member; a missing member counts as done. */
