@@ -4,10 +4,12 @@
  * after a survey and after every preference change; a failed sync is simply
  * tried again the next time one of those happens.
  *
- * Two runs can overlap (a sign-in sync still talking to Mailchimp while the
- * person unticks "email me"). So after every Mailchimp call the stored choice
- * is read again, and a "no" that arrived in the meantime wins: the member is
- * unsubscribed again before anything is recorded as synced.
+ * Runs can overlap (two tabs, or a sign-in sync still talking to Mailchimp
+ * while the person changes their mind). Every change of the choice bumps
+ * profiles.marketing_version (database trigger). A run records its result
+ * only if the version is still the one it read; otherwise it goes round
+ * again and applies the newest choice — even if the profile already looks
+ * synced, because its own late Mailchimp call may have just undone it.
  */
 import {
   MAILCHIMP_TAGS,
@@ -19,30 +21,33 @@ import { getSupabaseAdmin } from "@/lib/supabase/admin.server";
 
 type ProfileSyncRow = {
   marketing_opt_in: boolean;
-  mailchimp_synced_at: string | null;
-  mailchimp_survey_tagged: boolean;
+  marketing_version: number;
   mailchimp_member: boolean;
+  mailchimp_synced_choice: boolean | null;
+  mailchimp_survey_tagged: boolean;
 };
 
 type Db = NonNullable<ReturnType<typeof getSupabaseAdmin>>;
 
+const SYNC_COLUMNS =
+  "marketing_opt_in, marketing_version, mailchimp_member, mailchimp_synced_choice, mailchimp_survey_tagged";
+const MAX_ROUNDS = 3;
+
 async function readProfile(db: Db, userId: string): Promise<ProfileSyncRow | null> {
   const { data, error } = await db
     .from("profiles")
-    .select("marketing_opt_in, mailchimp_synced_at, mailchimp_survey_tagged, mailchimp_member")
+    .select(SYNC_COLUMNS)
     .eq("id", userId)
     .maybeSingle();
   return error ? null : ((data as ProfileSyncRow | null) ?? null);
 }
 
-/** Unsubscribes whatever this account may have put on the audience. */
-async function optOut(db: Db, userId: string, email: string): Promise<{ synced: boolean }> {
-  if (!(await mailchimpOptOut(email))) return { synced: false };
-  await db
-    .from("profiles")
-    .update({ mailchimp_synced_at: null, mailchimp_survey_tagged: false })
-    .eq("id", userId);
-  return { synced: true };
+async function hasSurveyResponse(db: Db, userId: string): Promise<boolean> {
+  const { count } = await db
+    .from("survey_responses")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId);
+  return (count ?? 0) > 0;
 }
 
 export async function reconcileForUser(
@@ -52,57 +57,60 @@ export async function reconcileForUser(
   const db = getSupabaseAdmin();
   if (!db || !mailchimpConfigured()) return { synced: false };
 
-  const profile = await readProfile(db, userId);
-  if (!profile) return { synced: false };
-
   const { data: userData } = await db.auth.admin.getUserById(userId);
   const email = userData?.user?.email;
   if (!email) return { synced: false };
 
-  if (!profile.marketing_opt_in) {
-    // Nothing of ours on the audience: nothing to undo.
-    if (!profile.mailchimp_member && !profile.mailchimp_synced_at) return { synced: true };
-    return optOut(db, userId, email);
+  // An explicit choice (or redoing work a late call undid) may re-subscribe.
+  let force = Boolean(opts.resubscribe);
+
+  for (let round = 0; round < MAX_ROUNDS; round++) {
+    const profile = await readProfile(db, userId);
+    if (!profile) return { synced: false };
+    const choice = profile.marketing_opt_in;
+    const hasSurvey = choice ? await hasSurveyResponse(db, userId) : false;
+    const upToDate =
+      profile.mailchimp_synced_choice === choice &&
+      (!choice || profile.mailchimp_survey_tagged || !hasSurvey);
+    if (upToDate && !force) return { synced: true };
+
+    let remoteOk: boolean;
+    if (choice) {
+      const tags: string[] = [MAILCHIMP_TAGS.account];
+      if (hasSurvey) tags.push(MAILCHIMP_TAGS.survey);
+      const result = await mailchimpOptIn(email, tags, { resubscribe: force });
+      // A member exists even if a later step failed: remember it, so an
+      // opt-out or account deletion always reaches Mailchimp.
+      if (result.member && !profile.mailchimp_member) {
+        await db.from("profiles").update({ mailchimp_member: true }).eq("id", userId);
+      }
+      remoteOk = result.ok;
+    } else if (!profile.mailchimp_member && profile.mailchimp_synced_choice === null) {
+      remoteOk = true; // nothing of ours on the audience
+    } else {
+      remoteOk = await mailchimpOptOut(email);
+    }
+
+    // Record the outcome only if the choice is still the one this round applied.
+    const { data: committed, error } = await db
+      .from("profiles")
+      .update(
+        remoteOk
+          ? {
+              mailchimp_synced_choice: choice,
+              mailchimp_synced_at: new Date().toISOString(),
+              mailchimp_survey_tagged: choice
+                ? hasSurvey || profile.mailchimp_survey_tagged
+                : false,
+            }
+          : { mailchimp_synced_choice: null },
+      )
+      .eq("id", userId)
+      .eq("marketing_version", profile.marketing_version)
+      .select("id");
+    if (error) return { synced: false };
+    if (committed && committed.length > 0) return { synced: remoteOk };
+    force = true;
   }
-
-  const { count } = await db
-    .from("survey_responses")
-    .select("id", { count: "exact", head: true })
-    .eq("user_id", userId);
-  const hasSurvey = (count ?? 0) > 0;
-  const upToDate =
-    Boolean(profile.mailchimp_synced_at) && (profile.mailchimp_survey_tagged || !hasSurvey);
-  if (upToDate && !opts.resubscribe) return { synced: true };
-
-  const tags: string[] = [MAILCHIMP_TAGS.account];
-  if (hasSurvey) tags.push(MAILCHIMP_TAGS.survey);
-  // Only an explicit choice on the Account page re-subscribes someone who
-  // unsubscribed through an email link; sign-ins and surveys only add tags.
-  const result = await mailchimpOptIn(email, tags, { resubscribe: Boolean(opts.resubscribe) });
-
-  // A member now exists even if a later step failed: record it so an opt-out
-  // or account deletion always reaches Mailchimp.
-  if (result.member && !profile.mailchimp_member) {
-    await db.from("profiles").update({ mailchimp_member: true }).eq("id", userId);
-  }
-
-  // The choice may have changed while Mailchimp was being called.
-  const latest = await readProfile(db, userId);
-  if (!latest) return { synced: false };
-  if (!latest.marketing_opt_in) {
-    if (!result.member) return { synced: true };
-    await optOut(db, userId, email);
-    return { synced: false };
-  }
-
-  if (!result.ok) return { synced: false };
-  await db
-    .from("profiles")
-    .update({
-      mailchimp_synced_at: new Date().toISOString(),
-      mailchimp_survey_tagged: hasSurvey || latest.mailchimp_survey_tagged,
-      mailchimp_member: true,
-    })
-    .eq("id", userId);
-  return { synced: true };
+  return { synced: false };
 }

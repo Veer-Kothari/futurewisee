@@ -21,7 +21,8 @@ export type Profile = {
   full_name: string;
   marketing_opt_in: boolean;
   age_confirmed: boolean;
-  mailchimp_synced_at: string | null;
+  mailchimp_member: boolean;
+  mailchimp_synced_choice: boolean | null;
   created_at: string;
 };
 
@@ -50,6 +51,9 @@ const SIGNED_OUT: AuthState = {
 
 const SYNC_MARKER = "fw-mailchimp-synced-";
 const syncsInFlight = new Set<string>();
+// Bumped by every sign-out (in this tab or another): a sync that started
+// before it can't mark the next session as already synced.
+let syncGeneration = 0;
 
 /**
  * The Mailchimp sync after sign-in runs at most once per tab session per
@@ -57,17 +61,19 @@ const syncsInFlight = new Set<string>();
  * retried on the next sign-in. Two sign-in events at once share one run.
  */
 async function syncMarketingOnce(userId: string) {
+  const generation = syncGeneration;
+  const flightKey = `${generation}:${userId}`;
   let done = false;
   try {
     done = window.sessionStorage.getItem(SYNC_MARKER + userId) === "1";
   } catch {
     // Storage blocked: run it (the server skips when nothing changed).
   }
-  if (done || syncsInFlight.has(userId)) return;
-  syncsInFlight.add(userId);
+  if (done || syncsInFlight.has(flightKey)) return;
+  syncsInFlight.add(flightKey);
   try {
     const result = await reconcileMarketing().catch(() => null);
-    if (result?.ok && (result.synced || !result.configured)) {
+    if (generation === syncGeneration && result?.ok && (result.synced || !result.configured)) {
       try {
         window.sessionStorage.setItem(SYNC_MARKER + userId, "1");
       } catch {
@@ -75,8 +81,14 @@ async function syncMarketingOnce(userId: string) {
       }
     }
   } finally {
-    syncsInFlight.delete(userId);
+    syncsInFlight.delete(flightKey);
   }
+}
+
+/** On every sign-out: forget which accounts were synced in this tab. */
+function invalidateSyncs() {
+  syncGeneration += 1;
+  clearSyncMarkers();
 }
 
 function clearSyncMarkers() {
@@ -105,7 +117,14 @@ async function afterSignIn(session: Session, profile: Profile | null) {
       clearPendingClaim();
     }
   }
-  if (profile && (profile.marketing_opt_in || profile.mailchimp_synced_at)) {
+  // Also when the account has a Mailchimp member or a recorded sync: a failed
+  // unsubscribe is retried this way on a later sign-in.
+  if (
+    profile &&
+    (profile.marketing_opt_in ||
+      profile.mailchimp_member ||
+      profile.mailchimp_synced_choice !== null)
+  ) {
     await syncMarketingOnce(session.user.id);
   }
 }
@@ -138,7 +157,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const [profileResult, rolesResult] = await Promise.all([
         supabase
           .from("profiles")
-          .select("id, full_name, marketing_opt_in, age_confirmed, mailchimp_synced_at, created_at")
+          .select(
+            "id, full_name, marketing_opt_in, age_confirmed, mailchimp_member, mailchimp_synced_choice, created_at",
+          )
           .eq("id", session.user.id)
           .maybeSingle(),
         supabase.from("user_roles").select("role").eq("user_id", session.user.id),
@@ -173,6 +194,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (!active) return;
         if (event === "SIGNED_OUT") {
           signOuts.current += 1;
+          invalidateSyncs();
           followedUp.current = null;
           setState(SIGNED_OUT);
           return;
@@ -215,7 +237,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const supabase = getSupabase();
     signOuts.current += 1;
     clearPendingClaim();
-    clearSyncMarkers();
+    invalidateSyncs();
     queryClient.clear();
     if (supabase) await supabase.auth.signOut().catch(() => undefined);
     followedUp.current = null;

@@ -312,6 +312,8 @@ if (files.length === 0) {
         "mailchimp_synced_at",
         "mailchimp_survey_tagged",
         "mailchimp_member",
+        "mailchimp_synced_choice",
+        "marketing_version",
         "created_at",
         "updated_at",
       ]) {
@@ -858,6 +860,38 @@ if (files.length === 0) {
       );
       assert.equal(visible.rows[0].n, 0);
     });
+    await t.test(
+      "a change of email choice bumps the version, so a stale sync can't record itself",
+      async () => {
+        const before = (
+          await db.query("select marketing_version from public.profiles where id=$1", [B])
+        ).rows[0].marketing_version;
+        await db.query("update public.profiles set marketing_opt_in = true where id=$1", [B]);
+        const after = (
+          await db.query("select marketing_version from public.profiles where id=$1", [B])
+        ).rows[0].marketing_version;
+        assert.equal(after, before + 1);
+        // Same value again: no bump.
+        await db.query("update public.profiles set marketing_opt_in = true where id=$1", [B]);
+        assert.equal(
+          (await db.query("select marketing_version from public.profiles where id=$1", [B])).rows[0]
+            .marketing_version,
+          after,
+        );
+        // A sync that read the old version records nothing.
+        const stale = await db.query(
+          "update public.profiles set mailchimp_synced_choice = false where id=$1 and marketing_version=$2",
+          [B, before],
+        );
+        assert.equal(stale.affectedRows, 0);
+        const fresh = await db.query(
+          "update public.profiles set mailchimp_synced_choice = true where id=$1 and marketing_version=$2",
+          [B, after],
+        );
+        assert.equal(fresh.affectedRows, 1);
+        await denied("authenticated", B, "select public.bump_marketing_version()");
+      },
+    );
     await t.test("re-applying the migrations on a populated database keeps every row", async () => {
       const before = (
         await db.query(

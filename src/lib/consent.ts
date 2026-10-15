@@ -64,7 +64,7 @@ export function analyticsLocation(): { page_location: string; page_path: string 
 
 /** True while an emailed sign-in or reset link's tokens are still in the address bar. */
 export function hasAuthTokensInUrl(): boolean {
-  return hasAuthTokens(`${window.location.hash}${window.location.search}`);
+  return hasAuthTokens(window.location.href);
 }
 
 export function loadGoogleAnalytics(id: string) {
@@ -84,6 +84,10 @@ export function loadGoogleAnalytics(id: string) {
   script.async = true;
   script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
   document.head.appendChild(script);
+}
+
+export function isGoogleAnalyticsLoaded(): boolean {
+  return Boolean((window as unknown as GaWindow).__fwGaLoaded);
 }
 
 export function disableGoogleAnalytics(id: string) {

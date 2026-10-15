@@ -89,12 +89,19 @@ create table if not exists public.profiles (
   -- true once this account has created a Mailchimp member (kept after an
   -- opt-out), so deleting the account also deletes that member.
   mailchimp_member boolean not null default false,
+  -- The choice last confirmed in Mailchimp (null = never synced or unknown).
+  mailchimp_synced_choice boolean,
+  -- Bumped by a trigger whenever marketing_opt_in changes, so a sync that
+  -- read an older choice can't record itself as the current state.
+  marketing_version integer not null default 0,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 alter table public.profiles add column if not exists mailchimp_synced_at timestamptz;
 alter table public.profiles add column if not exists mailchimp_survey_tagged boolean not null default false;
 alter table public.profiles add column if not exists mailchimp_member boolean not null default false;
+alter table public.profiles add column if not exists mailchimp_synced_choice boolean;
+alter table public.profiles add column if not exists marketing_version integer not null default 0;
 alter table public.profiles enable row level security;
 revoke all on public.profiles from anon;
 revoke insert, update, delete, truncate on public.profiles from authenticated;
@@ -119,6 +126,25 @@ drop trigger if exists profiles_set_updated_at on public.profiles;
 create trigger profiles_set_updated_at
   before update on public.profiles
   for each row execute function public.set_updated_at();
+
+create or replace function public.bump_marketing_version()
+returns trigger
+language plpgsql
+set search_path = public
+as $$
+begin
+  if new.marketing_opt_in is distinct from old.marketing_opt_in then
+    new.marketing_version = old.marketing_version + 1;
+  end if;
+  return new;
+end;
+$$;
+revoke all on function public.bump_marketing_version() from public, anon, authenticated;
+
+drop trigger if exists profiles_bump_marketing_version on public.profiles;
+create trigger profiles_bump_marketing_version
+  before update on public.profiles
+  for each row execute function public.bump_marketing_version();
 
 -- Sign-up: the age confirmation is required here, on the server, not only in
 -- the form (16 or older, or a parent/guardian agreed).

@@ -26,9 +26,29 @@ export function analyticsUrl(href: string): { page_location: string; page_path: 
   return { page_location: url.toString(), page_path: url.pathname };
 }
 
-/** True while an emailed sign-in or reset link's tokens are still in the address. */
-export function hasAuthTokens(hashAndSearch: string): boolean {
-  return /(access_token|refresh_token|token_hash|type=recovery|error_description)/i.test(
-    hashAndSearch,
+/** Parameter names that only ever carry sign-in secrets on this site. */
+const TOKEN_PARAMS = new Set(["code", "token", "token_hash", "access_token", "refresh_token"]);
+
+/**
+ * True while an emailed sign-in or reset link's credentials are still in the
+ * address — in the query or in the #fragment, whatever the order or encoding
+ * of the parameter names.
+ */
+export function hasAuthTokens(href: string): boolean {
+  let url: URL;
+  try {
+    url = new URL(href);
+  } catch {
+    return false;
+  }
+  const params = [
+    ...url.searchParams.entries(),
+    ...new URLSearchParams(url.hash.replace(/^#/, "")).entries(),
+  ];
+  return params.some(
+    ([key, value]) =>
+      (TOKEN_PARAMS.has(key.toLowerCase()) && value !== "") ||
+      key.toLowerCase() === "error_description" ||
+      (key.toLowerCase() === "type" && value.toLowerCase() === "recovery"),
   );
 }

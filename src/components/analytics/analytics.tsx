@@ -6,6 +6,7 @@ import {
   analyticsId,
   disableGoogleAnalytics,
   hasAuthTokensInUrl,
+  isGoogleAnalyticsLoaded,
   loadGoogleAnalytics,
   onConsentChange,
   onOpenCookieSettings,
@@ -74,7 +75,15 @@ export function Analytics() {
     return router.subscribe("onResolved", ({ toLocation, pathChanged }) => {
       if (!pathChanged) return;
       // Let the new page's <title> land first.
-      window.setTimeout(() => trackPageView(toLocation.pathname, document.title), 0);
+      window.setTimeout(() => {
+        // If the first page still had sign-in tokens when the wait ran out,
+        // start on the first clean page instead.
+        if (!isGoogleAnalyticsLoaded()) {
+          if (hasAuthTokensInUrl()) return;
+          loadGoogleAnalytics(id);
+        }
+        trackPageView(toLocation.pathname, document.title);
+      }, 0);
     });
   }, [id, consent, router]);
 

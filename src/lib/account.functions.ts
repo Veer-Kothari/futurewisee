@@ -102,10 +102,14 @@ export const deleteMyAccount = createServerFn({ method: "POST" })
       }
       const { data: profile } = await db
         .from("profiles")
-        .select("mailchimp_member")
+        .select("mailchimp_member, mailchimp_synced_choice")
         .eq("id", context.userId)
         .maybeSingle();
-      if ((profile as { mailchimp_member: boolean } | null)?.mailchimp_member) {
+      const mailchimpState = profile as {
+        mailchimp_member: boolean;
+        mailchimp_synced_choice: boolean | null;
+      } | null;
+      if (mailchimpState?.mailchimp_member || mailchimpState?.mailchimp_synced_choice === true) {
         const { data: userData } = await db.auth.admin.getUserById(context.userId);
         const email = userData?.user?.email;
         if (email) {

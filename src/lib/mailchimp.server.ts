@@ -38,25 +38,34 @@ export function mailchimpConfigured(): boolean {
   return config() !== null;
 }
 
+/**
+ * One Mailchimp API request. Never throws: a timeout or network failure comes
+ * back as status 0, so a caller that already created a member still knows it.
+ */
 async function call(
   cfg: Config,
   method: string,
   path: string,
   body?: unknown,
-): Promise<{ status: number; json: Record<string, unknown> | null }> {
-  const response = await fetch(`${cfg.base}${path}`, {
-    method,
-    headers: { Authorization: cfg.auth, "Content-Type": "application/json" },
-    body: body === undefined ? null : JSON.stringify(body),
-    signal: AbortSignal.timeout(8000),
-  });
+): Promise<{ status: number; ok: boolean; json: Record<string, unknown> | null }> {
+  let response: Response;
+  try {
+    response = await fetch(`${cfg.base}${path}`, {
+      method,
+      headers: { Authorization: cfg.auth, "Content-Type": "application/json" },
+      body: body === undefined ? null : JSON.stringify(body),
+      signal: AbortSignal.timeout(8000),
+    });
+  } catch {
+    return { status: 0, ok: false, json: null };
+  }
   let json: Record<string, unknown> | null = null;
   try {
     json = (await response.json()) as Record<string, unknown>;
   } catch {
     json = null;
   }
-  return { status: response.status, json };
+  return { status: response.status, ok: response.status >= 200 && response.status < 300, json };
 }
 
 const memberPath = (email: string) => `/${md5Hex(email.trim().toLowerCase())}`;
@@ -87,19 +96,21 @@ export async function mailchimpOptIn(
       email_address: email.trim().toLowerCase(),
       status_if_new: "pending",
     });
-    if (created.status >= 300) return { member: false, ok: false };
-  } else if (current.status >= 300 || !status) {
+    // No answer at all: the member may have been created anyway, so count it
+    // (an extra unsubscribe or delete later is harmless; a missed one isn't).
+    if (!created.ok) return { member: created.status === 0, ok: false };
+  } else if (!current.ok || !status) {
     return { member: false, ok: false };
   } else if (status !== "subscribed" && status !== "pending" && opts.resubscribe) {
     const updated = await call(cfg, "PATCH", path, { status: "pending" });
-    if (updated.status >= 300) return { member: true, ok: false };
+    if (!updated.ok) return { member: true, ok: false };
   }
 
   if (tags.length) {
     const tagged = await call(cfg, "POST", `${path}/tags`, {
       tags: tags.map((name) => ({ name, status: "active" })),
     });
-    if (tagged.status >= 300) return { member: true, ok: false };
+    if (!tagged.ok) return { member: true, ok: false };
   }
   return { member: true, ok: true };
 }
@@ -110,7 +121,7 @@ export async function mailchimpOptOut(email: string): Promise<boolean> {
   if (!cfg) return false;
   const path = memberPath(email);
   const result = await call(cfg, "PATCH", path, { status: "unsubscribed" });
-  return result.status < 300 || result.status === 404;
+  return result.ok || result.status === 404;
 }
 
 /** Permanently removes the address (account deletion). A missing member counts as done. */
@@ -118,5 +129,5 @@ export async function mailchimpDelete(email: string): Promise<boolean> {
   const cfg = config();
   if (!cfg) return false;
   const result = await call(cfg, "POST", `${memberPath(email)}/actions/delete-permanent`);
-  return result.status < 300 || result.status === 404;
+  return result.ok || result.status === 404;
 }
