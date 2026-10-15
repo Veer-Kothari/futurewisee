@@ -187,10 +187,20 @@ function EmailSection() {
       setMessage("Saved.");
       return;
     }
+    if (result.refused) {
+      // Mailchimp turned the address down (for example one removed for good
+      // earlier): trying again won't help.
+      setMessage("Saved, but we couldn't add you to our email list.");
+      return;
+    }
     if (!result.synced) {
       // Saved, but the email list wasn't updated yet (busy or briefly
       // unreachable): try once more shortly; later sign-ins keep retrying.
-      setMessage("Saved. Our email list will be updated in a moment.");
+      setMessage(
+        next
+          ? "Saved. Our email list will be updated in a moment. If this is new, check your inbox then to confirm your email address."
+          : "Saved. Our email list will be updated in a moment.",
+      );
       window.setTimeout(() => void reconcileMarketing().catch(() => null), 6000);
       return;
     }

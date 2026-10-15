@@ -58,7 +58,8 @@ export const submitSurvey = createServerFn({ method: "POST" })
 
       if (userId) {
         const { reconcileForUser } = await import("@/lib/marketing.server");
-        // One try for the lease: if another sync is running, the next one adds the tag.
+        // One try for the lease: a sync already running for this account adds
+        // the tag before it finishes.
         await reconcileForUser(userId, { wait: false }).catch(() => undefined);
       }
       return { ok: true, id, claimToken };

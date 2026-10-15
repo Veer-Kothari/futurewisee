@@ -14,6 +14,8 @@ export type PreferenceResult =
       synced: boolean;
       /** Mailchimp isn't connected: the choice is only stored. */
       configured: boolean;
+      /** Mailchimp turned the address down; retrying won't help. */
+      refused: boolean;
     }
   | { ok: false; reason: "invalid" | "unavailable" | "error" };
 
@@ -55,9 +57,14 @@ export const updateMarketingPreference = createServerFn({ method: "POST" })
       const { reconcileForUser } = await import("@/lib/marketing.server");
       const { mailchimpConfigured } = await import("@/lib/mailchimp.server");
       const sync = await reconcileForUser(context.userId, { resubscribe: parsed.data.optIn }).catch(
-        () => ({ synced: false }),
+        () => ({ synced: false, refused: false }),
       );
-      return { ok: true, synced: sync.synced, configured: mailchimpConfigured() };
+      return {
+        ok: true,
+        synced: sync.synced,
+        configured: mailchimpConfigured(),
+        refused: sync.refused === true,
+      };
     } catch {
       return { ok: false, reason: "error" };
     }

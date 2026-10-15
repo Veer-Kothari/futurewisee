@@ -14,7 +14,8 @@
  *   choice version it read; a newer choice (profiles.marketing_version,
  *   bumped by a trigger) sends it round again.
  * - After the lease is released, a choice that changed meanwhile (from a
- *   request that couldn't get the lease) is applied before returning.
+ *   request that couldn't get the lease) is applied before returning, and so
+ *   is the tag for a survey saved meanwhile (it starts the drip).
  *
  * An explicit "email me" sets mailchimp_resubscribe_pending: it re-subscribes
  * someone who had unsubscribed through an email link, and is cleared as soon
@@ -39,7 +40,12 @@ type ProfileSyncRow = {
 
 type Db = NonNullable<ReturnType<typeof getSupabaseAdmin>>;
 
-export type ReconcileResult = { synced: boolean; deferred?: boolean };
+export type ReconcileResult = {
+  synced: boolean;
+  deferred?: boolean;
+  /** Mailchimp turned the subscription down; trying again won't help. */
+  refused?: boolean;
+};
 
 const SYNC_COLUMNS =
   "marketing_opt_in, marketing_version, mailchimp_member, mailchimp_synced_choice, mailchimp_survey_tagged, mailchimp_resubscribe_pending";
@@ -105,6 +111,8 @@ type PassResult = {
   version: number | null;
   /** Mailchimp itself refused or failed: running again now won't help. */
   remoteFailed: boolean;
+  /** Mailchimp turned the subscription down for good (not a timeout or outage). */
+  refused?: boolean;
   lostLease: boolean;
 };
 
@@ -163,11 +171,13 @@ async function syncPass(
     }
 
     let remoteOk = true;
+    let refused = false;
     if (choice) {
       const tags: string[] = [MAILCHIMP_TAGS.account];
       if (hasSurvey) tags.push(MAILCHIMP_TAGS.survey);
       const result = await mailchimpOptIn(email, tags, { resubscribe });
       remoteOk = result.ok;
+      refused = result.refused;
       // The re-subscribe has happened: never repeat it, even if tagging failed.
       if (result.statusDone && profile.mailchimp_resubscribe_pending) {
         await db
@@ -206,6 +216,7 @@ async function syncPass(
         synced: remoteOk,
         version: profile.marketing_version,
         remoteFailed: !remoteOk,
+        refused,
         lostLease: false,
       };
     }
@@ -236,7 +247,12 @@ export async function reconcileForUser(
     // Another run of this account is working and will apply the newest choice;
     // if it can't, the next sign-in or change does ("needs sync" stays recorded).
     if (lease === "busy") return { synced: false, deferred: true };
-    if (lease === "stop") return { synced: false };
+    if (lease === "stop") {
+      // The answer may have been lost after the lease was taken: hand it back
+      // (does nothing when this run doesn't hold it).
+      await db.rpc("release_mailchimp_lock", { _user: userId, _owner: owner });
+      return { synced: false };
+    }
 
     let result: PassResult;
     try {
@@ -244,16 +260,22 @@ export async function reconcileForUser(
     } finally {
       await db.rpc("release_mailchimp_lock", { _user: userId, _owner: owner });
     }
-    if (result.remoteFailed) return { synced: false };
+    if (result.remoteFailed) return { synced: false, refused: result.refused === true };
 
-    // A change saved while this run held the lease is applied now.
+    // A change saved while this run held the lease is applied now, and so is
+    // the tag for a survey saved meanwhile (its own sync couldn't get the lease).
     const latest = await readProfile(db, userId);
     if (!latest) return { synced: result.synced };
     const settled =
       result.version !== null &&
       latest.marketing_version === result.version &&
       latest.mailchimp_synced_choice === latest.marketing_opt_in &&
-      !(latest.marketing_opt_in && latest.mailchimp_resubscribe_pending);
+      !(latest.marketing_opt_in && latest.mailchimp_resubscribe_pending) &&
+      !(
+        latest.marketing_opt_in &&
+        !latest.mailchimp_survey_tagged &&
+        (await hasSurveyResponse(db, userId))
+      );
     if (settled) return { synced: result.synced };
     redo = true;
   }

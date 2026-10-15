@@ -71,6 +71,14 @@ async function call(
 const memberPath = (email: string) => `/${md5Hex(email.trim().toLowerCase())}`;
 
 /**
+ * Mailchimp turned the request down (a 4xx answer other than a timeout or rate
+ * limit), so sending it again won't help: for example an address that was
+ * removed for good, or an invalid API key.
+ */
+const refusedStatus = (status: number) =>
+  status >= 400 && status < 500 && status !== 408 && status !== 429;
+
+/**
  * Makes sure the address is on the audience: new → pending (Mailchimp asks
  * them to confirm); subscribed or pending → unchanged; unsubscribed, cleaned
  * or archived → pending again only with `resubscribe` (an explicit new
@@ -81,14 +89,15 @@ const memberPath = (email: string) => `/${md5Hex(email.trim().toLowerCase())}`;
  * `statusDone`: the member is subscribed or pending now (a requested
  * re-subscribe has happened), whatever happens with the tags.
  * `ok`: every step worked.
+ * `refused`: Mailchimp turned the subscription down; repeating it won't help.
  */
 export async function mailchimpOptIn(
   email: string,
   tags: string[],
   opts: { resubscribe: boolean },
-): Promise<{ member: boolean; statusDone: boolean; ok: boolean }> {
+): Promise<{ member: boolean; statusDone: boolean; ok: boolean; refused: boolean }> {
   const cfg = config();
-  if (!cfg) return { member: false, statusDone: false, ok: false };
+  if (!cfg) return { member: false, statusDone: false, ok: false, refused: false };
   const path = memberPath(email);
   const current = await call(cfg, "GET", path);
   const status = typeof current.json?.["status"] === "string" ? current.json["status"] : null;
@@ -101,15 +110,24 @@ export async function mailchimpOptIn(
     });
     // No answer at all: the member may have been created anyway, so count it
     // (an extra unsubscribe or delete later is harmless; a missed one isn't).
-    if (!created.ok) return { member: created.status === 0, statusDone: false, ok: false };
+    if (!created.ok) {
+      return {
+        member: created.status === 0,
+        statusDone: false,
+        ok: false,
+        refused: refusedStatus(created.status),
+      };
+    }
     statusDone = true;
   } else if (!current.ok || !status) {
-    return { member: false, statusDone: false, ok: false };
+    return { member: false, statusDone: false, ok: false, refused: refusedStatus(current.status) };
   } else if (status === "subscribed" || status === "pending") {
     statusDone = true;
   } else if (opts.resubscribe) {
     const updated = await call(cfg, "PATCH", path, { status: "pending" });
-    if (!updated.ok) return { member: true, statusDone: false, ok: false };
+    if (!updated.ok) {
+      return { member: true, statusDone: false, ok: false, refused: refusedStatus(updated.status) };
+    }
     statusDone = true;
   }
 
@@ -117,9 +135,9 @@ export async function mailchimpOptIn(
     const tagged = await call(cfg, "POST", `${path}/tags`, {
       tags: tags.map((name) => ({ name, status: "active" })),
     });
-    if (!tagged.ok) return { member: true, statusDone, ok: false };
+    if (!tagged.ok) return { member: true, statusDone, ok: false, refused: false };
   }
-  return { member: true, statusDone, ok: true };
+  return { member: true, statusDone, ok: true, refused: false };
 }
 
 /** Unsubscribes an existing member; a missing member counts as done. */
