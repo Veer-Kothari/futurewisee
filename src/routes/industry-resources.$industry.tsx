@@ -75,7 +75,7 @@ function IndustryPage() {
               are published. Tell FutureWise what you would like covered first.
             </p>
             <Link to="/survey" className="text-link mt-6">
-              Take the Survey
+              Get Involved
             </Link>
           </section>
         ) : (

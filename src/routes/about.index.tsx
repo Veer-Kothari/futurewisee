@@ -173,7 +173,7 @@ function AboutPage() {
             Oman.
           </p>
           <Button asChild variant="survey" size="lg" className="mt-8">
-            <Link to="/survey">Take the Survey</Link>
+            <Link to="/survey">Get Involved</Link>
           </Button>
         </div>
       </section>

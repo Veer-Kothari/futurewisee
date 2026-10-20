@@ -269,7 +269,7 @@ function AnswersSection() {
         <p className="text-sm text-charcoal/80">
           No answers saved to your account yet.{" "}
           <Link to="/survey" className="font-semibold text-navy underline">
-            Take the survey
+            Get Involved
           </Link>
         </p>
       ) : (

@@ -109,7 +109,7 @@ function Index() {
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Button asChild variant="survey" size="lg" className="h-11">
-                <Link to="/survey">Take the Survey</Link>
+                <Link to="/survey">Get Involved</Link>
               </Button>
               <Button
                 asChild
@@ -196,7 +196,7 @@ function Index() {
                   Tell FutureWise which industry to cover first. The survey takes less than two
                   minutes.
                 </p>
-                <p className="mt-auto pt-5 text-xs font-semibold text-blue">Take the Survey</p>
+                <p className="mt-auto pt-5 text-xs font-semibold text-blue">Get Involved</p>
               </Link>
             </li>
           </ul>
@@ -334,7 +334,7 @@ function Index() {
               survey takes less than two minutes.
             </p>
             <Button asChild variant="survey" size="lg" className="mt-8 h-11">
-              <Link to="/survey">Take the Survey</Link>
+              <Link to="/survey">Get Involved</Link>
             </Button>
           </div>
           {integrations.newsletter ? (
