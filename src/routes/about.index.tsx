@@ -245,10 +245,10 @@ function TeamSection() {
                   src={member.photo}
                   alt={member.name}
                   loading="lazy"
-                  className="aspect-[6/5] w-full object-cover object-top"
+                  className="aspect-[3/4] w-full object-cover object-top"
                 />
               ) : (
-                <div className="flex aspect-[6/5] items-center justify-center bg-light-grey">
+                <div className="flex aspect-[3/4] items-center justify-center bg-light-grey">
                   <span className="text-sm font-medium text-charcoal/60">Photo coming soon</span>
                 </div>
               )}
