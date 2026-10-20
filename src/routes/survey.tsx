@@ -340,7 +340,6 @@ function SurveyPage() {
                 <FinishLinks
                   onSwitch={() => setMode("login")}
                   switchLabel="Already have an account? Log in"
-                  onSkip={() => submitDirectly("anonymous")}
                   busy={busy || formBusy}
                   error={error}
                 />
@@ -377,7 +376,6 @@ function SurveyPage() {
                 <FinishLinks
                   onSwitch={() => setMode("signup")}
                   switchLabel="New here? Create an account"
-                  onSkip={() => submitDirectly("anonymous")}
                   busy={busy || formBusy}
                   error={error}
                 />
@@ -422,13 +420,11 @@ function SurveyPage() {
 function FinishLinks({
   onSwitch,
   switchLabel,
-  onSkip,
   busy,
   error,
 }: {
   onSwitch: () => void;
   switchLabel: string;
-  onSkip: () => void;
   busy: boolean;
   error: string;
 }) {
@@ -442,16 +438,6 @@ function FinishLinks({
       >
         {switchLabel}
       </button>
-      <div>
-        <button
-          type="button"
-          onClick={onSkip}
-          disabled={busy}
-          className="min-h-6 text-charcoal/75 underline underline-offset-2 hover:text-navy disabled:opacity-50"
-        >
-          Submit without an account
-        </button>
-      </div>
       {error ? (
         <p role="alert" className="border-l-2 border-destructive pl-3 text-destructive">
           {error}
