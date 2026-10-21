@@ -10,18 +10,28 @@ type ResourceLogoAsset = {
   default: { url: string };
 };
 
-const resourceLogoModules = import.meta.glob<ResourceLogoAsset>(
+// Logos uploaded through Lovable (<id>.png.asset.json) and logos kept as plain
+// files in the repo (<id>.png); a plain file wins for the same resource.
+const uploadedLogoModules = import.meta.glob<ResourceLogoAsset>(
   "/src/assets/resource-logos/*.asset.json",
   { eager: true },
 );
 
-const resourceLogos = Object.fromEntries(
-  Object.entries(resourceLogoModules).map(([path, module]) => {
-    const filename = path.split("/").at(-1) ?? "";
-    const resourceId = filename.replace(/\.(?:png|ico)\.asset\.json$/, "");
-    return [resourceId, module.default.url];
-  }),
-);
+const fileLogoUrls = import.meta.glob<string>("/src/assets/resource-logos/*.{png,jpg,jpeg,webp}", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+
+const logoId = (path: string) =>
+  (path.split("/").at(-1) ?? "").replace(/\.(?:png|ico|jpe?g|webp)(?:\.asset\.json)?$/, "");
+
+const resourceLogos: Record<string, string> = {
+  ...Object.fromEntries(
+    Object.entries(uploadedLogoModules).map(([path, module]) => [logoId(path), module.default.url]),
+  ),
+  ...Object.fromEntries(Object.entries(fileLogoUrls).map(([path, url]) => [logoId(path), url])),
+};
 
 const description =
   "A curated directory of useful external sites for students and young people in Oman.";
