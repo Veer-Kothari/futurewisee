@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { getIndustryArticle } from "@/content/industry-articles";
 import { industries } from "@/data/industries";
 import { absoluteUrl, site } from "@/data/site";
 import { listPublishedPosts } from "@/lib/content";
@@ -24,7 +25,11 @@ export const Route = createFileRoute("/llms.txt")({
           "## Pages",
           `- [Home](${absoluteUrl("/")}): what FutureWise offers students`,
           `- [About](${absoluteUrl("/about")}): the project, the team and Oman Vision 2040`,
-          `- [Industry Insights](${absoluteUrl("/industry-resources")}): videos, course material and guides by industry`,
+          `- [Industry Insights](${absoluteUrl("/industry-resources")}): ${
+            industries.some((industry) => getIndustryArticle(industry.slug))
+              ? "industry cheat sheets (what the industry does, its main areas, career paths, skills, qualifications and key terms), useful links, videos and course material"
+              : "useful links, videos, course material and guides by industry"
+          }`,
           ...industries.map(
             (industry) =>
               `  - [${industry.name}](${absoluteUrl(`/industry-resources/${industry.slug}`)}): ${industry.description}`,

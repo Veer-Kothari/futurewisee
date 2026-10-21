@@ -1,6 +1,8 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 
+import { getIndustryArticle } from "@/content/industry-articles";
 import { industries } from "@/data/industries";
+import { resourcesForIndustry } from "@/data/resources";
 import { absoluteUrl } from "@/data/site";
 import { countByIndustry, listPublishedInsights } from "@/lib/content";
 import { pageTitle, seo } from "@/lib/seo";
@@ -48,6 +50,12 @@ function IndustryInsightsPage() {
         <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {industries.map((industry) => {
             const count = counts[industry.slug] ?? 0;
+            const links = resourcesForIndustry(industry.slug).length;
+            const material = getIndustryArticle(industry.slug)
+              ? "Read the cheat sheet"
+              : count > 0
+                ? `${count} ${count === 1 ? "video, guide or course" : "videos, guides and courses"}`
+                : "Cheat sheet coming soon";
             return (
               <li key={industry.slug}>
                 <Link
@@ -58,9 +66,7 @@ function IndustryInsightsPage() {
                   <h2 className="text-xl font-semibold text-navy">{industry.name}</h2>
                   <p className="mt-3 leading-7 text-charcoal/75">{industry.description}</p>
                   <p className="mt-auto pt-6 text-sm font-semibold text-blue">
-                    {count > 0
-                      ? `${count} ${count === 1 ? "video, guide or course" : "videos, guides and courses"}`
-                      : "Material coming soon"}
+                    {material} · {links} useful {links === 1 ? "link" : "links"}
                   </p>
                 </Link>
               </li>

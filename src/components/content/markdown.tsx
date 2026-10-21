@@ -1,26 +1,41 @@
 import { Link } from "@tanstack/react-router";
 import { Fragment } from "react";
 
-import { parseMarkdownLite, type MdBlock, type MdInline } from "@/lib/markdown";
+import { outlineHeadings, parseMarkdownLite, type MdBlock, type MdInline } from "@/lib/markdown";
 import { cn } from "@/lib/utils";
 
-/** Renders Veer's text (blog posts, guides) from the safe Markdown subset. Never injects HTML. */
-export function Markdown({ source, className }: { source: string; className?: string }) {
+/**
+ * Renders Veer's text (blog posts, guides, industry articles) from the safe
+ * Markdown subset. Never injects HTML. `anchors` gives each "## " heading the
+ * id from outlineHeadings(), for a table of contents.
+ */
+export function Markdown({
+  source,
+  className,
+  anchors = false,
+}: {
+  source: string;
+  className?: string;
+  anchors?: boolean;
+}) {
   const blocks = parseMarkdownLite(source);
+  const ids = anchors
+    ? new Map(outlineHeadings(blocks).map((heading) => [heading.index, heading.id]))
+    : null;
   return (
     <div className={cn("prose-fw", className)}>
       {blocks.map((block, index) => (
-        <Block key={index} block={block} />
+        <Block key={index} block={block} id={ids?.get(index)} />
       ))}
     </div>
   );
 }
 
-function Block({ block }: { block: MdBlock }) {
+function Block({ block, id }: { block: MdBlock; id?: string | undefined }) {
   switch (block.type) {
     case "heading":
       return block.level === 2 ? (
-        <h2>
+        <h2 id={id} className={id ? "scroll-mt-28" : undefined}>
           <Inline nodes={block.children} />
         </h2>
       ) : (

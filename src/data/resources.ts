@@ -1,3 +1,5 @@
+import type { IndustrySlug } from "@/lib/content-schema";
+
 export type ResourceSection =
   "Career Exploration" | "Financial Literacy" | "Oman-Specific" | "Skill Building";
 
@@ -7,6 +9,11 @@ export interface Resource {
   description: string;
   category: string;
   sections: ResourceSection[];
+  /**
+   * Industry Insights pages that list this resource under "Useful Links":
+   * column F ("Industry") of Veer's resources sheet.
+   */
+  industries: IndustrySlug[];
   url: string;
   /**
    * A referral/affiliate link for this resource, used exactly as given
@@ -31,6 +38,7 @@ export const resources: Resource[] = [
       "An all-in-one workspace for notes, databases, project management, planning and personal organization.",
     category: "Productivity & Organization",
     sections: ["Skill Building"],
+    industries: ["entrepreneurship"],
     url: "https://www.notion.com/",
   },
   {
@@ -40,6 +48,7 @@ export const resources: Resource[] = [
       "A flexible database and workflow platform useful for organizing projects, research, contacts and personal goals.",
     category: "Productivity & Organization",
     sections: ["Skill Building"],
+    industries: ["entrepreneurship"],
     url: "https://www.airtable.com/",
   },
   {
@@ -49,6 +58,7 @@ export const resources: Resource[] = [
       "A visual project-management platform using boards, lists and cards to organize tasks, projects and deadlines.",
     category: "Productivity & Organization",
     sections: ["Skill Building"],
+    industries: ["entrepreneurship"],
     url: "https://trello.com/",
   },
   {
@@ -58,6 +68,7 @@ export const resources: Resource[] = [
       "A design platform for creating presentations, CVs, portfolios, documents, graphics and professional materials.",
     category: "Design & Presentation",
     sections: ["Skill Building"],
+    industries: ["entrepreneurship"],
     url: "https://www.canva.com/",
   },
   {
@@ -67,6 +78,7 @@ export const resources: Resource[] = [
       "An AI assistant that can help students understand concepts, analyze information, brainstorm and work with documents.",
     category: "AI & Productivity",
     sections: ["Skill Building"],
+    industries: ["entrepreneurship"],
     url: "https://claude.ai/",
   },
   {
@@ -76,6 +88,7 @@ export const resources: Resource[] = [
       "A collaborative visual workspace useful for brainstorming, mind mapping, project planning and diagrams.",
     category: "Brainstorming & Collaboration",
     sections: ["Skill Building"],
+    industries: ["entrepreneurship"],
     url: "https://miro.com/",
   },
   {
@@ -85,6 +98,15 @@ export const resources: Resource[] = [
       "A professional networking platform where students can explore industries, companies and professionals and develop a professional presence.",
     category: "Professional Development",
     sections: ["Career Exploration"],
+    industries: [
+      "law",
+      "entrepreneurship",
+      "investment-banking-and-trading",
+      "other-finance",
+      "tax",
+      "economics",
+      "operations",
+    ],
     url: "https://www.linkedin.com/",
   },
   {
@@ -94,6 +116,15 @@ export const resources: Resource[] = [
       "A suite of tools including Docs, Sheets, Slides, Drive, Gmail and Calendar for academic and professional work.",
     category: "Productivity",
     sections: ["Skill Building"],
+    industries: [
+      "law",
+      "entrepreneurship",
+      "investment-banking-and-trading",
+      "other-finance",
+      "tax",
+      "economics",
+      "operations",
+    ],
     url: "https://workspace.google.com/",
   },
   {
@@ -103,6 +134,15 @@ export const resources: Resource[] = [
       "A suite of professional productivity applications including Word, Excel, PowerPoint, OneDrive and Outlook.",
     category: "Productivity",
     sections: [],
+    industries: [
+      "law",
+      "entrepreneurship",
+      "investment-banking-and-trading",
+      "other-finance",
+      "tax",
+      "economics",
+      "operations",
+    ],
     url: "https://www.microsoft.com/microsoft-365/",
   },
   {
@@ -112,6 +152,7 @@ export const resources: Resource[] = [
       "A platform for managing and collaborating on software projects that can help students demonstrate practical technical work.",
     category: "Technology & Projects",
     sections: [],
+    industries: ["entrepreneurship"],
     url: "https://github.com/",
   },
   {
@@ -121,6 +162,7 @@ export const resources: Resource[] = [
       "A collaborative design and prototyping platform useful for students interested in design, technology and product development.",
     category: "Design & Technology",
     sections: [],
+    industries: ["entrepreneurship"],
     url: "https://www.figma.com/",
   },
   {
@@ -130,6 +172,7 @@ export const resources: Resource[] = [
       "A simple tool for creating surveys, questionnaires and data-collection forms for projects and research.",
     category: "Surveys & Research",
     sections: [],
+    industries: ["entrepreneurship"],
     url: "https://forms.google.com/",
   },
   {
@@ -139,6 +182,15 @@ export const resources: Resource[] = [
       "A spreadsheet tool useful for budgeting, data analysis, project tracking and developing practical financial skills.",
     category: "Data & Finance",
     sections: [],
+    industries: [
+      "law",
+      "entrepreneurship",
+      "investment-banking-and-trading",
+      "other-finance",
+      "tax",
+      "economics",
+      "operations",
+    ],
     url: "https://sheets.google.com/",
   },
   {
@@ -148,6 +200,7 @@ export const resources: Resource[] = [
       "Oman's central bank and banking-sector regulator, providing authoritative information about the country's banking and financial system.",
     category: "Financial Education — Oman",
     sections: ["Oman-Specific"],
+    industries: ["investment-banking-and-trading", "economics"],
     url: "https://cbo.gov.om/",
   },
   {
@@ -157,6 +210,7 @@ export const resources: Resource[] = [
       "An official directory of licensed banks operating in Oman that students can use to understand the local banking ecosystem.",
     category: "Financial Education — Oman",
     sections: ["Oman-Specific"],
+    industries: ["investment-banking-and-trading", "economics"],
     url: "https://cbo.gov.om/pages/licensedbanks.aspx",
   },
   {
@@ -166,6 +220,7 @@ export const resources: Resource[] = [
       "An official overview of Oman's financial system and the role of banking regulation and supervision.",
     category: "Financial Education — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["investment-banking-and-trading", "other-finance", "economics"],
     url: "https://cbo.gov.om/pages/omanfinancialsystem.aspx",
   },
   {
@@ -175,6 +230,7 @@ export const resources: Resource[] = [
       "Oman's financial regulator responsible for areas including insurance, capital markets and accounting and auditing.",
     category: "Financial Regulation — Oman",
     sections: ["Oman-Specific"],
+    industries: ["investment-banking-and-trading", "other-finance", "tax", "economics"],
     url: "https://fsa.gov.om/",
   },
   {
@@ -184,6 +240,7 @@ export const resources: Resource[] = [
       "An official directory of licensed and accredited insurance companies, brokers, investment funds and other regulated entities.",
     category: "Financial Regulation — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://fsa.gov.om/Home/AuthorizedAndAccredited",
   },
   {
@@ -193,6 +250,7 @@ export const resources: Resource[] = [
       "One of Oman's major banks offering personal banking, savings, cards, financing and other financial services.",
     category: "Banking — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["investment-banking-and-trading", "other-finance", "economics"],
     url: "https://www.bankmuscat.om/",
   },
   {
@@ -201,6 +259,7 @@ export const resources: Resource[] = [
     description: "An Omani bank providing personal and business banking services.",
     category: "Banking — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["investment-banking-and-trading", "other-finance", "economics"],
     url: "https://www.nbo.om/",
   },
   {
@@ -209,6 +268,7 @@ export const resources: Resource[] = [
     description: "An Omani bank providing personal and business banking services.",
     category: "Banking — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["investment-banking-and-trading", "other-finance", "economics"],
     url: "https://www.bankdhofar.com/",
   },
   {
@@ -217,6 +277,7 @@ export const resources: Resource[] = [
     description: "An Omani bank providing retail, corporate and digital banking services.",
     category: "Banking — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["investment-banking-and-trading", "other-finance", "economics"],
     url: "https://www.sib.om/",
   },
   {
@@ -225,6 +286,12 @@ export const resources: Resource[] = [
     description: "An Omani commercial bank providing personal and business financial services.",
     category: "Banking — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: [
+      "entrepreneurship",
+      "investment-banking-and-trading",
+      "other-finance",
+      "economics",
+    ],
     url: "https://www.oman-arabbank.com/",
   },
   {
@@ -234,6 +301,7 @@ export const resources: Resource[] = [
       "An Omani bank providing personal banking, cards, financing and other financial services.",
     category: "Banking — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["entrepreneurship", "other-finance", "economics"],
     url: "https://ahlibank.om/",
   },
   {
@@ -243,6 +311,7 @@ export const resources: Resource[] = [
       "A specialized Omani bank focused primarily on housing finance and related services.",
     category: "Banking — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["entrepreneurship", "other-finance", "economics"],
     url: "https://www.ohb.co.om/",
   },
   {
@@ -252,6 +321,7 @@ export const resources: Resource[] = [
       "A development-focused financial institution supporting businesses and economic development in Oman.",
     category: "Banking — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://www.db.om/",
   },
   {
@@ -261,6 +331,7 @@ export const resources: Resource[] = [
       "An international bank with an Oman presence offering corporate and commercial banking services.",
     category: "Banking — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["investment-banking-and-trading", "other-finance", "economics"],
     url: "https://www.business.hsbc.om/",
   },
   {
@@ -270,6 +341,7 @@ export const resources: Resource[] = [
       "An insurance provider operating in Oman across areas including health, motor, life, home and travel insurance.",
     category: "Insurance — Oman",
     sections: ["Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://livainsurance.om/",
   },
   {
@@ -279,6 +351,7 @@ export const resources: Resource[] = [
       "An Omani insurance company offering life, health, motor and general insurance products.",
     category: "Insurance — Oman",
     sections: ["Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://www.nlg.om/",
   },
   {
@@ -288,6 +361,7 @@ export const resources: Resource[] = [
       "An Oman-based insurance provider offering a range of general and life insurance products.",
     category: "Insurance — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://oqic.com/",
   },
   {
@@ -297,6 +371,7 @@ export const resources: Resource[] = [
       "An Omani insurance company providing various personal and commercial insurance products.",
     category: "Insurance — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://www.omanutd.com/",
   },
   {
@@ -305,6 +380,7 @@ export const resources: Resource[] = [
     description: "An Omani insurance provider offering general and life insurance products.",
     category: "Insurance — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://www.muscatinsurance.com/",
   },
   {
@@ -314,6 +390,7 @@ export const resources: Resource[] = [
       "An Omani insurer offering a range of general, health and life insurance products.",
     category: "Insurance — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://www.almadinainsurance.com/",
   },
   {
@@ -323,6 +400,7 @@ export const resources: Resource[] = [
       "An Omani Sharia-compliant insurance provider offering takaful products for individuals and businesses.",
     category: "Insurance — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://www.takafuloman.om/",
   },
   {
@@ -331,6 +409,7 @@ export const resources: Resource[] = [
     description: "An Omani insurance provider offering personal and commercial insurance products.",
     category: "Insurance — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://www.dhofarinsurance.com/",
   },
   {
@@ -340,6 +419,7 @@ export const resources: Resource[] = [
       "An Oman-based insurance company providing various general and life insurance services.",
     category: "Insurance — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://www.arabiafalcon.com/",
   },
   {
@@ -348,6 +428,7 @@ export const resources: Resource[] = [
     description: "An insurance provider operating in Oman and other regional markets.",
     category: "Insurance — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["other-finance", "tax", "economics"],
     url: "https://www.insuranceuae.com/",
   },
   {
@@ -357,6 +438,7 @@ export const resources: Resource[] = [
       "An insurance company providing life, health and general insurance solutions in the region.",
     category: "Insurance — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://www.sukoon.com/",
   },
   {
@@ -366,6 +448,7 @@ export const resources: Resource[] = [
       "An international insurance provider with an Oman presence offering general insurance products.",
     category: "Insurance — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
+    industries: ["other-finance", "tax", "economics"],
     url: "https://www.newindia.co.in/",
   },
   {
@@ -375,6 +458,15 @@ export const resources: Resource[] = [
       "Oman's national long-term development framework covering economic, social, human-capital and institutional priorities.",
     category: "Government & Education",
     sections: ["Oman-Specific"],
+    industries: [
+      "law",
+      "entrepreneurship",
+      "investment-banking-and-trading",
+      "other-finance",
+      "tax",
+      "economics",
+      "operations",
+    ],
     url: "https://www.oman2040.om/",
   },
   {
@@ -384,6 +476,7 @@ export const resources: Resource[] = [
       "The government ministry responsible for labour-market, employment and workforce-related policy and services in Oman.",
     category: "Government & Employment",
     sections: ["Oman-Specific"],
+    industries: ["other-finance", "economics"],
     url: "https://www.mol.gov.om/",
   },
   {
@@ -393,6 +486,7 @@ export const resources: Resource[] = [
       "A major business institution representing the private sector and providing opportunities for business and industry engagement.",
     category: "Business & Industry",
     sections: ["Oman-Specific"],
+    industries: ["other-finance", "economics"],
     url: "https://www.chamberoman.om/",
   },
   {
@@ -402,6 +496,15 @@ export const resources: Resource[] = [
       "Oman's official government-services portal providing access to information and services from government entities.",
     category: "Government Services",
     sections: ["Oman-Specific"],
+    industries: [
+      "law",
+      "entrepreneurship",
+      "investment-banking-and-trading",
+      "other-finance",
+      "tax",
+      "economics",
+      "operations",
+    ],
     url: "https://gov.om/",
   },
   {
@@ -411,6 +514,7 @@ export const resources: Resource[] = [
       "Bank Muscat's website provides students and consumers with information about banking products and financial services.",
     category: "Financial Education",
     sections: ["Oman-Specific", "Career Exploration", "Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://www.bankmuscat.om/",
   },
   {
@@ -420,6 +524,7 @@ export const resources: Resource[] = [
       "The Central Bank provides official regulatory and financial-literacy information relevant to understanding Oman's financial system.",
     category: "Financial Education",
     sections: ["Oman-Specific", "Career Exploration", "Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://cbo.gov.om/",
   },
   {
@@ -429,6 +534,7 @@ export const resources: Resource[] = [
       "An official resource explaining insurance companies, insurance products and the regulated insurance sector in Oman.",
     category: "Insurance Education",
     sections: ["Financial Literacy"],
+    industries: ["other-finance", "economics"],
     url: "https://fsa.gov.om/Sector/DisplaySubsection/3",
   },
   {
@@ -438,6 +544,7 @@ export const resources: Resource[] = [
       "The Financial Services Authority provides information about Oman's capital markets and regulated investment-sector entities.",
     category: "Financial Education",
     sections: ["Financial Literacy"],
+    industries: ["investment-banking-and-trading", "other-finance", "economics"],
     url: "https://fsa.gov.om/",
   },
   {
@@ -447,6 +554,15 @@ export const resources: Resource[] = [
       "Online courses, certificates and guided projects from universities and companies across a wide range of career fields.",
     category: "Online Learning & Career Exploration",
     sections: ["Career Exploration"],
+    industries: [
+      "law",
+      "entrepreneurship",
+      "investment-banking-and-trading",
+      "other-finance",
+      "tax",
+      "economics",
+      "operations",
+    ],
     url: "https://www.coursera.org/",
   },
   {
@@ -456,6 +572,15 @@ export const resources: Resource[] = [
       "Online courses and programmes from universities and institutions that help students explore subjects and career paths.",
     category: "Online Learning & Career Exploration",
     sections: ["Career Exploration"],
+    industries: [
+      "law",
+      "entrepreneurship",
+      "investment-banking-and-trading",
+      "other-finance",
+      "tax",
+      "economics",
+      "operations",
+    ],
     url: "https://www.edx.org/",
   },
   {
@@ -465,6 +590,15 @@ export const resources: Resource[] = [
       "Free virtual job simulations that let students experience real tasks from leading employers and explore career options.",
     category: "Virtual Work Experience",
     sections: ["Career Exploration"],
+    industries: [
+      "law",
+      "entrepreneurship",
+      "investment-banking-and-trading",
+      "other-finance",
+      "tax",
+      "economics",
+      "operations",
+    ],
     url: "https://www.theforage.com/",
   },
   {
@@ -474,6 +608,15 @@ export const resources: Resource[] = [
       "Virtual work experience, university subject spotlights and career resources designed to help students explore their next steps.",
     category: "Virtual Work Experience",
     sections: ["Career Exploration"],
+    industries: [
+      "law",
+      "entrepreneurship",
+      "investment-banking-and-trading",
+      "other-finance",
+      "tax",
+      "economics",
+      "operations",
+    ],
     url: "https://www.springpod.com/",
   },
   {
@@ -483,6 +626,20 @@ export const resources: Resource[] = [
       "Free lessons and practice across mathematics, economics, computing and other subjects that support academic and career exploration.",
     category: "Online Learning & Career Exploration",
     sections: ["Career Exploration"],
+    industries: [
+      "law",
+      "entrepreneurship",
+      "investment-banking-and-trading",
+      "other-finance",
+      "tax",
+      "economics",
+      "operations",
+    ],
     url: "https://www.khanacademy.org/",
   },
 ];
+
+/** The resources in an industry page's Useful Links panel, in the sheet's order. */
+export function resourcesForIndustry(industry: IndustrySlug): Resource[] {
+  return resources.filter((resource) => resource.industries.includes(industry));
+}

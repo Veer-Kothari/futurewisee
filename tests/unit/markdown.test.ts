@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { parseMarkdownLite } from "../../src/lib/markdown.ts";
+import { outlineHeadings, parseMarkdownLite } from "../../src/lib/markdown.ts";
 
 const text = (value: string) => [{ type: "text", text: value }];
 function flatten(nodes): string {
@@ -106,4 +106,16 @@ test("raw HTML is inert text, never an HTML node or extracted link", () => {
 test("CRLF input produces the same blocks as LF", () => {
   const source = "## Title\n\nFirst\nsecond\n\n- Item\n- Another\n\n> Quote";
   assert.deepEqual(parseMarkdownLite(source.replace(/\n/g, "\r\n")), parseMarkdownLite(source));
+});
+test("outline gives each ## heading a stable, unique anchor id", () => {
+  const blocks = parseMarkdownLite(
+    "## Skills Needed\n\ntext\n\n### Technical skills\n\n## M&A **Basics**\n\n## Skills Needed\n\n## Skills Needed 2\n\n## !!!",
+  );
+  assert.deepEqual(outlineHeadings(blocks), [
+    { index: 0, id: "skills-needed", text: "Skills Needed" },
+    { index: 3, id: "m-and-a-basics", text: "M&A Basics" },
+    { index: 4, id: "skills-needed-2", text: "Skills Needed" },
+    { index: 5, id: "skills-needed-2-2", text: "Skills Needed 2" },
+    { index: 6, id: "section", text: "!!!" },
+  ]);
 });

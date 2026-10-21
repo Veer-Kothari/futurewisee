@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { getIndustryArticle } from "@/content/industry-articles";
 import { industries } from "@/data/industries";
 import { absoluteUrl } from "@/data/site";
 import { listPublishedInsights, listPublishedPosts } from "@/lib/content";
@@ -27,10 +28,14 @@ export const Route = createFileRoute("/sitemap.xml")({
         const entries: Array<{ loc: string; lastmod?: string }> = [
           ...staticRoutes.map((path) => ({ loc: absoluteUrl(path) })),
           ...industries.map((industry) => {
-            const lastmod = latestByIndustry.get(industry.slug);
+            const dates = [
+              latestByIndustry.get(industry.slug)?.slice(0, 10),
+              getIndustryArticle(industry.slug)?.updated,
+            ].filter((date): date is string => Boolean(date));
+            const lastmod = dates.sort().at(-1);
             return {
               loc: absoluteUrl(`/industry-resources/${industry.slug}`),
-              ...(lastmod ? { lastmod: lastmod.slice(0, 10) } : {}),
+              ...(lastmod ? { lastmod } : {}),
             };
           }),
           ...posts.map((post) => ({

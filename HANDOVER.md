@@ -22,6 +22,14 @@ https://futurewiseapp.org once that domain is connected — see "Domain" below).
 | Look and feel (slide 19) | The homepage follows the eugovlab.com structure — headline with a card carousel of your latest posts and insights, then Industry Insights, the blog, the resources directory, Oman Vision 2040 and the survey — in FutureWise's square navy style. |
 | SEO (slide 21) | Every page has its own title and description (table below), a share image, a sitemap, robots.txt and llms.txt for AI assistants. |
 
+## Industry Insights cheat sheets and Useful Links (21 October 2026)
+
+Each industry page reads as one long article, like an Investopedia entry: the industry's cheat sheet with an "On this page" list, then a **Useful Links** panel at the end.
+
+- **The cheat sheet text** is the industry-information part of Veer's Google Doc for that industry (Drive › Cheat Sheets › "<Industry> Cheat Sheet"), copied into `src/content/industries/<industry>.md`. The Expert FAQs, the template's bracketed RESEARCH / EXPERT INPUT / LINK TO notes, instructions to the writer and sections with nothing filled in yet (Leading Firms) are left out. The sheet's own "Useful Resources" section is replaced by the Useful Links panel.
+- **Going live:** each cheat sheet appears only when its `published` is `true` in `src/content/industry-articles.ts`. All seven are `false` until Veer says a sheet is complete. Then the text is copied again from his Doc, `published` is set to `true` and `updated` to that day. Until then the page shows "Material for … is on its way" and the Useful Links.
+- **Useful Links** come from column F ("Industry") of the resources sheet: the `industries` list on each resource in `src/data/resources.ts`, shown in the sheet's order. Links added in /admin with the type *Link* for an industry are added to the end of the same panel. Clicks are recorded like clicks on the Resources page (the Privacy Policy says so).
+
 ## Using the editor (/admin)
 
 1. Sign up on the site with the email you want to use as the editor, confirm the email, then ask Herdy to make that account an editor (one database command).
@@ -31,7 +39,7 @@ https://futurewiseapp.org once that domain is connected — see "Domain" below).
    - *Video* — a YouTube or Vimeo link (it only loads when someone presses play);
    - *Course material* — upload a PDF/image (up to 20 MB) and/or link to an online course;
    - *Guide* — written text;
-   - *Link* — any useful page.
+   - *Link* — any useful page (shown at the end of the industry's Useful Links).
    "Order on the page" decides what shows first (lower numbers first).
 5. Writing format for posts and guides: a blank line starts a new paragraph; `## Heading`; `- list item`; `**bold**`; `*italic*`; `[link text](https://…)`.
 6. Only use photos you have permission to use. Anyone under 18 shown in a photo needs a parent's or guardian's written consent.
@@ -81,7 +89,8 @@ Titles stay under 60 characters and descriptions under 155 so search results don
 
 Everything is still editable with Lovable prompts. Useful ones:
 
-- "Add a resource to `src/data/resources.ts`: name …, description …, section …, url …" (and add its logo to `src/assets/resource-logos/<id>.png`).
+- "Add a resource to `src/data/resources.ts`: name …, description …, section …, industries …, url …" (and add its logo to `src/assets/resource-logos/<id>.png`).
+- "In `src/data/resources.ts`, add `tax` to the `industries` of Gov.om" — the resource then also appears under Useful Links on the Tax page. The industry names to use are `law`, `entrepreneurship`, `investment-banking-and-trading`, `other-finance` (Finance), `tax`, `economics` and `operations`.
 - "Change the homepage hero paragraph in `src/routes/index.tsx` to: …"
 - "Hide the Tax industry from the menus: set `inMenu: false` for tax in `src/data/industries.ts`" (its page keeps working).
 - Please don't ask Lovable to rebuild the survey, the account pages or /admin — they are wired to the database and its access rules; ask Herdy instead.

@@ -7,6 +7,9 @@
  * "## "), "- " / "* " bullets, "1. " numbered lists, "> " quotes, **bold**,
  * *italic* / _italic_, [text](https://…), mailto: and site links ("/blog").
  */
+// The .ts extension keeps this file importable by the plain-Node unit tests.
+import { slugify } from "./slug.ts";
+
 export type MdInline =
   | { type: "text"; text: string }
   | { type: "strong"; children: MdInline[] }
@@ -201,4 +204,33 @@ export function parseMarkdownLite(source: string): MdBlock[] {
   }
   flushAll();
   return blocks;
+}
+
+/** The plain text of inline nodes, without the bold/italic/link markers. */
+export function inlineText(nodes: MdInline[]): string {
+  return nodes
+    .map((node) => (node.type === "text" ? node.text : inlineText(node.children)))
+    .join("");
+}
+
+export type MdHeading = { index: number; id: string; text: string };
+
+/**
+ * The "## " headings with anchor ids for a table of contents
+ * ("Main Areas of Law" → "main-areas-of-law"; a repeated heading gets -2, -3).
+ * `index` is the heading's position in `blocks`.
+ */
+export function outlineHeadings(blocks: MdBlock[]): MdHeading[] {
+  const used = new Set<string>();
+  const headings: MdHeading[] = [];
+  blocks.forEach((block, index) => {
+    if (block.type !== "heading" || block.level !== 2) return;
+    const text = inlineText(block.children).trim();
+    const base = slugify(text) || "section";
+    let id = base;
+    for (let n = 2; used.has(id); n++) id = `${base}-${n}`;
+    used.add(id);
+    headings.push({ index, id, text });
+  });
+  return headings;
 }

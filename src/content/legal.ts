@@ -2,7 +2,7 @@ import type { LegalDoc } from "./types";
 
 export const privacyPolicy: LegalDoc = {
   title: "Privacy Policy",
-  updated: "2026-10-14",
+  updated: "2026-10-21",
   intro: [
     "FutureWise is a student-led educational project for high school students in Oman, aged about 15–19. Parents and educators also use it. It is not a registered company or charity.",
     "This policy explains what information we collect and how we use it. For privacy requests or questions, email partners@futurewiseapp.org.",
@@ -29,7 +29,7 @@ export const privacyPolicy: LegalDoc = {
       id: "resource-clicks",
       heading: "What happens when you open a resource?",
       paragraphs: [
-        "When you click a resource on the Resources page, we record the resource, the page and the time. If you are signed in, we also link the click to your account.",
+        "When you click a resource on the Resources page or under Useful Links on an Industry Insights page, we record the resource, the page and the time. If you are signed in, we also link the click to your account.",
         "Outbound resource links include the tags utm_source=futurewise, utm_medium=referral and utm_campaign=resources. These tell the other website that your visit came from FutureWise.",
         "FutureWise does not currently receive money for these links. If we add referral or affiliate links in future, we will say so on the Resources page and update this policy.",
       ],

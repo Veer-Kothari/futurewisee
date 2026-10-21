@@ -1,9 +1,8 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 
 import { resourceSections, resources, type Resource, type ResourceSection } from "@/data/resources";
-import { trackEvent } from "@/lib/consent";
+import { recordResourceClick } from "@/lib/resource-clicks";
 import { pageTitle, seo } from "@/lib/seo";
-import { trackResourceClick } from "@/lib/tracking.functions";
 import { resourceHref } from "@/lib/utm";
 import { cn } from "@/lib/utils";
 
@@ -126,12 +125,7 @@ function ResourceCard({ resource }: { resource: Resource }) {
   const logoUrl = resourceLogos[resource.id];
   const visibleUrl = new URL(resource.url).hostname.replace(/^www\./, "");
 
-  const onClick = () => {
-    trackEvent("resource_click", { resource_id: resource.id });
-    void trackResourceClick({
-      data: { resourceId: resource.id, path: window.location.pathname },
-    }).catch(() => undefined);
-  };
+  const onClick = () => recordResourceClick(resource.id);
 
   return (
     <article className="flex h-full flex-col border border-border bg-background p-6">
