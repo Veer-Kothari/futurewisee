@@ -322,7 +322,7 @@ export const resources: Resource[] = [
     category: "Banking — Oman",
     sections: ["Oman-Specific", "Financial Literacy"],
     industries: ["other-finance", "economics"],
-    url: "https://www.db.om/",
+    url: "https://db.om/",
   },
   {
     id: "hsbc-oman",
@@ -487,7 +487,7 @@ export const resources: Resource[] = [
     category: "Business & Industry",
     sections: ["Oman-Specific"],
     industries: ["other-finance", "economics"],
-    url: "https://www.chamberoman.om/",
+    url: "https://omanchamber.om/",
   },
   {
     id: "gov-om",
