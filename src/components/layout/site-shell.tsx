@@ -383,7 +383,7 @@ function SiteFooter({ newsletter }: { newsletter: boolean }) {
         <div className="site-container flex flex-col items-center gap-4 py-8 text-center">
           <p className="text-xs text-primary-foreground/70">© Copyright All Rights Reserved</p>
           <p className="max-w-4xl text-xs leading-relaxed text-primary-foreground/70">
-            Educational Disclaimer: FutureWise provides general educational and informational
+            Disclaimer: FutureWise provides general educational and informational
             content only and does not provide legal, financial, investment, tax, career or other
             professional advice. FutureWise and its contributors are not licensed professionals.
             Information should not be relied upon as a substitute for qualified professional advice.
