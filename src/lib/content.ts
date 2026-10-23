@@ -1,4 +1,9 @@
-import type { BlogCategorySlug, IndustrySlug, InsightKind } from "@/lib/content-schema";
+import {
+  BLOG_CATEGORY_SLUGS,
+  type BlogCategorySlug,
+  type IndustrySlug,
+  type InsightKind,
+} from "@/lib/content-schema";
 import { getSupabase } from "@/lib/supabase/client";
 
 /**
@@ -74,7 +79,9 @@ export async function listPublishedPosts(
       .eq("published", true)
       .order("published_at", { ascending: false, nullsFirst: false })
       .limit(opts.limit ?? 60);
-    if (opts.category) query = query.eq("category", opts.category);
+    query = opts.category
+      ? query.eq("category", opts.category)
+      : query.in("category", BLOG_CATEGORY_SLUGS);
     const { data, error } = await query;
     return error ? [] : ((data ?? []) as PostSummary[]);
   } catch {
@@ -91,6 +98,7 @@ export async function getPublishedPost(slug: string): Promise<Post | null> {
       .select(POST_COLUMNS)
       .eq("slug", slug)
       .eq("published", true)
+      .in("category", BLOG_CATEGORY_SLUGS)
       .maybeSingle();
     return error ? null : ((data as Post | null) ?? null);
   } catch {

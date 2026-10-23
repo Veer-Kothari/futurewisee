@@ -2,13 +2,15 @@
  * Every value that changes per deployment lives here.
  *
  * siteUrl must equal the address the site is actually published at (no
- * trailing slash): canonicals, the sitemap and share previews use it. Switch it
- * to https://futurewiseapp.org only after that domain is connected and loads
- * the site.
+ * trailing slash): canonicals, the sitemap, robots.txt, llms.txt, share
+ * previews and structured data use it. It is the custom domain (Herdy, 23 Oct
+ * 2026): connect futurewiseapp.org in Lovable with the bare domain as primary
+ * (www redirects to it) before publishing this. If www is made primary instead,
+ * change this to https://www.futurewiseapp.org, or the two redirect in a loop.
  */
 export const site = {
   name: "FutureWise",
-  siteUrl: "https://futurewisee.lovable.app",
+  siteUrl: "https://futurewiseapp.org",
   tagline: "Practical knowledge for life beyond school.",
   description:
     "FutureWise helps high school students in Oman aged 15-19 explore careers, industries, money, and independent adulthood.",

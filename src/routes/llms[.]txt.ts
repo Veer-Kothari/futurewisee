@@ -34,7 +34,7 @@ export const Route = createFileRoute("/llms.txt")({
             (industry) =>
               `  - [${industry.name}](${absoluteUrl(`/industry-resources/${industry.slug}`)}): ${industry.description}`,
           ),
-          `- [Blog](${absoluteUrl("/blog")}): Personal Finance, The Practical Skills Guide and My Journey`,
+          `- [Blog](${absoluteUrl("/blog")}): Personal Finance and The Practical Skills Guide`,
           `- [Resources](${absoluteUrl("/resources")}): external resources for students in Oman (career, finance, skills, Oman-specific)`,
           `- [Survey](${absoluteUrl("/survey")}): five questions that shape what FutureWise covers next`,
           ...(posts.length

@@ -1,5 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 
+import { CategoryHeader, CategoryPosts } from "@/components/blog/category-views";
 import { LinkedInCallout } from "@/components/blog/linkedin-callout";
 import { BLOG_CATEGORIES, type BlogCategorySlug } from "@/lib/content-schema";
 import { formatDate, listPublishedPosts } from "@/lib/content";
@@ -19,10 +20,6 @@ const categoryTitles: Record<BlogCategorySlug, { title: string; description: str
     title: "The Practical Skills Guide",
     description:
       "Hands-on guidance for everyday skills that help students live more independently.",
-  },
-  "my-journey": {
-    title: "My Journey",
-    description: "Real reflections on learning, growth, and preparing for the next chapter.",
   },
 };
 
@@ -55,40 +52,42 @@ function BlogHub() {
   const { category } = Route.useSearch();
   const heading = category ? categoryTitles[category] : null;
 
+  const nav = (
+    <nav aria-label="Blog sections" className="flex flex-wrap gap-2">
+      <FilterLink active={!category} label="All posts" />
+      {BLOG_CATEGORIES.map((entry) => (
+        <FilterLink
+          key={entry.slug}
+          active={category === entry.slug}
+          label={entry.label}
+          category={entry.slug}
+        />
+      ))}
+    </nav>
+  );
+
   return (
     <>
-      <section className="page-intro">
-        <div className="site-container py-16 sm:py-24">
-          <h1 className="max-w-3xl text-4xl font-bold text-navy sm:text-5xl">
-            {heading ? heading.title : "Notes for life beyond school"}
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-charcoal/80">
-            {heading ? heading.description : description}
-          </p>
-
-          <nav
-            aria-label="Blog sections"
-            className="mt-9 flex flex-wrap gap-2 border-b border-border pb-2"
-          >
-            <FilterLink active={!category} label="All posts" />
-            {BLOG_CATEGORIES.map((entry) => (
-              <FilterLink
-                key={entry.slug}
-                active={category === entry.slug}
-                label={entry.label}
-                category={entry.slug}
-              />
-            ))}
-          </nav>
-        </div>
-      </section>
+      {heading ? (
+        <CategoryHeader title={heading.title} description={heading.description} nav={nav} />
+      ) : (
+        <section className="page-intro">
+          <div className="site-container py-16 sm:py-24">
+            <h1 className="max-w-3xl text-4xl font-bold text-navy sm:text-5xl">
+              Notes for life beyond school
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-charcoal/80">{description}</p>
+            <div className="mt-9 border-b border-border pb-2">{nav}</div>
+          </div>
+        </section>
+      )}
 
       <section className="site-container py-16 sm:py-20">
-        {posts.length === 0 ? (
+        {heading ? (
+          <CategoryPosts title={heading.title} posts={posts} />
+        ) : posts.length === 0 ? (
           <div className="max-w-2xl border border-border border-t-2 border-t-navy p-8">
-            <h2 className="text-2xl font-semibold text-navy">
-              {heading ? `${heading.title}: first posts coming soon` : "First posts coming soon"}
-            </h2>
+            <h2 className="text-2xl font-semibold text-navy">First posts coming soon</h2>
             <p className="mt-3 leading-7 text-charcoal/75">
               New posts appear here as soon as they're published. Follow FutureWise on LinkedIn to
               hear when they go up.

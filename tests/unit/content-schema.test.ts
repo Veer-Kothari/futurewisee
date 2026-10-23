@@ -38,7 +38,6 @@ test("content enums match the publishing contract", () => {
   assert.deepEqual(BLOG_CATEGORIES, [
     { slug: "personal-finance", label: "Personal Finance" },
     { slug: "practical-skills", label: "The Practical Skills Guide" },
-    { slug: "my-journey", label: "My Journey" },
   ]);
   assert.deepEqual(INDUSTRY_SLUGS, [
     "law",

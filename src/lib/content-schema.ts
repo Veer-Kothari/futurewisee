@@ -3,12 +3,13 @@ import { z } from "zod";
 /**
  * Validation for Veer's editor (/admin). Mirrors the CHECK constraints in
  * supabase/migrations/20261014120000_futurewise_accounts_content.sql — change
- * both together.
+ * both together. Exception: the database still accepts "my-journey"; that
+ * section was removed from the site (Herdy, 23 Oct 2026), so it is left out here
+ * and its posts are never listed or shown.
  */
 export const BLOG_CATEGORIES = [
   { slug: "personal-finance", label: "Personal Finance" },
   { slug: "practical-skills", label: "The Practical Skills Guide" },
-  { slug: "my-journey", label: "My Journey" },
 ] as const;
 export type BlogCategorySlug = (typeof BLOG_CATEGORIES)[number]["slug"];
 export const BLOG_CATEGORY_SLUGS = BLOG_CATEGORIES.map((c) => c.slug) as [
