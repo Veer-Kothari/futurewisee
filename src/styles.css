@@ -388,3 +388,13 @@
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Top progress bar while a page loads (navigation-progress.tsx). */
+@keyframes nav-progress {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}

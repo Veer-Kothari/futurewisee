@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Analytics } from "@/components/analytics/analytics";
 import { NewsletterForm } from "@/components/newsletter/newsletter-form";
 import { Button } from "@/components/ui/button";
+import { NavigationProgress } from "@/components/layout/navigation-progress";
 import { menuIndustries } from "@/data/industries";
 import { site } from "@/data/site";
 import { useAuth } from "@/lib/auth";
@@ -226,6 +227,7 @@ function SiteHeader() {
 
   return (
     <>
+      <NavigationProgress />
       <header className="sticky top-0 z-40 border-b border-border bg-background">
         <div className="site-container flex min-h-20 items-center justify-between gap-5">
           <Link to="/" aria-label="FutureWise home" onClick={close}>

@@ -11,7 +11,10 @@ export const getRouter = () => {
     routeTree,
     context: { queryClient },
     scrollRestoration: true,
-    defaultPreloadStaleTime: 0,
+    // Start loading a page's code and data when a link is hovered or touched,
+    // and keep what was preloaded for 30 s so the click itself uses it.
+    defaultPreload: "intent",
+    defaultPreloadStaleTime: 30_000,
     // Errors and 404s in any page render inside the site layout.
     defaultErrorComponent: RouteErrorState,
     defaultNotFoundComponent: NotFoundState,
