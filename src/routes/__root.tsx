@@ -16,6 +16,8 @@ import { AuthProvider } from "@/lib/auth";
 import { jsonLdText } from "@/lib/json-ld";
 import { rootGraph } from "@/lib/seo";
 import { getIntegrationStatus, type IntegrationStatus } from "@/lib/status.functions";
+import interBody from "@fontsource/inter/files/inter-latin-400-normal.woff2?url";
+import poppinsHeading from "@fontsource/poppins/files/poppins-latin-700-normal.woff2?url";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -82,11 +84,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      // The body and heading fonts every page uses first (self-hosted, see styles.css).
+      { rel: "preload", href: interBody, as: "font", type: "font/woff2", crossOrigin: "anonymous" },
       {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap",
+        rel: "preload",
+        href: poppinsHeading,
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous",
       },
       { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },

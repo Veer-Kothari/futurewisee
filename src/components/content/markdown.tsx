@@ -51,6 +51,33 @@ function Block({ block, id }: { block: MdBlock; id?: string | undefined }) {
       ));
       return block.ordered ? <ol>{items}</ol> : <ul>{items}</ul>;
     }
+    case "table":
+      return (
+        <div className="overflow-x-auto">
+          <table>
+            <thead>
+              <tr>
+                {block.header.map((cell, index) => (
+                  <th key={index} scope="col">
+                    <Inline nodes={cell} />
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {block.rows.map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                  {row.map((cell, index) => (
+                    <td key={index}>
+                      <Inline nodes={cell} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
     case "quote":
       return (
         <blockquote>

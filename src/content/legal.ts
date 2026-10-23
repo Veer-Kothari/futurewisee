@@ -2,7 +2,7 @@ import type { LegalDoc } from "./types";
 
 export const privacyPolicy: LegalDoc = {
   title: "Privacy Policy",
-  updated: "2026-10-21",
+  updated: "2026-10-23",
   intro: [
     "FutureWise is a student-led educational project for high school students in Oman, aged about 15–19. Parents and educators also use it. It is not a registered company or charity.",
     "This policy explains what information we collect and how we use it. For privacy requests or questions, email partners@futurewiseapp.org.",
@@ -66,8 +66,7 @@ export const privacyPolicy: LegalDoc = {
       id: "other-providers",
       heading: "Which other providers load on the site?",
       paragraphs: [
-        "Google Fonts loads fonts from fonts.googleapis.com and fonts.gstatic.com. Google receives your IP address when these fonts load.",
-        "YouTube videos from youtube-nocookie.com and Vimeo videos on Industry Insights and blog pages load only when you press play. Resource logos are served from FutureWise itself.",
+        "YouTube videos from youtube-nocookie.com and Vimeo videos on Industry Insights and blog pages load only when you press play. Fonts and resource logos are served from FutureWise itself.",
         "The providers described in this policy may process data outside Oman.",
       ],
     },

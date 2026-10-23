@@ -5,7 +5,9 @@
  *
  * Supported: blank-line paragraphs, "## " / "### " headings ("# " counts as
  * "## "), "- " / "* " bullets, "1. " numbered lists, "> " quotes, **bold**,
- * *italic* / _italic_, [text](https://…), mailto: and site links ("/blog").
+ * *italic* / _italic_, [text](https://…), mailto: and site links ("/blog"),
+ * and simple tables (lines starting with "|"; the first row is the header and
+ * a "|---|---|" line under it is optional).
  */
 // The .ts extension keeps this file importable by the plain-Node unit tests.
 import { slugify } from "./slug.ts";
@@ -20,7 +22,8 @@ export type MdBlock =
   | { type: "heading"; level: 2 | 3; children: MdInline[] }
   | { type: "paragraph"; children: MdInline[] }
   | { type: "list"; ordered: boolean; items: MdInline[][] }
-  | { type: "quote"; children: MdInline[] };
+  | { type: "quote"; children: MdInline[] }
+  | { type: "table"; header: MdInline[][]; rows: MdInline[][][] };
 
 const MAX_DEPTH = 4;
 
@@ -125,6 +128,7 @@ export function parseMarkdownLite(source: string): MdBlock[] {
   let paragraph: string[] = [];
   let quote: string[] = [];
   let list: { ordered: boolean; items: string[] } | null = null;
+  let table: string[][] = [];
 
   const flushParagraph = () => {
     if (paragraph.length)
@@ -145,10 +149,21 @@ export function parseMarkdownLite(source: string): MdBlock[] {
     }
     list = null;
   };
+  const flushTable = () => {
+    const [head, ...rest] = table;
+    if (head) {
+      const width = head.length;
+      const fit = (cells: string[]) =>
+        Array.from({ length: width }, (_, i) => parseInline(cells[i] ?? ""));
+      blocks.push({ type: "table", header: fit(head), rows: rest.map(fit) });
+    }
+    table = [];
+  };
   const flushAll = () => {
     flushParagraph();
     flushQuote();
     flushList();
+    flushTable();
   };
 
   for (const raw of lines) {
@@ -157,6 +172,21 @@ export function parseMarkdownLite(source: string): MdBlock[] {
       flushAll();
       continue;
     }
+
+    if (line.startsWith("|")) {
+      flushParagraph();
+      flushQuote();
+      flushList();
+      const cells = line
+        .replace(/^\|/, "")
+        .replace(/\|$/, "")
+        .split("|")
+        .map((cell) => cell.trim());
+      // The optional "|---|---|" line under the header carries no content.
+      if (!cells.every((cell) => /^:?-{3,}:?$/.test(cell))) table.push(cells);
+      continue;
+    }
+    if (table.length) flushTable();
 
     const heading = line.match(/^(#{1,3})\s+(.+)$/);
     if (heading) {

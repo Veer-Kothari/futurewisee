@@ -1,6 +1,13 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+/* Self-hosted (no Google Fonts request): each file covers its unicode range, so
+   browsers only download the subsets a page uses. */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/poppins/600.css";
+@import "@fontsource/poppins/700.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -221,7 +228,9 @@
   color: var(--navy);
   font-size: 0.8rem;
   line-height: 1.25rem;
-  transition: background-color 160ms ease, color 160ms ease;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
   &:hover {
     background-color: var(--light-blue);
     color: var(--blue);
@@ -238,7 +247,9 @@
   color: var(--charcoal);
   font-size: 0.875rem;
   line-height: 1.35rem;
-  transition: background-color 160ms ease, color 160ms ease;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
   &:hover {
     background-color: var(--light-blue);
     color: var(--blue);
@@ -288,7 +299,9 @@
   color: var(--navy);
   font-size: 0.875rem;
   font-weight: 600;
-  transition: color 160ms ease, border-color 160ms ease;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease;
   &:hover {
     border-color: var(--blue);
     color: var(--blue);
@@ -325,6 +338,24 @@
   }
   & li + li {
     margin-top: 0.4rem;
+  }
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  & th,
+  & td {
+    border-bottom: 1px solid var(--border);
+    padding: 0.6rem 0.9rem 0.6rem 0;
+    text-align: left;
+    vertical-align: top;
+  }
+  & th {
+    border-bottom: 2px solid var(--navy);
+    color: var(--navy);
+    font-weight: 600;
   }
   & blockquote {
     border-left: 2px solid var(--blue);

@@ -119,3 +119,24 @@ test("outline gives each ## heading a stable, unique anchor id", () => {
     { index: 6, id: "section", text: "!!!" },
   ]);
 });
+test("markdown reads pipe tables, with or without a separator line", () => {
+  const blocks = parseMarkdownLite(
+    "Intro\n| Category | Amount |\n|---|---|\n| Food | **OMR 8** |\n| Total |\n\nAfter",
+  );
+  assert.equal(blocks.length, 3);
+  const table = blocks[1];
+  assert.equal(table.type, "table");
+  assert.deepEqual(table.header.map(flatten), ["Category", "Amount"]);
+  assert.deepEqual(
+    table.rows.map((row) => row.map(flatten)),
+    [
+      ["Food", "OMR 8"],
+      ["Total", ""],
+    ],
+  );
+  assert.equal(table.rows[0][1][0].type, "strong");
+  assert.deepEqual(
+    parseMarkdownLite("| A | B |\n| 1 | 2 |")[0].rows.map((r) => r.map(flatten)),
+    [["1", "2"]],
+  );
+});

@@ -219,8 +219,12 @@ export function PostsPanel() {
                 >
                   <span className="block font-semibold text-navy">{post.title}</span>
                   <span className="mt-1 block text-xs text-charcoal/65">
-                    {post.published ? `Published ${formatDate(post.published_at)}` : "Draft"} ·{" "}
-                    {BLOG_CATEGORIES.find((category) => category.slug === post.category)?.label}
+                    {!post.published
+                      ? "Draft"
+                      : post.published_at && Date.parse(post.published_at) > Date.now()
+                        ? `Scheduled for ${formatDate(post.published_at)}`
+                        : `Published ${formatDate(post.published_at)}`}{" "}
+                    · {BLOG_CATEGORIES.find((category) => category.slug === post.category)?.label}
                   </span>
                 </button>
               </li>
