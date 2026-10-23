@@ -140,3 +140,12 @@ test("markdown reads pipe tables, with or without a separator line", () => {
     [["1", "2"]],
   );
 });
+test("numbered items separated by paragraphs keep their numbers", () => {
+  const blocks = parseMarkdownLite(
+    "1. Principal\n\nThe amount borrowed.\n\n2. Interest\n\nThe cost.",
+  );
+  assert.equal(blocks[0].start, undefined);
+  assert.equal(blocks[2].type, "list");
+  assert.equal(blocks[2].start, 2);
+  assert.deepEqual(blocks[2].items.map(flatten), ["Interest"]);
+});

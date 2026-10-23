@@ -21,7 +21,7 @@ export type MdInline =
 export type MdBlock =
   | { type: "heading"; level: 2 | 3; children: MdInline[] }
   | { type: "paragraph"; children: MdInline[] }
-  | { type: "list"; ordered: boolean; items: MdInline[][] }
+  | { type: "list"; ordered: boolean; start?: number; items: MdInline[][] }
   | { type: "quote"; children: MdInline[] }
   | { type: "table"; header: MdInline[][]; rows: MdInline[][][] };
 
@@ -127,7 +127,7 @@ export function parseMarkdownLite(source: string): MdBlock[] {
   const blocks: MdBlock[] = [];
   let paragraph: string[] = [];
   let quote: string[] = [];
-  let list: { ordered: boolean; items: string[] } | null = null;
+  let list: { ordered: boolean; start: number; items: string[] } | null = null;
   let table: string[][] = [];
 
   const flushParagraph = () => {
@@ -144,6 +144,8 @@ export function parseMarkdownLite(source: string): MdBlock[] {
       blocks.push({
         type: "list",
         ordered: list.ordered,
+        // "2. …" after a paragraph keeps its number instead of restarting at 1.
+        ...(list.ordered && list.start !== 1 ? { start: list.start } : {}),
         items: list.items.map((item) => parseInline(item)),
       });
     }
@@ -197,15 +199,15 @@ export function parseMarkdownLite(source: string): MdBlock[] {
     }
 
     const bullet = line.match(/^[-*]\s+(.+)$/);
-    const numbered = bullet ? null : line.match(/^\d{1,3}[.)]\s+(.+)$/);
+    const numbered = bullet ? null : line.match(/^(\d{1,3})[.)]\s+(.+)$/);
     if (bullet || numbered) {
       const ordered = Boolean(numbered);
-      const text = ((bullet ?? numbered)?.[1] ?? "").trim();
+      const text = (bullet ? bullet[1] : numbered?.[2])?.trim() ?? "";
       flushParagraph();
       flushQuote();
       if (!list || list.ordered !== ordered) {
         flushList();
-        list = { ordered, items: [] };
+        list = { ordered, start: numbered ? Number(numbered[1]) : 1, items: [] };
       }
       list.items.push(text);
       continue;
