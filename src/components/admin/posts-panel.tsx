@@ -11,8 +11,12 @@ import {
 } from "@/components/admin/fields";
 import { uploadMedia, zodFieldErrors } from "@/components/admin/admin-utils";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/lib/auth";
-import { BLOG_CATEGORIES, postInputSchema, type BlogCategorySlug } from "@/lib/content-schema";
+import {
+  BLOG_CATEGORIES,
+  defaultAuthorFor,
+  postInputSchema,
+  type BlogCategorySlug,
+} from "@/lib/content-schema";
 import { formatDate, type Post } from "@/lib/content";
 import { slugify } from "@/lib/slug";
 import { getSupabase } from "@/lib/supabase/client";
@@ -33,13 +37,13 @@ type Draft = {
   published: boolean;
 };
 
-const emptyDraft = (author: string): Draft => ({
+const emptyDraft = (): Draft => ({
   id: null,
   slug: "",
   slugEdited: false,
   title: "",
   category: "personal-finance",
-  author_name: author,
+  author_name: defaultAuthorFor("personal-finance"),
   excerpt: "",
   body: "",
   cover_image_url: "",
@@ -64,7 +68,6 @@ const fromPost = (post: Post): Draft => ({
 });
 
 export function PostsPanel() {
-  const { profile } = useAuth();
   const [posts, setPosts] = useState<Post[] | null>(null);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -99,6 +102,12 @@ export function PostsPanel() {
       const next = { ...current, [key]: value };
       if (key === "title" && !current.slugEdited) next.slug = slugify(String(value));
       if (key === "slug") next.slugEdited = true;
+      // Switching section swaps the byline, unless it was typed by hand.
+      if (
+        key === "category" &&
+        BLOG_CATEGORIES.some((c) => c.defaultAuthor === current.author_name.trim())
+      )
+        next.author_name = defaultAuthorFor(value as BlogCategorySlug);
       return next;
     });
 
@@ -190,7 +199,7 @@ export function PostsPanel() {
           type="button"
           className="h-11 w-full"
           onClick={() => {
-            setDraft(emptyDraft(profile?.full_name || "FutureWise"));
+            setDraft(emptyDraft());
             setErrors({});
             setStatus({ message: "", tone: "idle" });
           }}

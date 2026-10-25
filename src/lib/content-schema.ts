@@ -8,10 +8,17 @@ import { z } from "zod";
  * and its posts are never listed or shown.
  */
 export const BLOG_CATEGORIES = [
-  { slug: "personal-finance", label: "Personal Finance" },
-  { slug: "practical-skills", label: "The Practical Skills Guide" },
+  { slug: "personal-finance", label: "Personal Finance", defaultAuthor: "Veer Kothari" },
+  // Formerly the Living Independently guide; written with William Darker (Veer, 25 Oct 2026).
+  {
+    slug: "practical-skills",
+    label: "The Practical Skills Guide",
+    defaultAuthor: "William Darker",
+  },
 ] as const;
 export type BlogCategorySlug = (typeof BLOG_CATEGORIES)[number]["slug"];
+export const defaultAuthorFor = (slug: BlogCategorySlug): string =>
+  BLOG_CATEGORIES.find((c) => c.slug === slug)?.defaultAuthor ?? BLOG_CATEGORIES[0].defaultAuthor;
 export const BLOG_CATEGORY_SLUGS = BLOG_CATEGORIES.map((c) => c.slug) as [
   BlogCategorySlug,
   ...BlogCategorySlug[],

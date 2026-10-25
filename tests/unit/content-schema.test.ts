@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   BLOG_CATEGORIES,
+  defaultAuthorFor,
   INDUSTRY_SLUGS,
   INSIGHT_KINDS,
   postInputSchema,
@@ -34,10 +35,19 @@ const insight = {
   published: false,
 };
 
+test("each blog section has its own byline", () => {
+  assert.equal(defaultAuthorFor("personal-finance"), "Veer Kothari");
+  assert.equal(defaultAuthorFor("practical-skills"), "William Darker");
+});
+
 test("content enums match the publishing contract", () => {
   assert.deepEqual(BLOG_CATEGORIES, [
-    { slug: "personal-finance", label: "Personal Finance" },
-    { slug: "practical-skills", label: "The Practical Skills Guide" },
+    { slug: "personal-finance", label: "Personal Finance", defaultAuthor: "Veer Kothari" },
+    {
+      slug: "practical-skills",
+      label: "The Practical Skills Guide",
+      defaultAuthor: "William Darker",
+    },
   ]);
   assert.deepEqual(INDUSTRY_SLUGS, [
     "law",

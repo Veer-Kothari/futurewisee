@@ -34,7 +34,7 @@ Each industry page reads as one long article, like an Investopedia entry: the in
 
 1. Sign up on the site with the email you want to use as the editor, confirm the email, then ask Herdy to make that account an editor (one database command).
 2. Go to **/admin** (it isn't linked in the menu; it also appears on your Account page once you're an editor).
-3. **Blog posts:** New post → title (the web address fills itself in), section, author, a short summary, the post itself, optional cover image (with a one-sentence description) and optional YouTube/Vimeo link → tick "Published" → Save. Untick "Published" to hide a post again.
+3. **Blog posts:** New post → title (the web address fills itself in), section, author (filled in for you: "Veer Kothari" for Personal Finance, "William Darker" for The Practical Skills Guide; type another name to change it), a short summary, the post itself, optional cover image (with a one-sentence description) and optional YouTube/Vimeo link → tick "Published" → Save. Untick "Published" to hide a post again.
 4. **Industry Insights:** pick the industry → New item → type:
    - *Video* — a YouTube or Vimeo link (it only loads when someone presses play);
    - *Course material* — upload a PDF/image (up to 20 MB) and/or link to an online course;
