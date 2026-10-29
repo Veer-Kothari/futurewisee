@@ -5,8 +5,9 @@ import { formatDate, type PostSummary } from "@/lib/content";
 
 /**
  * The look of a blog section page (/blog?category=…), shared by Personal
- * Finance and The Practical Skills Guide: a grid-paper header and the posts as
- * numbered cards, so a section reads like a guide rather than the all-posts grid.
+ * Finance and Practical Skills: the same plain header as the all-posts page
+ * (tutor, 29 Oct 2026: no grid-paper background), and the posts as numbered
+ * cards, so a section reads like a guide rather than the all-posts grid.
  */
 export function CategoryHeader({
   title,
@@ -18,13 +19,11 @@ export function CategoryHeader({
   nav: ReactNode;
 }) {
   return (
-    <section className="border-b border-border bg-light-blue [background-image:linear-gradient(to_right,rgb(0_0_0/0.045)_1px,transparent_1px),linear-gradient(to_bottom,rgb(0_0_0/0.045)_1px,transparent_1px)] [background-size:24px_24px]">
+    <section className="page-intro">
       <div className="site-container py-16 sm:py-24">
-        <div className="max-w-3xl border-l-4 border-navy bg-background p-6 sm:p-8">
-          <h1 className="text-4xl font-bold text-navy sm:text-5xl">{title}</h1>
-          <p className="mt-5 text-lg leading-8 text-charcoal/80">{description}</p>
-        </div>
-        <div className="mt-9 border-b border-navy/20 pb-2">{nav}</div>
+        <h1 className="max-w-3xl text-4xl font-bold text-navy sm:text-5xl">{title}</h1>
+        <p className="mt-6 max-w-2xl text-lg leading-8 text-charcoal/80">{description}</p>
+        <div className="mt-9 border-b border-border pb-2">{nav}</div>
       </div>
     </section>
   );

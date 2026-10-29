@@ -38,12 +38,8 @@ const navItems: NavItem[] = [
     label: "Blog",
     to: "/blog",
     children: [
-      { label: "Personal Finance Blog", to: "/blog", search: { category: "personal-finance" } },
-      {
-        label: "The Practical Skills Guide",
-        to: "/blog",
-        search: { category: "practical-skills" },
-      },
+      { label: "Personal Finance", to: "/blog", search: { category: "personal-finance" } },
+      { label: "Practical Skills", to: "/blog", search: { category: "practical-skills" } },
     ],
   },
   { label: "Resources", to: "/resources" },

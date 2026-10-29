@@ -126,7 +126,7 @@ function IndustryPage() {
           className={
             article
               ? "lg:grid lg:grid-cols-[minmax(0,46rem)_13rem] lg:justify-between lg:gap-16"
-              : "max-w-[46rem]"
+              : undefined
           }
         >
           {article ? (
@@ -182,14 +182,15 @@ function IndustryPage() {
                 </ul>
               </section>
             ))}
-
-            <UsefulLinks
-              className="mt-16"
-              resources={resourcesForIndustry(industry.slug)}
-              adminLinks={items.filter((item) => item.kind === "link")}
-            />
           </div>
         </div>
+
+        {/* Full container width, outside the reading column, so the links fill the row. */}
+        <UsefulLinks
+          className="mt-16"
+          resources={resourcesForIndustry(industry.slug)}
+          adminLinks={items.filter((item) => item.kind === "link")}
+        />
 
         <nav aria-label="Other industries" className="mt-20 border-t border-border pt-10">
           <h2 className="text-lg font-semibold text-navy">Other industries</h2>
@@ -235,7 +236,7 @@ function ComingSoon({ industry }: { industry: Industry }) {
       <h2 className="text-2xl font-semibold text-navy">
         Material for {industry.name} is on its way
       </h2>
-      <p className="mt-3 leading-7 text-charcoal/75">
+      <p className="mt-3 max-w-3xl leading-7 text-charcoal/75">
         The {industry.name} cheat sheet, videos and course material will appear here as soon as they
         are published. Tell FutureWise what you would like covered first.
       </p>

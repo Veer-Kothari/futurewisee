@@ -12,7 +12,7 @@ export const BLOG_CATEGORIES = [
   // Formerly the Living Independently guide; written with William Darker (Veer, 25 Oct 2026).
   {
     slug: "practical-skills",
-    label: "The Practical Skills Guide",
+    label: "Practical Skills",
     defaultAuthor: "William Darker",
   },
 ] as const;

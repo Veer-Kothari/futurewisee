@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
-import type { Resource } from "@/data/resources";
+import { LINKS_DISCLAIMER, type Resource } from "@/data/resources";
 import type { InsightItem } from "@/lib/content";
 import { recordResourceClick } from "@/lib/resource-clicks";
 import { resourceHref } from "@/lib/utm";
@@ -33,12 +33,12 @@ export function UsefulLinks({
       <h2 id="useful-links-heading" className="text-2xl font-semibold text-navy">
         Useful Links
       </h2>
-      {resources.some((resource) => resource.affiliateUrl) ? (
-        <p className="mt-3 text-sm leading-6 text-charcoal/70">
-          Some links are referral links: FutureWise may be credited if you sign up through them.
-        </p>
-      ) : null}
-      <ul className="mt-5 grid gap-x-10 gap-y-4 sm:grid-cols-2">
+      <p className="mt-3 max-w-3xl text-sm leading-6 text-charcoal/70">
+        {resources.some((resource) => resource.affiliateUrl)
+          ? "Some links are referral links: FutureWise may be credited if you sign up through them."
+          : LINKS_DISCLAIMER}
+      </p>
+      <ul className="mt-5 grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {resources.map((resource) => (
           <li key={resource.id}>
             <ExternalLink

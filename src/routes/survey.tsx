@@ -23,8 +23,8 @@ export const Route = createFileRoute("/survey")({
   head: () =>
     seo(
       "/survey",
-      pageTitle("Take the Survey"),
-      "Share your perspective and help FutureWise create resources that work for students in Oman.",
+      pageTitle("Join the Community"),
+      "Join the FutureWise community: hear about new guides and resources for students in Oman, and help shape what comes next.",
     ),
   component: SurveyPage,
 });
@@ -227,18 +227,18 @@ function SurveyPage() {
               tabIndex={-1}
               className="text-2xl font-semibold leading-snug text-navy outline-none sm:text-3xl"
             >
-              Before we start.
+              Join the FutureWise community.
             </h1>
             <p className="text-charcoal/80">
-              FutureWise is a free resource built for high school students in Oman. We're still
-              early, so what we make next — the industry guides, the practical skills content,
-              everything — should be shaped by the people actually using it.
+              FutureWise is a free resource built for high school students in Oman. Join the
+              community to hear when new industry guides, practical skills posts and resources are
+              published, and to help decide what we make next.
             </p>
             <p className="text-charcoal/80">
-              This survey has five quick questions, about two minutes in total. Your answers tell us
-              which industries to cover first, what students find hardest to figure out, and how
-              confident you already feel about your next steps. There are no right answers, and you
-              can share as much or as little as you like.
+              Joining starts with five quick questions, about two minutes in total. Then you can
+              create a free account and choose whether you would like email updates. Your answers
+              tell us which industries to cover first and what students find hardest to figure out.
+              There are no right answers.
             </p>
             <p className="text-sm text-charcoal/65">
               Every response goes straight to the FutureWise team and is used only to build better
@@ -318,8 +318,8 @@ function SurveyPage() {
                     You're almost there.
                   </h1>
                   <p className="mt-3 text-charcoal/80">
-                    Create a free account to save your answers and get notified when new resources
-                    are ready.
+                    Create a free account to join the community, save your answers and hear when new
+                    guides and resources are ready.
                   </p>
                 </div>
                 <SignUpForm
@@ -408,7 +408,7 @@ function SurveyPage() {
               disabled={!answered}
               onClick={() => setStep((s) => s + 1)}
             >
-              {step === 0 ? "Get started" : "Next"}
+              {step === 0 ? "Join the community" : "Next"}
             </Button>
           </div>
         ) : null}

@@ -12,12 +12,12 @@ const description =
 
 const categoryTitles: Record<BlogCategorySlug, { title: string; description: string }> = {
   "personal-finance": {
-    title: "Personal Finance Blog",
+    title: "Personal Finance",
     description:
       "Practical perspectives to help students understand, manage, and plan their money.",
   },
   "practical-skills": {
-    title: "The Practical Skills Guide",
+    title: "Practical Skills",
     description:
       "Hands-on guidance for everyday skills that help students live more independently.",
   },

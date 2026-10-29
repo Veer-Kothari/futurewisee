@@ -45,7 +45,7 @@ test("content enums match the publishing contract", () => {
     { slug: "personal-finance", label: "Personal Finance", defaultAuthor: "Veer Kothari" },
     {
       slug: "practical-skills",
-      label: "The Practical Skills Guide",
+      label: "Practical Skills",
       defaultAuthor: "William Darker",
     },
   ]);

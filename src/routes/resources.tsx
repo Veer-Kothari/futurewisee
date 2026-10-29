@@ -1,6 +1,12 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 
-import { resourceSections, resources, type Resource, type ResourceSection } from "@/data/resources";
+import {
+  LINKS_DISCLAIMER,
+  resourceSections,
+  resources,
+  type Resource,
+  type ResourceSection,
+} from "@/data/resources";
 import { recordResourceClick } from "@/lib/resource-clicks";
 import { pageTitle, seo } from "@/lib/seo";
 import { resourceHref } from "@/lib/utm";
@@ -67,11 +73,11 @@ function ResourcesPage() {
             Fifty-two external resources selected for students in Oman, covering career research,
             financial literacy, practical skills, and local opportunities.
           </p>
-          {hasReferralLinks ? (
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-charcoal/70">
-              Some links are referral links: FutureWise may be credited if you sign up through them.
-            </p>
-          ) : null}
+          <p className="mt-4 max-w-2xl text-sm leading-6 text-charcoal/70">
+            {hasReferralLinks
+              ? "Some links are referral links: FutureWise may be credited if you sign up through them."
+              : LINKS_DISCLAIMER}
+          </p>
         </div>
       </section>
 

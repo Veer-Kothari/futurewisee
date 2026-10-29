@@ -639,6 +639,14 @@ export const resources: Resource[] = [
   },
 ];
 
+/**
+ * Shown on the Resources page and every Useful Links panel (tutor's wording,
+ * 29 Oct 2026). It is only true while no resource has an `affiliateUrl`, so
+ * those pages show the referral note instead once one does.
+ */
+export const LINKS_DISCLAIMER =
+  "FutureWise is not affiliated with any of the links or resources mentioned here and does not earn revenue from them. They are shared solely for educational purposes, and FutureWise has no partnerships or formal agreements with them. Please consult them at your own risk.";
+
 /** The resources in an industry page's Useful Links panel, in the sheet's order. */
 export function resourcesForIndustry(industry: IndustrySlug): Resource[] {
   return resources.filter((resource) => resource.industries.includes(industry));
