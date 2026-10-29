@@ -33,7 +33,7 @@ function SignUpPage() {
   return (
     <AuthCard
       title="Create a free account"
-      intro="Save your survey answers and hear when new resources are ready."
+      intro="Save your progress and hear when new resources are ready."
     >
       {status === "unavailable" ? (
         <AccountsUnavailable />

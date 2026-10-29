@@ -106,7 +106,7 @@ function IndustryPage() {
               <li aria-current="page">{industry.name}</li>
             </ol>
           </nav>
-          <h1 className="mt-5 text-4xl font-bold text-navy sm:text-5xl lg:text-6xl">
+          <h1 className="mt-5 text-3xl font-bold text-navy hyphens-auto min-[360px]:text-4xl sm:text-5xl lg:text-6xl">
             {industry.name}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-charcoal/80">
@@ -238,9 +238,9 @@ function ComingSoon({ industry }: { industry: Industry }) {
       </h2>
       <p className="mt-3 max-w-3xl leading-7 text-charcoal/75">
         The {industry.name} cheat sheet, videos and course material will appear here as soon as they
-        are published. Tell FutureWise what you would like covered first.
+        are published. Sign up to hear when they go live.
       </p>
-      <Link to="/survey" className="text-link mt-6">
+      <Link to="/get-involved" className="text-link mt-6">
         Get Involved
       </Link>
     </section>

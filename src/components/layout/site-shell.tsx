@@ -51,7 +51,7 @@ const siteMapLinks: NavChild[] = [
   { label: "Industry Insights", to: "/industry-resources" },
   { label: "Blog", to: "/blog" },
   { label: "Resources", to: "/resources" },
-  { label: "Get Involved", to: "/survey" },
+  { label: "Get Involved", to: "/get-involved" },
 ];
 
 function Wordmark({ inverse = false }: { inverse?: boolean }) {
@@ -242,7 +242,7 @@ function SiteHeader() {
           <div className="flex items-center gap-2">
             <AccountButton className="hidden md:inline-flex" />
             <Button asChild variant="survey" size="pill" className="hidden sm:inline-flex">
-              <Link to="/survey">Get Involved</Link>
+              <Link to="/get-involved">Get Involved</Link>
             </Button>
             <Button
               ref={menuButtonRef}
@@ -287,7 +287,7 @@ function SiteHeader() {
             <div className="grid gap-3 pt-4 sm:grid-cols-2">
               <AccountButton className="w-full" onNavigate={close} />
               <Button asChild variant="survey" size="pill" className="w-full">
-                <Link to="/survey" onClick={close}>
+                <Link to="/get-involved" onClick={close}>
                   Get Involved
                 </Link>
               </Button>

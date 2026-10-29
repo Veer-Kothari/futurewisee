@@ -36,7 +36,7 @@ export const Route = createFileRoute("/llms.txt")({
           ),
           `- [Blog](${absoluteUrl("/blog")}): Personal Finance and Practical Skills`,
           `- [Resources](${absoluteUrl("/resources")}): external resources for students in Oman (career, finance, skills, Oman-specific)`,
-          `- [Survey](${absoluteUrl("/survey")}): five questions that shape what FutureWise covers next`,
+          `- [Get Involved](${absoluteUrl("/get-involved")}): sign up for new industry guides, practical content and ways to get involved`,
           ...(posts.length
             ? [
                 "",

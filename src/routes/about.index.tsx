@@ -169,11 +169,11 @@ function AboutPage() {
             Want to be part of what we’re building?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg leading-7 text-charcoal/75">
-            Take our short survey and help us shape resources that actually matter to students in
-            Oman.
+            Sign up to stay in touch and get the latest industry guides, practical content and ways
+            you can get involved.
           </p>
           <Button asChild variant="survey" size="lg" className="mt-8">
-            <Link to="/survey">Get Involved</Link>
+            <Link to="/get-involved">Sign Up to Get Involved</Link>
           </Button>
         </div>
       </section>

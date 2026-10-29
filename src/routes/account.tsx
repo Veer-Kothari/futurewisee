@@ -259,18 +259,14 @@ function AnswersSection() {
     };
   }, [auth.session]);
 
+  // The survey was retired (29 Oct 2026): the panel only shows answers already saved.
+  if (rows?.length === 0) return null;
+
   return (
     <Panel title="Your survey answers">
       {rows === null ? (
         <p role="status" className="text-sm text-charcoal/70">
           Loading…
-        </p>
-      ) : rows.length === 0 ? (
-        <p className="text-sm text-charcoal/80">
-          No answers saved to your account yet.{" "}
-          <Link to="/survey" className="font-semibold text-navy underline">
-            Get Involved
-          </Link>
         </p>
       ) : (
         <ul className="space-y-5">

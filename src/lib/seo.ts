@@ -152,7 +152,7 @@ export const staticRoutes = [
   "/industry-resources",
   "/blog",
   "/resources",
-  "/survey",
+  "/get-involved",
   "/privacy-policy",
   "/terms-of-use",
 ];

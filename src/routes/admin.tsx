@@ -5,6 +5,7 @@ import { ClicksPanel } from "@/components/admin/clicks-panel";
 import { InsightsPanel } from "@/components/admin/insights-panel";
 import { PostsPanel } from "@/components/admin/posts-panel";
 import { ResponsesPanel } from "@/components/admin/responses-panel";
+import { SignupsPanel } from "@/components/admin/signups-panel";
 import { useAuth } from "@/lib/auth";
 import { privateHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/admin")({
 const tabs = [
   { id: "posts", label: "Blog posts" },
   { id: "insights", label: "Industry Insights" },
+  { id: "signups", label: "Sign-ups" },
   { id: "responses", label: "Survey responses" },
   { id: "clicks", label: "Resource clicks" },
 ] as const;
@@ -104,6 +106,7 @@ function AdminPage() {
       >
         {tab === "posts" ? <PostsPanel /> : null}
         {tab === "insights" ? <InsightsPanel /> : null}
+        {tab === "signups" ? <SignupsPanel /> : null}
         {tab === "responses" ? <ResponsesPanel /> : null}
         {tab === "clicks" ? <ClicksPanel /> : null}
       </div>

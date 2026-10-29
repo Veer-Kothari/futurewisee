@@ -2,7 +2,7 @@ import type { LegalDoc } from "./types";
 
 export const privacyPolicy: LegalDoc = {
   title: "Privacy Policy",
-  updated: "2026-10-23",
+  updated: "2026-10-29",
   intro: [
     "FutureWise is a student-led educational project for high school students in Oman, aged about 15–19. Parents and educators also use it. It is not a registered company or charity.",
     "This policy explains what information we collect and how we use it. For privacy requests or questions, email partners@futurewiseapp.org.",
@@ -20,8 +20,8 @@ export const privacyPolicy: LegalDoc = {
       id: "survey-answers",
       heading: "How do we use survey answers?",
       paragraphs: [
-        "Our five survey questions ask how you heard about FutureWise, which description fits you, which industries interest you, what you need help with and how confident you feel about your career direction on a scale of 1–5.",
-        "You can submit without an account. Those answers are not linked to a name or email address. If you create an account or log in at the end, your answers are linked to your account.",
+        "FutureWise no longer runs this survey, but we keep the answers already given. Its five questions asked how you heard about FutureWise, which description fits you, which industries interest you, what you need help with and how confident you feel about your career direction on a scale of 1–5.",
+        "Answers could be submitted without an account. Those answers are not linked to a name or email address. Answers given while creating an account or logging in are linked to that account.",
         "We use answers to decide what FutureWise covers next. We may share results as totals, never as individual answers.",
       ],
     },
@@ -38,8 +38,8 @@ export const privacyPolicy: LegalDoc = {
       id: "email-updates",
       heading: "When will we email you?",
       paragraphs: [
-        "We use Mailchimp, operated by Intuit, for email updates. You choose these by ticking the box at sign-up or on the Account page, or by using the newsletter form.",
-        "Mailchimp sends a confirmation email first. You need to confirm before receiving updates. This is called double opt-in. If you choose updates, FutureWise may send follow-up emails after you complete the survey.",
+        "We use Mailchimp, operated by Intuit, for email updates. Signing up on the Get Involved page includes them: emails with FutureWise content, resources and partner information. You can also choose them by ticking the box when you create an account elsewhere, on the Account page, or through the newsletter form.",
+        "Mailchimp sends a confirmation email first. You need to confirm before receiving updates. This is called double opt-in. Once you confirm, FutureWise may send a short series of follow-up emails with updates and resources.",
         "Every email has an unsubscribe link. Unticking the email-updates setting on the Account page also unsubscribes you. To delete your Mailchimp data, email partners@futurewiseapp.org.",
       ],
     },

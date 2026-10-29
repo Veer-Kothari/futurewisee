@@ -69,15 +69,19 @@ export type SignUpOutcome = { needsConfirmation: boolean; email: string };
  * Create an account: name, email, password, the age confirmation (16+, or a
  * parent/guardian agreed — also enforced by the database) and an optional
  * email-updates choice. `beforeSignUp` lets the survey save its answers first.
+ * `emailUpdates="included"` (Get Involved): signing up is joining the email
+ * list, so the choice isn't offered and the page says so above the form.
  */
 export function SignUpForm({
   submitLabel = "Create account",
+  emailUpdates = "optional",
   beforeSignUp,
   onSuccess,
   onBusyChange,
   footer,
 }: {
   submitLabel?: string;
+  emailUpdates?: "optional" | "included";
   /** Tells the page while the form is saving, so other actions can wait. */
   onBusyChange?: (busy: boolean) => void;
   beforeSignUp?: () => Promise<{ ok: true } | { ok: false; message: string }>;
@@ -89,7 +93,7 @@ export function SignUpForm({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [age, setAge] = useState(false);
-  const [marketing, setMarketing] = useState(false);
+  const [marketing, setMarketing] = useState(emailUpdates === "included");
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -234,21 +238,23 @@ export function SignUpForm({
         </label>
         <FieldError id={`${id}-age-error`} message={errors.age} />
       </div>
-      <label
-        htmlFor={`${id}-marketing`}
-        className="flex cursor-pointer items-start gap-3 text-sm leading-6 text-charcoal/80"
-      >
-        <input
-          id={`${id}-marketing`}
-          type="checkbox"
-          checked={marketing}
-          onChange={(event) => setMarketing(event.target.checked)}
-          className="mt-1 size-4 shrink-0 accent-[var(--navy)]"
-        />
-        <span>
-          Optional: email me when new FutureWise resources are ready. I can stop at any time.
-        </span>
-      </label>
+      {emailUpdates === "optional" ? (
+        <label
+          htmlFor={`${id}-marketing`}
+          className="flex cursor-pointer items-start gap-3 text-sm leading-6 text-charcoal/80"
+        >
+          <input
+            id={`${id}-marketing`}
+            type="checkbox"
+            checked={marketing}
+            onChange={(event) => setMarketing(event.target.checked)}
+            className="mt-1 size-4 shrink-0 accent-[var(--navy)]"
+          />
+          <span>
+            Optional: email me when new FutureWise resources are ready. I can stop at any time.
+          </span>
+        </label>
+      ) : null}
 
       <p className="text-xs leading-5 text-charcoal/65">
         By creating an account you agree to the{" "}

@@ -15,6 +15,7 @@ import { Route as AccountRouteImport } from './routes/account'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as GetInvolvedRouteImport } from './routes/get-involved'
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as IndustryResourcesRouteImport } from './routes/industry-resources'
 import { Route as LivingIndependentlyAndPersonalFinanceRouteImport } from './routes/living-independently-and-personal-finance'
@@ -67,6 +68,11 @@ const BlogRoute = BlogRouteImport.update({
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GetInvolvedRoute = GetInvolvedRouteImport.update({
+  id: '/get-involved',
+  path: '/get-involved',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndustriesRoute = IndustriesRouteImport.update({
@@ -201,6 +207,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/blog': typeof BlogRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
+  '/get-involved': typeof GetInvolvedRoute
   '/industries': typeof IndustriesRoute
   '/industry-resources': typeof IndustryResourcesRouteWithChildren
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
@@ -230,6 +237,7 @@ export interface FileRoutesByTo {
   '/account': typeof AccountRoute
   '/admin': typeof AdminRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/get-involved': typeof GetInvolvedRoute
   '/industries': typeof IndustriesRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/login': typeof LoginRoute
@@ -260,6 +268,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/blog': typeof BlogRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
+  '/get-involved': typeof GetInvolvedRoute
   '/industries': typeof IndustriesRoute
   '/industry-resources': typeof IndustryResourcesRouteWithChildren
   '/living-independently-and-personal-finance': typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
@@ -293,6 +302,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/blog'
     | '/forgot-password'
+    | '/get-involved'
     | '/industries'
     | '/industry-resources'
     | '/living-independently-and-personal-finance'
@@ -322,6 +332,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/admin'
     | '/forgot-password'
+    | '/get-involved'
     | '/industries'
     | '/llms.txt'
     | '/login'
@@ -351,6 +362,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/blog'
     | '/forgot-password'
+    | '/get-involved'
     | '/industries'
     | '/industry-resources'
     | '/living-independently-and-personal-finance'
@@ -383,6 +395,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   BlogRoute: typeof BlogRouteWithChildren
   ForgotPasswordRoute: typeof ForgotPasswordRoute
+  GetInvolvedRoute: typeof GetInvolvedRoute
   IndustriesRoute: typeof IndustriesRoute
   IndustryResourcesRoute: typeof IndustryResourcesRouteWithChildren
   LivingIndependentlyAndPersonalFinanceRoute: typeof LivingIndependentlyAndPersonalFinanceRouteWithChildren
@@ -440,6 +453,13 @@ declare module '@tanstack/react-router' {
       path: '/forgot-password'
       fullPath: '/forgot-password'
       preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/get-involved': {
+      id: '/get-involved'
+      path: '/get-involved'
+      fullPath: '/get-involved'
+      preLoaderRoute: typeof GetInvolvedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/industries': {
@@ -675,6 +695,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   BlogRoute: BlogRouteWithChildren,
   ForgotPasswordRoute: ForgotPasswordRoute,
+  GetInvolvedRoute: GetInvolvedRoute,
   IndustriesRoute: IndustriesRoute,
   IndustryResourcesRoute: IndustryResourcesRouteWithChildren,
   LivingIndependentlyAndPersonalFinanceRoute:

@@ -109,7 +109,7 @@ function Index() {
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Button asChild variant="survey" size="lg" className="h-11">
-                <Link to="/survey">Get Involved</Link>
+                <Link to="/get-involved">Sign Up to Get Involved</Link>
               </Button>
               <Button
                 asChild
@@ -188,13 +188,12 @@ function Index() {
             })}
             <li>
               <Link
-                to="/survey"
+                to="/get-involved"
                 className="flex h-full flex-col border border-dashed border-navy/40 bg-light-blue p-6 hover:border-navy"
               >
                 <h3 className="text-lg font-semibold text-navy">Not sure where to start?</h3>
                 <p className="mt-2 text-sm leading-6 text-charcoal/75">
-                  Tell FutureWise which industry to cover first. The survey takes less than two
-                  minutes.
+                  Sign up to FutureWise and hear first when new industry guides are published.
                 </p>
                 <p className="mt-auto pt-5 text-xs font-semibold text-blue">Get Involved</p>
               </Link>
@@ -327,14 +326,14 @@ function Index() {
         >
           <div className={integrations.newsletter ? "" : "mx-auto max-w-2xl"}>
             <h2 className="text-3xl font-semibold text-navy sm:text-4xl">
-              Which topics should FutureWise cover next?
+              Join the FutureWise community
             </h2>
             <p className="mt-4 text-lg leading-7 text-charcoal/75">
-              Share the career, money, and independent-living questions you want answered. The
-              survey takes less than two minutes.
+              Sign up to stay in touch and get the latest industry guides, practical content and
+              ways you can get involved.
             </p>
             <Button asChild variant="survey" size="lg" className="mt-8 h-11">
-              <Link to="/survey">Get Involved</Link>
+              <Link to="/get-involved">Sign Up to Get Involved</Link>
             </Button>
           </div>
           {integrations.newsletter ? (
