@@ -13,11 +13,14 @@ import { resourceHref } from "@/lib/utm";
 import { cn } from "@/lib/utils";
 
 // Logos kept as plain files in the repo, named <resource id>.<ext>.
-const fileLogoUrls = import.meta.glob<string>("/src/assets/resource-logos/*.{png,jpg,jpeg,webp,ico}", {
-  eager: true,
-  query: "?url",
-  import: "default",
-});
+const fileLogoUrls = import.meta.glob<string>(
+  "/src/assets/resource-logos/*.{png,jpg,jpeg,webp,ico}",
+  {
+    eager: true,
+    query: "?url",
+    import: "default",
+  },
+);
 
 const logoId = (path: string) =>
   (path.split("/").at(-1) ?? "").replace(/\.(?:png|ico|jpe?g|webp)$/, "");
