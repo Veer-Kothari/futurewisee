@@ -1,9 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouterState } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import veerKothariPhoto from "@/assets/team/veer-kothari.png.asset.json";
-import williamDarkerPhoto from "@/assets/team/william-darker.png.asset.json";
+import veerKothariPhoto from "@/assets/team/veer-kothari.jpg";
+import williamDarkerPhoto from "@/assets/team/william-darker.jpg";
 
 import { Button } from "@/components/ui/button";
 import { site } from "@/data/site";
@@ -40,7 +40,7 @@ const team = [
   {
     name: "Veer Kothari",
     role: "Founder & Project Lead",
-    photo: veerKothariPhoto.url,
+    photo: veerKothariPhoto,
     bio: [
       "I am Veer Kothari, a Year 12 student at British School Muscat in Muscat, Oman. I have a strong interest in mathematics, economics, careers and practical education, and I am particularly interested in business and finance. I am in the high school graduating class of 2028, and look to apply to the UK, the United States and wider Europe to pursue a career in finance.",
       "Through my academic and extracurricular experiences, including the Harvard Secondary School Program in Microeconomics, an internship at one of the largest college investment funds globally, and articulating essays to answer economic queries far beyond the classroom, I have developed an interest in understanding how education can better prepare young people for the world beyond school and exams.",
@@ -51,7 +51,7 @@ const team = [
   {
     name: "William Darker",
     role: "Head of Content Creation",
-    photo: williamDarkerPhoto.url,
+    photo: williamDarkerPhoto,
     bio: [
       "My name is William Darker, a Year 12 student with a passionate interest in economic and personal wellbeing. Having composed numerous essays on both analytical philosophy & practical ethics, I aim to eventually refine & contribute my interests to the world through a degree of Physics & Philosophy.",
       "My primary role in FutureWise is as the foremost columnist for The Practical Skills Guide; a personal project I had previously created out of frustration at the lack of resources provided for soon-to-be solo living students.",
@@ -91,19 +91,22 @@ const pillars = [
 
 function AboutPage() {
   const [activeTab, setActiveTab] = useState("project");
+  // Follow the URL hash on every change, so header links like /about#team work
+  // while already on this page, not only on first load.
+  const hash = useRouterState({ select: (s) => s.location.hash });
 
   useEffect(() => {
-    const hash = typeof window !== "undefined" ? window.location.hash.replace("#", "") : "";
-    if (tabs.some((t) => t.id === hash)) {
-      setActiveTab(hash);
+    const id = hash.replace("#", "");
+    if (tabs.some((t) => t.id === id)) {
+      setActiveTab(id);
       window.setTimeout(() => {
-        const el = document.getElementById(hash);
+        const el = document.getElementById(id);
         if (el) {
           el.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }, 50);
     }
-  }, []);
+  }, [hash]);
 
   const selectTab = (id: string) => {
     setActiveTab(id);
@@ -129,7 +132,7 @@ function AboutPage() {
       <div className="sticky top-20 z-30 border-b border-border bg-background/95 backdrop-blur-md">
         <div className="site-container">
           <div
-            className="flex gap-2 overflow-x-auto py-3"
+            className="grid grid-cols-3 gap-1 py-3 sm:flex sm:gap-2"
             role="tablist"
             aria-label="About sections"
           >
@@ -141,7 +144,7 @@ function AboutPage() {
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => selectTab(tab.id)}
-                  className={`min-h-11 shrink-0 border-b-2 px-5 py-2.5 text-sm font-semibold transition-colors ${
+                  className={`min-h-11 border-b-2 px-2 py-2.5 text-center text-sm font-semibold leading-tight sm:shrink-0 sm:px-5 transition-colors ${
                     isActive
                       ? "border-navy bg-navy text-primary-foreground"
                       : "border-transparent bg-transparent text-charcoal hover:bg-light-blue hover:text-navy"
@@ -172,7 +175,7 @@ function AboutPage() {
             Sign up to stay in touch and get the latest industry guides, practical content and ways
             you can get involved.
           </p>
-          <Button asChild variant="survey" size="lg" className="mt-8">
+          <Button asChild variant="survey" size="lg" className="mt-8 h-11">
             <Link to="/get-involved">Sign Up to Get Involved</Link>
           </Button>
         </div>
@@ -183,7 +186,7 @@ function AboutPage() {
 
 function ProjectSection() {
   return (
-    <section id="project" className="scroll-mt-32">
+    <section id="project" className="scroll-mt-44">
       <h2 className="text-3xl font-semibold text-navy sm:text-4xl">About FutureWise</h2>
       <div className="mt-10 grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
         <div className="space-y-6 text-lg leading-8 text-charcoal/80">
@@ -231,7 +234,7 @@ function TeamSection() {
   const [expandedMember, setExpandedMember] = useState<string | null>(null);
 
   return (
-    <section id="team" className="scroll-mt-32">
+    <section id="team" className="scroll-mt-44">
       <h2 className="text-3xl font-semibold text-navy sm:text-4xl">The Team</h2>
       <div className="mt-10 grid gap-x-9 gap-y-12 sm:grid-cols-2">
         {team.map((member) => {
@@ -302,7 +305,7 @@ function TeamSection() {
 
 function VisionSection() {
   return (
-    <section id="vision-2040" className="scroll-mt-32">
+    <section id="vision-2040" className="scroll-mt-44">
       <h2 className="text-3xl font-semibold text-navy sm:text-4xl">
         How We Contribute to Oman Vision 2040
       </h2>

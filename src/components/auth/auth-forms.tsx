@@ -256,7 +256,7 @@ export function SignUpForm({
         </label>
       ) : null}
 
-      <p className="text-xs leading-5 text-charcoal/65">
+      <p className="text-sm leading-6 text-charcoal/65">
         By creating an account you agree to the{" "}
         <Link to="/terms-of-use" className="underline">
           Terms of Use

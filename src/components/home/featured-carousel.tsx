@@ -36,11 +36,11 @@ export function FeaturedCarousel({ items }: { items: FeaturedItem[] }) {
           <>
             <div
               aria-hidden="true"
-              className="absolute inset-0 translate-x-3 translate-y-3 border border-border bg-light-grey"
+              className="absolute inset-0 bottom-3 right-3 translate-x-3 translate-y-3 border border-border bg-light-grey"
             />
             <div
               aria-hidden="true"
-              className="absolute inset-0 translate-x-1.5 translate-y-1.5 border border-border bg-background"
+              className="absolute inset-0 bottom-3 right-3 translate-x-1.5 translate-y-1.5 border border-border bg-background"
             />
           </>
         ) : null}
