@@ -2,26 +2,26 @@ import type { IndustrySlug } from "@/lib/content-schema";
 
 /**
  * The article on each Industry Insights page (/industry-resources/<slug>): the
- * "Industry Cheat Sheet" part of Veer's Google Doc for that industry (Drive ›
- * Cheat Sheets › "<Industry> Cheat Sheet"), copied into ./industries/<slug>.md.
+ * "Industry Cheat Sheet" part of Veer's collated document ("FutureWise Industry
+ * Insights Collated FINAL"), copied into ./industries/<slug>.md.
  *
- * Left out on purpose: the Expert FAQs, the template's bracketed RESEARCH,
- * EXPERT INPUT and LINK TO notes, instructions to the writer, sections with
- * nothing filled in yet (Leading Firms) and "Useful Resources" — the page's
- * Useful Links panel takes its place (src/data/resources.ts).
+ * Hidden on purpose: the expert interview parts (Meet the Expert, Questions for
+ * the Expert and Final Advice) and the template's instructions to the writer.
+ * Each sheet's "Useful Resources" list is kept at the end of the article; the
+ * page's Useful Links panel (src/data/resources.ts) is a separate list.
  *
- * `published` stays false until Veer says that sheet is complete; until then
- * the page shows its "on its way" state. `updated` is the day the text was last
- * copied from his sheet (shown as "Updated …" and used in the sitemap).
+ * `published: false` takes a sheet off its page (it then shows the "on its way"
+ * state). `updated` is the day the text was last copied from his document
+ * (shown as "Updated …" and used in the sitemap).
  */
 const articles: Record<IndustrySlug, { published: boolean; updated: string }> = {
-  law: { published: false, updated: "2026-10-21" },
-  entrepreneurship: { published: false, updated: "2026-10-21" },
-  "investment-banking-and-trading": { published: false, updated: "2026-10-21" },
-  "other-finance": { published: false, updated: "2026-10-21" },
-  tax: { published: false, updated: "2026-10-21" },
-  economics: { published: false, updated: "2026-10-21" },
-  operations: { published: false, updated: "2026-10-21" },
+  law: { published: true, updated: "2026-10-30" },
+  entrepreneurship: { published: true, updated: "2026-10-30" },
+  "investment-banking-and-trading": { published: true, updated: "2026-10-30" },
+  "other-finance": { published: true, updated: "2026-10-30" },
+  tax: { published: true, updated: "2026-10-30" },
+  economics: { published: true, updated: "2026-10-30" },
+  operations: { published: true, updated: "2026-10-30" },
 };
 
 const markdownFiles = import.meta.glob<string>("./industries/*.md", {

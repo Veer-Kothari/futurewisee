@@ -16,6 +16,8 @@ Depending on the role, economists may:
 - Analyse trade, investment or productivity.
 - Prepare reports and briefings for decision makers.
 
+**Real-world examples from Oman:** Guided by the goals of Oman Vision 2040, economists play a critical role in tracking and shaping economic diversification away from hydrocarbon reliance. Analysts model the impact of expanding non-oil sectors like tourism, logistics, and manufacturing. At the same time, they evaluate public spending frameworks and manage labour market nationalisation policies to balance private sector growth with local employment targets.
+
 ## Main Areas of Economics
 
 - Macroeconomics
@@ -97,6 +99,8 @@ Common academic routes include:
 
 Some research and senior economist positions may require postgraduate study. Entry level analyst roles may have different requirements.
 
+**Employer requirements and role distinctions:** Government bodies and international institutions typically require postgraduate qualifications, such as a Master's or PhD in Economics, for formal economist tracks. On the other hand, entry-level market research, banking, or corporate analyst roles frequently accept undergraduate degrees in economics, finance, or quantitative disciplines while placing a strong emphasis on data visualisation, financial modelling, and programming competencies.
+
 Useful preparation:
 
 - Learn to interpret economic data.
@@ -105,9 +109,15 @@ Useful preparation:
 - Build mathematical and statistical confidence.
 - Explore data analysis and research projects.
 
+## Leading Firms and Organisations
+
+- **Government and public institutions:** Ministry of Economy, Ministry of Finance, and the Central Bank of Oman, which regulate monetary policy and monitor macroeconomic stability.
+- **International organisations:** International Monetary Fund, World Bank Group, and the Gulf Organization for Industrial Consulting, which employ economists for regional research and policy advisories.
+- **Private sector employers:** Major accounting and economic consultancies like PwC, EY, Deloitte, and KPMG, alongside commercial banks such as Bank Muscat and the National Bank of Oman, plus corporate strategy groups.
+
 ## Example Career Progression
 
-Research Assistant or Analyst → Economist or Consultant → Senior Economist or Manager → Research Director, Policy Leadership or Chief Economist.
+The journey often starts as a Research Assistant or Analyst, before moving on to become an Economist or Consultant. From there, professionals can advance to a Senior Economist or Manager role, eventually reaching positions such as Research Director, Policy Leadership, or Chief Economist.
 
 Academic careers may require further research training and postgraduate qualifications.
 
@@ -121,3 +131,10 @@ Academic careers may require further research training and postgraduate qualific
 - **Monetary policy:** Policies affecting monetary conditions and, depending on the framework, interest rates and liquidity.
 - **Productivity:** A measure of output relative to inputs.
 - **Econometrics:** The use of statistical methods to analyse economic data.
+
+## Useful Resources
+
+- [National Centre for Statistics and Information Oman](https://www.ncsi.gov.om)
+- [Central Bank of Oman Publications](https://www.cbo.gov.om)
+- [World Bank Open Data and International Economic Data Sources](https://data.worldbank.org)
+- [American Economic Association Resources and Career Guidance](https://www.aeaweb.org)

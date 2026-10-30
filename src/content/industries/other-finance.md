@@ -89,22 +89,29 @@ Possible academic routes include:
 
 Some roles may value professional qualifications, depending on the country and career path. Others prioritise relevant experience, technical ability or licensing.
 
+**Oman and international qualifications:** Key professional credentials include the CFA charter, the ACCA qualification, and the CPA, alongside formal central bank licensing frameworks managed by the Central Bank of Oman for senior banking positions.
+
 Useful student preparation:
 
 - Learn to interpret financial statements.
 - Build Excel skills.
 - Understand revenue, costs, profit and cash flow.
-- Practice presenting numerical findings clearly.
+- Practise presenting numerical findings clearly.
 - Follow business and economic news.
 - Explore appropriate work experience or internships.
 
+## Leading Firms and Organisations
+
+- **Banks and financial institutions:** Bank Muscat, the National Bank of Oman, Ahlibank, Sohar International, and the regional operations of international banks like Standard Chartered and HSBC Middle East.
+- **Investment and asset managers:** OMINVEST, Bank Muscat Asset Management, and various regional private equity funds.
+- **Corporate finance employers:** Large commercial conglomerates and national energy enterprises such as OQ and Petroleum Development Oman, as well as telecommunications providers like Omantel.
+- **Professional organisations:** The Capital Market Authority of Oman and the Muscat Stock Exchange.
+
+Almost every medium sized or large business needs finance professionals, not only the famous banks.
+
 ## Example Career Progression
 
-Financial Analyst → Senior Analyst → Finance Manager → Finance Director → Chief Financial Officer.
-
-Alternative: Investment Analyst → Portfolio or Investment Manager → Senior Investment Leadership.
-
-These are examples only. Career paths differ by employer and specialisation.
+Professionals often begin as Financial Analysts before advancing to Senior Analysts and Finance Managers. Further progression can lead to roles like Finance Director or Chief Financial Officer. Another common pathway is starting as an Investment Analyst and growing into a Portfolio or Investment Manager leading senior investment teams. Career paths differ by employer and specialisation.
 
 ## Key Terminology
 
@@ -115,3 +122,10 @@ These are examples only. Career paths differ by employer and specialisation.
 - **Forecasting:** Estimating future financial results using available information and assumptions.
 - **Liquidity:** The ability to meet short term obligations or convert assets into cash.
 - **Return on investment:** A measure comparing the benefit or return from an investment with its cost.
+
+## Useful Resources
+
+- [Muscat Stock Exchange](https://msx.om)
+- [Capital Market Authority Oman](https://www.cma.gov.om)
+- [CFA Institute Educational Resources](https://www.cfainstitute.org)
+- [Corporate Finance Institute](https://corporatefinanceinstitute.com)

@@ -6,7 +6,9 @@ Entrepreneurs may launch new companies, develop technology products, build servi
 
 Entrepreneurship is not simply having a business idea. It involves testing whether the idea solves a real problem and whether customers are willing to pay for the solution.
 
-### What Does Entrepreneurship Look Like in Real Life?
+## What Does Entrepreneurship Look Like in Real Life?
+
+**Oman and GCC examples:** Founders across Oman are actively scaling ventures in logistics tech, fintech, sustainable agriculture, and tourism experiences. For instance, local startups must carefully navigate regional funding structures and bootstrapping models while overcoming scaling friction. They generate revenue through B2B software subscriptions, marketplace transaction commissions, or direct-to-consumer sales.
 
 Typical activities include:
 
@@ -30,6 +32,8 @@ Typical activities include:
 - Healthcare and Education Ventures
 - Family Businesses
 - Corporate Entrepreneurship and Innovation
+
+**Notable regional sectors:** Technology-enabled logistics, clean energy solutions, travel tech, digital payments, and specialised food processing represent sectors that are experiencing rapid entrepreneurial acceleration across Oman and the wider GCC ecosystem.
 
 ## Career Paths and Possible Jobs
 
@@ -106,13 +110,17 @@ Other useful preparation includes:
 - Understanding contracts and business registration.
 - Participating in permitted competitions or startup programmes.
 
+**Oman registration and support requirements:** Business formation in Oman requires compliance with the Ministry of Commerce, Industry and Investment Promotion guidelines through digital commercial registration portals like the Invest in Oman platform. Entrepreneurs frequently leverage support ecosystems such as the Sultan Haitham City innovation initiatives, Riyada (the Public Authority for SME Development), and local incubators including the Sas Center and the Oman Technology Fund.
+
+## Leading Companies and Ecosystem Organisations
+
+Unlike law or investment banking, entrepreneurship does not have a single list of universally recognised top firms.
+
+**Oman and GCC businesses and support organisations:** Key ecosystem builders include Riyada, the Oman Technology Fund as an early-stage tech investor, Petroleum Development Oman incubation schemes, and regional hubs like Hub71 in Abu Dhabi and Nama Ventures. These entities provide founders with essential seed capital, workspaces, and mentorship opportunities.
+
 ## Example Career Progression
 
-Possible route A: Identify a Problem → Validate Demand → Develop a Product or Service → Acquire Customers → Build a Sustainable Business → Scale or Diversify.
-
-Possible route B: University or Early Career Role → Startup Employee → Team Lead → Operations or Product Leadership → Founder or Executive.
-
-These are illustrative routes, not guaranteed outcomes.
+Entrepreneurs often follow paths like identifying a problem, validating demand, developing a product or service, acquiring customers, and ultimately building a sustainable business to scale or diversify. Alternatively, some begin with a university background or early-career role, transition into startup employees, move up to team lead and operational leadership, and eventually launch their own venture as founders. These are illustrative routes rather than guaranteed outcomes.
 
 ## Key Terminology
 
@@ -123,3 +131,10 @@ These are illustrative routes, not guaranteed outcomes.
 - **Product market fit:** Evidence that a product or service meets meaningful customer demand.
 - **Bootstrapping:** Building a business using available resources and internally generated funds rather than relying primarily on outside investment.
 - **Venture capital:** Investment in businesses with growth potential, often in exchange for equity.
+
+## Useful Resources
+
+- [Invest in Oman / MOCIIP Portal](https://www.investoman.om)
+- [Riyada (Public Authority for SME Development)](https://www.riyada.gov.om)
+- [Oman Technology Fund](https://www.otf.om)
+- [Startup Commons / Global Entrepreneurship Resources](https://www.startupcommons.org)

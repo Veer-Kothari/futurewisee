@@ -4,7 +4,9 @@ The legal industry involves interpreting laws, advising clients, resolving dispu
 
 Lawyers work in many settings, including private law firms, corporations, government departments, courts, international organisations and non-profit organisations.
 
-### What Does the Industry Actually Do in Real Life?
+## What Does the Industry Actually Do in Real Life?
+
+**Oman and international practice:** Lawyers working in Oman routinely draft corporate agreements for foreign direct investment, advise on labour regulations and Omanisation compliance, litigate commercial disputes before Omani courts, handle international arbitration cases, and structure complex project financing for major energy and infrastructure initiatives.
 
 Examples of legal work include:
 
@@ -26,6 +28,8 @@ Examples of legal work include:
 - International and Arbitration Law
 - Family Law
 - Public and Administrative Law
+
+**Oman market relevance:** Corporate and commercial law, banking and finance, dispute resolution, and labour law hold exceptional importance in Oman due to ongoing regulatory updates under Vision 2040 and evolving foreign investment frameworks.
 
 ## Career Paths and Possible Jobs
 
@@ -56,6 +60,8 @@ Examples of legal work include:
 - Policy Research
 - Corporate Governance
 
+**Local titles and qualification routes:** In Oman, gaining admission to practise law requires formal registration with the Ministry of Justice and Legal Affairs along with the Oman Lawyers Association. Candidates must complete recognised law degrees and mandated training periods before they can plead cases in primary or appellate courts.
+
 ## Skills Needed
 
 ### Technical skills
@@ -78,17 +84,22 @@ Examples of legal work include:
 
 ## Qualifications and Industry Prerequisites
 
-- Relevant university degree or recognised legal qualification
-- Professional training and examinations
-- Admission, licensing or registration requirements
-- Language requirements
-- Internship and work experience opportunities
+- **Relevant university degree or recognised legal qualification:** Bachelor of Laws (LLB) or equivalent.
+- **Professional training and examinations:** Local pupillage or structured traineeship under licensed advocates.
+- **Admission, licensing or registration requirements:** Registration with the Ministry of Justice and Legal Affairs in Oman.
+- **Language requirements:** Strong professional proficiency in both Arabic and English is vital for domestic and international legal practice in Oman.
+- **Internship and work experience opportunities:** Placements at leading local law firms and corporate legal departments.
 
 **Important:** Legal qualification is jurisdiction specific. Qualifying in one country does not automatically allow someone to practise in another.
 
+## Leading Firms and Organisations
+
+- **Oman leading firms:** Said Al Shahry Law Office, Al Alawi & Co., Dentons Muscat, Trowers & Hamlins, and other prominent local and international practices.
+- **International:** Magic Circle and global law firms operating dedicated cross-border advisory desks.
+
 ## Example Career Progression
 
-University or Legal Qualification → Professional Training → Junior Legal Role → Associate or Equivalent → Senior Role → Partner, General Counsel or Specialist Career.
+A traditional legal career starts by earning a university law degree, followed by professional training or education. Graduates then enter the field as junior associates or trainee advocates before moving up to become associates and senior associates. The path can culminate in partnership within a firm or taking on a corporate general counsel role.
 
 ## Key Terminology
 
@@ -98,3 +109,10 @@ University or Legal Qualification → Professional Training → Junior Legal Rol
 - **Compliance:** Meeting applicable laws, regulations and internal requirements.
 - **Jurisdiction:** The legal authority to hear a case or the territory whose laws apply.
 - **Arbitration:** A dispute resolution process in which an appointed arbitrator or tribunal decides the dispute under the applicable rules.
+- **Oman-specific terminology:** Important local legal concepts include the Commercial Companies Law, strict Omanisation quotas, and specific regulatory approvals mandated by the Ministry of Commerce, Industry and Investment Promotion.
+
+## Useful Resources
+
+- [Ministry of Justice and Legal Affairs Oman](https://www.mjla.gov.om)
+- [Oman Chamber of Commerce and Industry](https://www.chamberoman.om)
+- [International Bar Association](https://www.ibanet.org)

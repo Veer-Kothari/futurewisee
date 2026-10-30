@@ -4,7 +4,7 @@ Operations involves the systems, processes and people that allow an organisation
 
 Operations professionals work to ensure that activities are reliable, efficient, cost effective and aligned with customer needs. Depending on the organisation, this may involve managing supply chains, improving processes, coordinating logistics, overseeing production or ensuring service quality.
 
-Operations exists in almost every industry, from manufacturing and aviation to hospitals, retail, financial services and technology.
+Operations exist in almost every industry, from manufacturing and aviation to hospitals, retail, financial services and technology.
 
 ## What Operations Looks Like in Real Life
 
@@ -18,6 +18,8 @@ Examples include:
 - Monitoring service quality and performance.
 - Planning demand and allocating capacity.
 - Improving the customer experience.
+
+**Omani industry examples:** Professionals in this field handle complex logistics and container handling at the Port of Salalah and Port of Sohar. They also coordinate air cargo and passenger logistics via Oman Air and SalamAir, optimise manufacturing chains for petrochemicals and ceramics within Rusayl and Sohar Industrial Cities, and streamline cold-chain distribution networks for local fisheries and agricultural produce.
 
 ## Main Areas of Operations
 
@@ -100,15 +102,19 @@ Possible academic backgrounds include:
 
 Some specialist roles require technical knowledge, sector specific training or professional certification. Requirements depend on the work and employer.
 
+**Oman qualifications and certifications:** Professional credentials such as the ASCM Certified in Planning and Inventory Management designation, Six Sigma Yellow and Green Belts, and the Chartered Institute of Procurement and Supply qualifications are widely recognised by logistics and manufacturing employers throughout Oman.
+
 Students can prepare by learning spreadsheet analysis, exploring process improvement, practising project planning and understanding how businesses measure performance.
+
+## Leading Firms and Organisations
+
+- **Oman and GCC:** Key employers include the Asyad Group as an integrated logistics provider, the Port of Salalah, Sohar Port and Freezone, Oman Air, Petroleum Development Oman, and major manufacturing enterprises like Oman Cables Industry and Raysut Cement.
+- **International:** Global logistics giants such as DHL, Kuehne+Nagel, and DP World.
+- **Professional organisations:** The Chartered Institute of Logistics and Transport Oman.
 
 ## Example Career Progression
 
-Operations Coordinator or Analyst → Operations Supervisor or Specialist → Operations Manager → Head of Operations → Chief Operating Officer.
-
-A supply chain career might progress from Supply Chain Analyst → Planner or Specialist → Supply Chain Manager → Regional or Global Supply Chain Leadership.
-
-These are illustrative paths, not guaranteed sequences.
+Many professionals start as operations coordinators or analysts before moving up to supervise specific processes or step into operations manager roles. Further experience opens doors to heading up entire operations divisions or eventually serving as a Chief Operating Officer. Similarly, a supply chain career often begins at the analytical level before advancing through planning specialists to regional or global supply chain leadership. These are illustrative paths rather than rigid sequences.
 
 ## Key Terminology
 
@@ -120,3 +126,10 @@ These are illustrative paths, not guaranteed sequences.
 - **Lean operations:** An approach focused on improving value and reducing unnecessary activity or waste.
 - **Quality control:** Processes used to check whether outputs meet specified requirements.
 - **Forecasting:** Estimating future demand or operational conditions using available information.
+
+## Useful Resources
+
+- [Asyad Group Oman](https://www.asyad.om)
+- [Sohar Port and Freezone](https://www.soharportandfreezone.com)
+- [Port of Salalah](https://www.portofsalalah.com)
+- [ASCM Supply Chain Resources](https://www.ascm.org)

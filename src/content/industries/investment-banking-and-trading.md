@@ -24,9 +24,11 @@ These are related areas of finance, but they are not the same job. Investment ba
 - Managing positions within authorised risk limits.
 - Working with sales, research and risk teams.
 
+**Real-world transaction examples:** Regional investment banks routinely structure sovereign and corporate bond issuances, manage initial public offerings on the Muscat Stock Exchange, and advise on complex cross-border energy and infrastructure transactions across the GCC.
+
 ## Main Divisions and Specialisations
 
-- Mergers and Acquisitions (M&A)
+- Mergers and Acquisitions
 - Equity Capital Markets
 - Debt Capital Markets
 - Leveraged Finance
@@ -108,13 +110,17 @@ Useful preparation:
 - Explore legitimate internships and insight programmes.
 - Understand the regulatory requirements for relevant market roles.
 
+**Licensing and recruitment requirements:** Market practitioners operating in Oman must fully comply with Capital Market Authority licensing rules and broker certification standards. Meanwhile, global financial institutions typically recruit top quantitative and financial talent through structured graduate development programmes.
+
+## Leading Firms and Organisations
+
+- **Global investment banks:** Prominent bulge-bracket institutions with regional footprints, including Morgan Stanley, Goldman Sachs, JPMorgan Chase, and Citi.
+- **Regional and Oman-related institutions:** Bank Muscat Investment Banking, Ubhar Capital, and other regional GCC investment houses such as EFG Hermes and SNB Capital.
+- **Market infrastructure and regulators:** The Muscat Stock Exchange and the Capital Market Authority of Oman.
+
 ## Example Career Progression
 
-Investment Banking: Analyst → Associate → Vice President → Director or Executive Director → Managing Director.
-
-Markets: Analyst or Junior Role → Associate or Experienced Specialist → Senior Trader, Desk Head or Other Leadership Role.
-
-These are common examples, not universal structures. Advancement depends on the firm, role and performance.
+Investment banking typically starts at the Analyst level, progressing through Associate and Vice President roles before reaching Director, Executive Director, or Managing Director positions. In the markets division, professionals generally transition from junior or analyst roles into experienced specialist or associate tracks, eventually leading to senior trading, desk head, or other leadership responsibilities. Advancement depends heavily on the firm, the specific role, and individual performance.
 
 ## Key Terminology
 
@@ -126,3 +132,10 @@ These are common examples, not universal structures. Advancement depends on the 
 - **Liquidity:** The ability to transact or convert an asset into cash without an excessive impact on its price.
 - **Spread:** The difference between two prices or rates, such as a buying price and a selling price.
 - **Volatility:** The extent to which a price or return fluctuates over time.
+
+## Useful Resources
+
+- [Capital Market Authority Oman](https://www.cma.gov.om)
+- [Muscat Stock Exchange](https://msx.om)
+- [Financial Times Markets Coverage](https://www.ft.com/markets)
+- [Corporate Finance Institute Valuation Resources](https://corporatefinanceinstitute.com)
