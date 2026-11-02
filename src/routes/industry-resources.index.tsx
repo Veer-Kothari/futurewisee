@@ -55,7 +55,7 @@ function IndustryInsightsPage() {
               ? "Read the cheat sheet"
               : count > 0
                 ? `${count} ${count === 1 ? "video, guide or course" : "videos, guides and courses"}`
-                : "Cheat sheet coming soon";
+                : "Explore now";
             return (
               <li key={industry.slug}>
                 <Link
