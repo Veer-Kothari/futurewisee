@@ -180,7 +180,7 @@ function Index() {
                       {industry.description}
                     </p>
                     <p className="mt-auto pt-5 text-xs font-semibold text-blue">
-                      {count > 0 ? `${count} ${count === 1 ? "item" : "items"}` : "Coming soon"}
+                      {count > 0 ? `${count} ${count === 1 ? "item" : "items"}` : "Explore now"}
                     </p>
                   </Link>
                 </li>
