@@ -8,7 +8,7 @@ import { countByIndustry, listPublishedInsights } from "@/lib/content";
 import { pageTitle, seo } from "@/lib/seo";
 
 const description =
-  "Introductions to industries, their roles, and the routes students can pursue.";
+  "Introductions to industries, their roles, and the pathways students can pursue.";
 
 export const Route = createFileRoute("/industry-resources/")({
   loader: async () => ({ counts: countByIndustry(await listPublishedInsights()) }),
