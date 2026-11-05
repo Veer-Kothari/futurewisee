@@ -203,9 +203,9 @@ function ProjectSection() {
         <div className="min-h-[22rem] border-l-2 border-blue bg-light-blue p-8">
           <p className="text-sm font-semibold text-navy">FutureWise focuses on</p>
           <div className="mt-10 space-y-6 text-xl text-charcoal">
-            <p>Industry knowledge before choosing a path.</p>
-            <p>Financial literacy before managing money alone.</p>
-            <p>Practical skills before leaving school.</p>
+            <p>Industry knowledge to help students choose career paths.</p>
+            <p>Financial literacy to teach students financial concepts.</p>
+            <p>Practical and soft skills while in high school.</p>
           </div>
         </div>
       </div>
