@@ -31,7 +31,7 @@ export const Route = createFileRoute("/about/")({
 });
 
 const tabs = [
-  { id: "project", label: "The Project" },
+  { id: "project", label: "The Initiative" },
   { id: "team", label: "The Team" },
   { id: "vision-2040", label: "Oman Vision 2040" },
 ];
