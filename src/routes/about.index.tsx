@@ -60,12 +60,6 @@ const team = [
   },
 ];
 
-const stats = [
-  { label: "7 industries covered" },
-  { label: "Built for Oman" },
-  { label: "Student-led" },
-];
-
 const pillars = [
   {
     title: "Education & Knowledge",
@@ -216,16 +210,6 @@ function ProjectSection() {
         </div>
       </div>
 
-      <div className="mt-12 flex flex-wrap gap-3">
-        {stats.map((stat) => (
-          <span
-            key={stat.label}
-            className="inline-flex items-center border-l-2 border-blue bg-light-blue px-5 py-2.5 text-sm font-semibold text-navy"
-          >
-            {stat.label}
-          </span>
-        ))}
-      </div>
     </section>
   );
 }
