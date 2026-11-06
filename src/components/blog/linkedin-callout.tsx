@@ -10,7 +10,7 @@ export function LinkedInCallout({ compact = false }: { compact?: boolean }) {
           Follow FutureWise on LinkedIn and join our LinkedIn Community.
         </p>
         <Button asChild className="mt-5 h-11 w-full">
-          <a href={site.linkedinUrl} target="_blank" rel="noopener noreferrer">
+          <a href={site.linkedinCommunityUrl} target="_blank" rel="noopener noreferrer">
             LinkedIn Community
           </a>
         </Button>
@@ -25,7 +25,7 @@ export function LinkedInCallout({ compact = false }: { compact?: boolean }) {
           Follow FutureWise on LinkedIn and join our LinkedIn Community
         </p>
         <Button asChild size="lg" className="h-11">
-          <a href={site.linkedinUrl} target="_blank" rel="noopener noreferrer">
+          <a href={site.linkedinCommunityUrl} target="_blank" rel="noopener noreferrer">
             LinkedIn Community
           </a>
         </Button>

@@ -16,6 +16,9 @@ export const site = {
     "FutureWise helps high school students in Oman aged 15-19 explore careers, industries, money, and independent adulthood.",
   email: "partners@futurewiseapp.org",
   linkedinUrl: "https://www.linkedin.com/company/futurewiseapp/",
+  // The LinkedIn Community button and footer link go to the group, not the
+  // company page (Veer, 6 Nov 2026).
+  linkedinCommunityUrl: "https://www.linkedin.com/groups/40607414/",
   /**
    * Google Analytics 4 measurement ID ("G-XXXXXXXXXX") from Veer's GA4
    * property. Empty = Google Analytics and the cookie banner stay off.
