@@ -2,7 +2,7 @@ import type { LegalDoc } from "./types";
 
 export const privacyPolicy: LegalDoc = {
   title: "Privacy Policy",
-  updated: "2026-10-29",
+  updated: "2026-11-06",
   intro: [
     "FutureWise is a student-led educational project for high school students in Oman, aged about 15–19. Parents and educators also use it. It is not a registered company or charity.",
     "This policy explains what information we collect and how we use it. For privacy requests or questions, email partners@futurewiseapp.org.",
@@ -38,9 +38,9 @@ export const privacyPolicy: LegalDoc = {
       id: "email-updates",
       heading: "When will we email you?",
       paragraphs: [
-        "We use Mailchimp, operated by Intuit, for email updates. Signing up on the Get Involved page includes them: emails with FutureWise content, resources and partner information. You can also choose them by ticking the box when you create an account elsewhere, on the Account page, or through the newsletter form.",
-        "Mailchimp sends a confirmation email first. You need to confirm before receiving updates. This is called double opt-in. Once you confirm, FutureWise may send a short series of follow-up emails with updates and resources.",
-        "Every email has an unsubscribe link. Unticking the email-updates setting on the Account page also unsubscribes you. To delete your Mailchimp data, email partners@futurewiseapp.org.",
+        "We use Kit (kit.com) for email updates. Signing up on the Get Involved page includes them: emails with FutureWise content, resources and partner information. You can also choose them by ticking the box when you create an account elsewhere, on the Account page, or through the newsletter form.",
+        "Kit sends a confirmation email first. You need to confirm before receiving updates. This is called double opt-in. Once you confirm, FutureWise may send a short series of follow-up emails with updates and resources.",
+        "Every email has an unsubscribe link. Unticking the email-updates setting on the Account page also unsubscribes you. Once you unsubscribe, emails can't be restarted from this site: email partners@futurewiseapp.org if you want them back. To delete your Kit data, email partners@futurewiseapp.org.",
       ],
     },
     {
@@ -82,9 +82,9 @@ export const privacyPolicy: LegalDoc = {
       id: "keeping-and-deleting-data",
       heading: "How long do we keep data?",
       paragraphs: [
-        "We keep account data until the account is deleted. You can delete your account through ‘Delete account’ on the Account page. This removes your profile and the survey answers linked to it. Resource-click records remain but lose their link to your account.",
+        "We keep account data until the account is deleted. You can delete your account through ‘Delete account’ on the Account page. This removes your profile and the survey answers linked to it, and unsubscribes your address from our email list. Your address stays in Kit as unsubscribed until we delete it; email us to ask for that. Resource-click records remain but lose their link to your account.",
         "Anonymous survey answers are kept for research and cannot be traced to a person.",
-        "You can download your account data as a JSON file through ‘Download my data’ on the Account page. For other privacy requests, email partners@futurewiseapp.org. For Mailchimp data, unsubscribe or email us to ask for deletion.",
+        "You can download your account data as a JSON file through ‘Download my data’ on the Account page. For other privacy requests, email partners@futurewiseapp.org. For Kit data, unsubscribe or email us to ask for deletion.",
       ],
     },
     {

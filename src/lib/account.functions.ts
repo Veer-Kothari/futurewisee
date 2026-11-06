@@ -10,11 +10,11 @@ export type AccountResult =
 export type PreferenceResult =
   | {
       ok: true;
-      /** Mailchimp already reflects the new choice. */
+      /** Kit already reflects the new choice. */
       synced: boolean;
-      /** Mailchimp isn't connected: the choice is only stored. */
+      /** Kit isn't connected: the choice is only stored. */
       configured: boolean;
-      /** Mailchimp turned the address down; retrying won't help. */
+      /** Kit can't subscribe the address; retrying won't help. */
       refused: boolean;
     }
   | { ok: false; reason: "invalid" | "unavailable" | "error" };
@@ -24,8 +24,8 @@ const DeleteInput = z.object({ confirm: z.literal("DELETE") });
 
 /**
  * The only way an account's email choice changes after sign-up: stores it,
- * then brings Mailchimp in line (an explicit "yes" also re-subscribes someone
- * who had unsubscribed through an email link).
+ * then brings Kit in line (an explicit "yes" for someone
+ * who had unsubscribed comes back as refused; Kit can't reactivate them).
  */
 export const updateMarketingPreference = createServerFn({ method: "POST" })
   .middleware([attachAuthToken, resolveUser])
@@ -48,21 +48,21 @@ export const updateMarketingPreference = createServerFn({ method: "POST" })
         .from("profiles")
         .update({
           marketing_opt_in: parsed.data.optIn,
-          // An explicit "yes" may re-subscribe; it stays pending until Mailchimp confirms it.
+          // An explicit "yes" may re-subscribe; it stays pending until Kit confirms it.
           mailchimp_resubscribe_pending: parsed.data.optIn,
         })
         .eq("id", context.userId);
       if (error) return { ok: false, reason: "error" };
 
       const { reconcileForUser } = await import("@/lib/marketing.server");
-      const { mailchimpConfigured } = await import("@/lib/mailchimp.server");
+      const { kitConfigured } = await import("@/lib/kit.server");
       const sync = await reconcileForUser(context.userId, { resubscribe: parsed.data.optIn }).catch(
         () => ({ synced: false, refused: false }),
       );
       return {
         ok: true,
         synced: sync.synced,
-        configured: mailchimpConfigured(),
+        configured: kitConfigured(),
         refused: sync.refused === true,
       };
     } catch {
@@ -70,7 +70,7 @@ export const updateMarketingPreference = createServerFn({ method: "POST" })
     }
   });
 
-/** Called after each sign-in: retries any Mailchimp sync that hasn't happened yet. */
+/** Called after each sign-in: retries any Kit sync that hasn't happened yet. */
 export const reconcileMarketing = createServerFn({ method: "POST" })
   .middleware([attachAuthToken, resolveUser])
   .handler(
@@ -91,9 +91,9 @@ export const reconcileMarketing = createServerFn({ method: "POST" })
           return { ok: false, reason: "error" };
         }
         const { reconcileForUser } = await import("@/lib/marketing.server");
-        const { mailchimpConfigured } = await import("@/lib/mailchimp.server");
+        const { kitConfigured } = await import("@/lib/kit.server");
         const { synced } = await reconcileForUser(context.userId);
-        return { ok: true, synced, configured: mailchimpConfigured() };
+        return { ok: true, synced, configured: kitConfigured() };
       } catch {
         return { ok: false, reason: "error" };
       }
@@ -103,7 +103,8 @@ export const reconcileMarketing = createServerFn({ method: "POST" })
 /**
  * Deletes the account. The profile, roles and linked survey answers go with
  * it (database cascades); resource clicks stay without the account link. An
- * address this account added to Mailchimp is removed there too (best effort).
+ * address on the Kit list is unsubscribed first; if that fails the account stays,
+ * so the person can try again. Kit keeps the record until it's deleted in its dashboard.
  */
 export const deleteMyAccount = createServerFn({ method: "POST" })
   .middleware([attachAuthToken, resolveUser])
@@ -122,22 +123,26 @@ export const deleteMyAccount = createServerFn({ method: "POST" })
       if (await guard.overLimit("account", 30, 60, `user:${context.userId}`)) {
         return { ok: false, reason: "error" };
       }
-      const { data: profile } = await db
-        .from("profiles")
-        .select("mailchimp_member, mailchimp_synced_choice")
-        .eq("id", context.userId)
-        .maybeSingle();
-      const mailchimpState = profile as {
-        mailchimp_member: boolean;
-        mailchimp_synced_choice: boolean | null;
-      } | null;
-      if (mailchimpState?.mailchimp_member || mailchimpState?.mailchimp_synced_choice === true) {
+      const kit = await import("@/lib/kit.server");
+      if (kit.kitConfigured()) {
+        const { data: profile, error: profileError } = await db
+          .from("profiles")
+          .select("mailchimp_member, mailchimp_synced_choice")
+          .eq("id", context.userId)
+          .maybeSingle();
         const { data: userData } = await db.auth.admin.getUserById(context.userId);
         const email = userData?.user?.email;
-        if (email) {
-          const { mailchimpDelete } = await import("@/lib/mailchimp.server");
-          await mailchimpDelete(email).catch(() => false);
-        }
+        if (profileError || !email) return { ok: false, reason: "error" };
+        const syncState = profile as {
+          mailchimp_member: boolean;
+          mailchimp_synced_choice: boolean | null;
+        } | null;
+        const added = syncState?.mailchimp_member || syncState?.mailchimp_synced_choice === true;
+        // Once the account is gone nothing can retry this, so it has to work first.
+        const unsubscribed = added
+          ? await kit.kitOptOut(email)
+          : await kit.kitOptOutIfListed(email);
+        if (!unsubscribed) return { ok: false, reason: "error" };
       }
       const { error } = await db.auth.admin.deleteUser(context.userId);
       return error ? { ok: false, reason: "error" } : { ok: true };

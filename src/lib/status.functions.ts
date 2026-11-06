@@ -9,7 +9,7 @@ export type IntegrationStatus = { accounts: boolean; newsletter: boolean };
  */
 export const getIntegrationStatus = createServerFn({ method: "GET" }).handler(
   async (): Promise<IntegrationStatus> => {
-    const { mailchimpConfigured } = await import("@/lib/mailchimp.server");
+    const { kitConfigured } = await import("@/lib/kit.server");
     const { isSupabaseConfigured } = await import("@/lib/supabase/client");
     const env = typeof process !== "undefined" && process.env ? process.env : undefined;
     return {
@@ -17,7 +17,7 @@ export const getIntegrationStatus = createServerFn({ method: "GET" }).handler(
         isSupabaseConfigured() &&
         Boolean(env?.["SUPABASE_URL"]) &&
         Boolean(env?.["SUPABASE_SERVICE_ROLE_KEY"]),
-      newsletter: mailchimpConfigured(),
+      newsletter: kitConfigured(),
     };
   },
 );

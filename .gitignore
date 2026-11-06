@@ -31,3 +31,6 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# Private working notes and local keys
+_internal/

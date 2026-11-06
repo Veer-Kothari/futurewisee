@@ -56,7 +56,7 @@ const syncsInFlight = new Set<string>();
 let syncGeneration = 0;
 
 /**
- * The Mailchimp sync after sign-in runs at most once per tab session per
+ * The Kit sync after sign-in runs at most once per tab session per
  * account — but only a run that worked is remembered, so a failed one is
  * retried on the next sign-in. Two sign-in events at once share one run.
  */
@@ -117,7 +117,7 @@ async function afterSignIn(session: Session, profile: Profile | null) {
       clearPendingClaim();
     }
   }
-  // Also when the account has a Mailchimp member or a recorded sync: a failed
+  // Also when the account has a Kit subscriber or a recorded sync: a failed
   // unsubscribe is retried this way on a later sign-in.
   if (
     profile &&

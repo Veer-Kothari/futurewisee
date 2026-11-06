@@ -3,14 +3,15 @@ import { useId, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { site } from "@/data/site";
 import { subscribeNewsletter } from "@/lib/newsletter.functions";
 import { cn } from "@/lib/utils";
 
 type Status = "idle" | "sending" | "done" | "error";
 
 /**
- * Email updates through Mailchimp (double opt-in). Only rendered when
- * Mailchimp is connected (see getIntegrationStatus).
+ * Email updates through Kit (double opt-in). Only rendered when
+ * Kit is connected (see getIntegrationStatus).
  */
 export function NewsletterForm({ tone = "light" }: { tone?: "light" | "dark" }) {
   const id = useId();
@@ -42,7 +43,9 @@ export function NewsletterForm({ tone = "light" }: { tone?: "light" | "dark" }) 
     }).catch(() => null);
     if (result?.ok) {
       setStatus("done");
-      setMessage("Almost done: check your inbox and confirm your email address.");
+      setMessage(
+        `Almost done: check your inbox and confirm your email address. If nothing arrives, email ${site.email}.`,
+      );
       setEmail("");
       setConsent(false);
       return;
@@ -113,7 +116,7 @@ export function NewsletterForm({ tone = "light" }: { tone?: "light" | "dark" }) 
         />
         <span>
           Email me new FutureWise guides and resources. I can unsubscribe at any time. Emails are
-          sent with Mailchimp.
+          sent with Kit.
         </span>
       </label>
       <p

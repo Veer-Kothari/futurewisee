@@ -10,6 +10,7 @@ import {
   reconcileMarketing,
   updateMarketingPreference,
 } from "@/lib/account.functions";
+import { site } from "@/data/site";
 import { useAuth } from "@/lib/auth";
 import { formatDate } from "@/lib/content";
 import { fetchAll } from "@/lib/fetch-all";
@@ -183,14 +184,14 @@ function EmailSection() {
     }
     await auth.refresh();
     if (!result.configured) {
-      // Mailchimp isn't connected yet: the choice is stored and applied once it is.
+      // Kit isn't connected yet: the choice is stored and applied once it is.
       setMessage("Saved.");
       return;
     }
     if (result.refused) {
-      // Mailchimp turned the address down (for example one removed for good
-      // earlier): trying again won't help.
-      setMessage("Saved, but we couldn't add you to our email list.");
+      // Kit can't subscribe the address (for example someone who unsubscribed
+      // earlier): trying again won't help, so point them to a person.
+      setMessage(`We can't restart emails to this address from here. Please email ${site.email}.`);
       return;
     }
     if (!result.synced) {
@@ -199,7 +200,7 @@ function EmailSection() {
       setMessage(
         next
           ? "Saved. Our email list will be updated in a moment. If this is new, check your inbox then to confirm your email address."
-          : "Saved. Our email list will be updated in a moment.",
+          : "Saved, but we couldn't update our email list yet. To stop emails now, use the unsubscribe link in any email.",
       );
       window.setTimeout(() => void reconcileMarketing().catch(() => null), 6000);
       return;
@@ -228,8 +229,9 @@ function EmailSection() {
         <span>Email me when new FutureWise resources are ready.</span>
       </label>
       <p className="mt-2 text-sm leading-6 text-charcoal/70">
-        Emails are sent with Mailchimp. Every email has an unsubscribe link, and unticking this box
-        unsubscribes you too.
+        Emails are sent with Kit. Every email has an unsubscribe link, and unticking this box
+        unsubscribes you too. Once you unsubscribe, emails can't be restarted from this page: email{" "}
+        {site.email}.
       </p>
       <p role="status" className="mt-3 min-h-6 text-sm text-navy">
         {busy ? "Saving…" : message}

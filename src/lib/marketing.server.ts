@@ -1,5 +1,5 @@
 /**
- * Keeps Mailchimp in step with an account's stored email choice
+ * Keeps Kit in step with an account's stored email choice
  * (profiles.marketing_opt_in). Safe to run any time; every run converges on
  * the newest choice, and anything left unfinished is redone by the next run
  * (sign-in, survey, claim or a preference change).
@@ -7,7 +7,7 @@
  * The rules that keep it correct when runs overlap, fail or are cut off:
  * - One run per account at a time: a short lease in the database, renewed
  *   every round; only the lease holder may write the sync columns.
- * - Write first, then act: before any Mailchimp call the recorded state is set
+ * - Write first, then act: before any Kit call the recorded state is set
  *   to "unknown" (and a possible member is recorded), so a run cut off half
  *   way always leaves "needs sync" behind, never a stale "synced".
  * - Confirm only what is current: a round records "synced" only for the
@@ -17,16 +17,14 @@
  *   request that couldn't get the lease) is applied before returning, and so
  *   is the tag for a survey saved meanwhile (it starts the drip).
  *
- * An explicit "email me" sets mailchimp_resubscribe_pending: it re-subscribes
- * someone who had unsubscribed through an email link, and is cleared as soon
- * as Mailchimp has applied it. Plain sign-ins never re-subscribe on their own.
+ * An explicit "email me" sets mailchimp_resubscribe_pending. Kit can't reactivate
+ * someone who unsubscribed, so for them the run comes back as refused; for
+ * everyone else it is cleared as soon as Kit has applied the choice.
+ *
+ * The database columns and lock functions keep their mailchimp_ names (no
+ * migration was needed to move to Kit); they hold the Kit sync state.
  */
-import {
-  MAILCHIMP_TAGS,
-  mailchimpConfigured,
-  mailchimpOptIn,
-  mailchimpOptOut,
-} from "@/lib/mailchimp.server";
+import { KIT_TAGS, kitConfigured, kitOptIn, kitOptOut } from "@/lib/kit.server";
 import { getSupabaseAdmin } from "@/lib/supabase/admin.server";
 
 type ProfileSyncRow = {
@@ -43,14 +41,14 @@ type Db = NonNullable<ReturnType<typeof getSupabaseAdmin>>;
 export type ReconcileResult = {
   synced: boolean;
   deferred?: boolean;
-  /** Mailchimp turned the subscription down; trying again won't help. */
+  /** Kit turned the subscription down; trying again won't help. */
   refused?: boolean;
 };
 
 const SYNC_COLUMNS =
   "marketing_opt_in, marketing_version, mailchimp_member, mailchimp_synced_choice, mailchimp_survey_tagged, mailchimp_resubscribe_pending";
-/** Longer than one round (3 Mailchimp calls × 8 s + database calls); renewed every round. */
-const LEASE_SECONDS = 45;
+/** Longer than one round (up to 6 Kit calls × 8 s + database calls); renewed every round. */
+const LEASE_SECONDS = 75;
 const MAX_ROUNDS = 3;
 const MAX_PASSES = 3;
 const DEADLINE_MS = 30_000;
@@ -83,7 +81,7 @@ async function takeLease(db: Db, userId: string, owner: string): Promise<LeaseAn
     _seconds: LEASE_SECONDS,
   });
   if (error) {
-    console.error("[mailchimp sync] lease unavailable");
+    console.error("[kit sync] lease unavailable");
     return "stop";
   }
   if (data === true) return "ok";
@@ -109,9 +107,9 @@ type PassResult = {
   synced: boolean;
   /** The choice version this pass confirmed, or null if nothing was confirmed. */
   version: number | null;
-  /** Mailchimp itself refused or failed: running again now won't help. */
+  /** Kit itself refused or failed: running again now won't help. */
   remoteFailed: boolean;
-  /** Mailchimp turned the subscription down for good (not a timeout or outage). */
+  /** Kit turned the subscription down for good (not a timeout or outage). */
   refused?: boolean;
   lostLease: boolean;
 };
@@ -122,7 +120,7 @@ async function syncPass(
   userId: string,
   email: string,
   owner: string,
-  /** Redo the Mailchimp side even if the profile looks synced. */
+  /** Redo the Kit side even if the profile looks synced. */
   redoFirst: boolean,
   /** An explicit "email me" in this request (also recorded as resubscribe_pending). */
   explicitResubscribe: boolean,
@@ -172,12 +170,16 @@ async function syncPass(
 
     let remoteOk = true;
     let refused = false;
+    let member = profile.mailchimp_member;
     if (choice) {
-      const tags: string[] = [MAILCHIMP_TAGS.account];
-      if (hasSurvey) tags.push(MAILCHIMP_TAGS.survey);
-      const result = await mailchimpOptIn(email, tags, { resubscribe });
+      const tags: string[] = [KIT_TAGS.account];
+      if (hasSurvey) tags.push(KIT_TAGS.survey);
+      const result = await kitOptIn(email, tags, { resubscribe });
       remoteOk = result.ok;
       refused = result.refused;
+      // Definitely not created: don't leave a "possible subscriber" behind, because a
+      // later opt-out would then create a cancelled record that can never re-join.
+      if (result.member) member = true;
       // The re-subscribe has happened: never repeat it, even if tagging failed.
       if (result.statusDone && profile.mailchimp_resubscribe_pending) {
         await db
@@ -188,23 +190,34 @@ async function syncPass(
           .eq("mailchimp_lock_owner", owner);
       }
     } else if (!nothingRemote) {
-      remoteOk = await mailchimpOptOut(email);
+      remoteOk = await kitOptOut(email);
     }
 
     // Confirm only the version this round applied, and only while holding the lease.
+    const now = new Date().toISOString();
     const { data: committed, error } = await db
       .from("profiles")
       .update(
-        remoteOk
+        refused
           ? {
-              mailchimp_synced_choice: choice,
-              mailchimp_synced_at: new Date().toISOString(),
-              mailchimp_survey_tagged: choice
-                ? hasSurvey || profile.mailchimp_survey_tagged
-                : false,
-              ...(choice ? { mailchimp_resubscribe_pending: false } : {}),
+              // Kit can't subscribe this address. Stop trying and let the setting tell
+              // the truth, so the box unticks and later runs have nothing to do.
+              marketing_opt_in: false,
+              mailchimp_resubscribe_pending: false,
+              mailchimp_synced_choice: false,
+              mailchimp_synced_at: now,
+              mailchimp_survey_tagged: false,
             }
-          : { mailchimp_synced_choice: null },
+          : remoteOk
+            ? {
+                mailchimp_synced_choice: choice,
+                mailchimp_synced_at: now,
+                mailchimp_survey_tagged: choice
+                  ? hasSurvey || profile.mailchimp_survey_tagged
+                  : false,
+                ...(choice ? { mailchimp_resubscribe_pending: false } : {}),
+              }
+            : { mailchimp_synced_choice: null, mailchimp_member: member },
       )
       .eq("id", userId)
       .eq("marketing_version", profile.marketing_version)
@@ -231,7 +244,7 @@ export async function reconcileForUser(
   opts: { resubscribe?: boolean; wait?: boolean } = {},
 ): Promise<ReconcileResult> {
   const db = getSupabaseAdmin();
-  if (!db || !mailchimpConfigured()) return { synced: false };
+  if (!db || !kitConfigured()) return { synced: false };
 
   const { data: userData } = await db.auth.admin.getUserById(userId);
   const email = userData?.user?.email;

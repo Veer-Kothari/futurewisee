@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
  * Get Involved: the sign-up page that grows the FutureWise community (tutor,
  * 29 Oct 2026: "capture emails and user sign ups", no survey). Copy from Veer's
  * "Get Involved - Capture Signups and Users" doc. Signing up here creates an
- * account and joins the Mailchimp list (double opt-in), which is where the drip
+ * account and joins the Kit list (double opt-in), which is where the drip
  * campaigns start; /admin → Sign-ups downloads the list as a spreadsheet.
  */
 export const Route = createFileRoute("/get-involved")({
