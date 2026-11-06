@@ -5,6 +5,7 @@ import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } fr
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/ui/password-input";
 import { site } from "@/data/site";
 import { authRedirectBase } from "@/lib/auth";
 import { getSupabase } from "@/lib/supabase/client";
@@ -200,10 +201,9 @@ export function SignUpForm({
       </div>
       <div className="space-y-2">
         <Label htmlFor={`${id}-password`}>Create a password</Label>
-        <Input
+        <PasswordInput
           ref={refs.password}
           id={`${id}-password`}
-          type="password"
           autoComplete="new-password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
@@ -362,10 +362,9 @@ export function LogInForm({
             Forgot your password?
           </Link>
         </div>
-        <Input
+        <PasswordInput
           ref={passwordRef}
           id={`${id}-password`}
-          type="password"
           autoComplete="current-password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}

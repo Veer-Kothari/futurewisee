@@ -4,8 +4,8 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { AuthCard } from "@/components/auth/auth-card";
 import { MIN_PASSWORD, authErrorMessage } from "@/components/auth/auth-forms";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/ui/password-input";
 import { privateHead } from "@/lib/seo";
 import { getSupabase } from "@/lib/supabase/client";
 
@@ -96,10 +96,9 @@ function ResetPasswordPage() {
         <form onSubmit={onSubmit} noValidate className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="new-password">New password</Label>
-            <Input
+            <PasswordInput
               ref={passwordRef}
               id="new-password"
-              type="password"
               autoComplete="new-password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
