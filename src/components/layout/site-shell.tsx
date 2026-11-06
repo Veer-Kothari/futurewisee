@@ -314,12 +314,14 @@ function SiteFooter({ newsletter }: { newsletter: boolean }) {
             <Wordmark inverse />
           </Link>
           <p className="mt-5 text-sm leading-7 text-primary-foreground/80">
-            Any Questions? E-mail{" "}
+            Any Questions? Ask Away on our{" "}
             <a
-              href={`mailto:${site.email}`}
+              href={site.linkedinCommunityUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="underline underline-offset-2 transition-colors hover:text-light-blue"
             >
-              {site.email}
+              LinkedIn Community
             </a>
           </p>
           {newsletter ? (
@@ -363,16 +365,6 @@ function SiteFooter({ newsletter }: { newsletter: boolean }) {
                 <ChildLink child={link} className={footerLink} />
               </li>
             ))}
-            <li>
-              <a
-                href={site.linkedinCommunityUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={footerLink}
-              >
-                LinkedIn Community
-              </a>
-            </li>
           </ul>
         </div>
       </div>
