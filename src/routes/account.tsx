@@ -375,7 +375,7 @@ function DataSection() {
     if (!result?.ok) {
       setBusy(null);
       setMessage(
-        "Your account couldn't be deleted. Please try again, or email partners@futurewiseapp.org.",
+        "Your account couldn't be deleted. Please try again.",
       );
       return;
     }

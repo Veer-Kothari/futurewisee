@@ -76,9 +76,14 @@ function GetInvolvedPage() {
             </p>
             <p className="text-charcoal/80">
               Feel free to share this with your friends. If you are a partner, please reach out to
-              us through the Partners team at{" "}
-              <a href={`mailto:${site.email}`} className="font-semibold text-navy underline">
-                {site.email}
+              us through our{" "}
+              <a
+                href={site.linkedinCommunityUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-navy underline"
+              >
+                LinkedIn Community
               </a>
               .
             </p>
