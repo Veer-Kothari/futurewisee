@@ -365,7 +365,7 @@ function SiteFooter({ newsletter }: { newsletter: boolean }) {
             ))}
             <li>
               <a
-                href={site.linkedinUrl}
+                href={site.linkedinCommunityUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={footerLink}
