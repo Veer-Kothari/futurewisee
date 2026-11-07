@@ -11,17 +11,26 @@ import { getSupabaseAdmin } from "@/lib/supabase/admin.server";
 
 export type LimitKind = "survey" | "claim" | "click" | "newsletter" | "account";
 
+/**
+ * Only trusts the header the host in front of this server sets itself. On
+ * Vercel (futurewiseapp.org) that is x-real-ip; a visitor can send any
+ * cf-connecting-ip there, so it's ignored. On Lovable's Cloudflare hosting,
+ * Cloudflare overwrites cf-connecting-ip. The "ip:" prefix keeps these keys
+ * apart from the "email:" and "user:" ones.
+ */
 export function clientIp(): string {
   const req = getRequest();
-  const cf = req.headers.get("cf-connecting-ip");
-  if (cf) return rateLimitAddress(cf);
+  const env = typeof process !== "undefined" && process.env ? process.env : undefined;
+  const header = env?.["VERCEL"] ? "x-real-ip" : "cf-connecting-ip";
+  const trusted = req.headers.get(header);
+  if (trusted) return `ip:${rateLimitAddress(trusted)}`;
   const xff = req.headers.get("x-forwarded-for");
   const last = xff
     ?.split(",")
     .map((part) => part.trim())
     .filter(Boolean)
     .at(-1);
-  return rateLimitAddress(last || "unknown");
+  return `ip:${rateLimitAddress(last || "unknown")}`;
 }
 
 /** Same-origin requests only: browsers send Origin on these POSTs; scheme, host and port must match. */

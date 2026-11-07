@@ -239,7 +239,7 @@ function Index() {
                       {post.excerpt ? (
                         <p className="mt-2 text-sm leading-6 text-charcoal/75">{post.excerpt}</p>
                       ) : null}
-                      <p className="mt-auto pt-4 text-xs text-charcoal/60">
+                      <p className="mt-auto pt-4 text-xs text-charcoal/70">
                         {formatDate(post.published_at)}
                       </p>
                     </div>

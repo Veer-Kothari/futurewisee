@@ -16,14 +16,15 @@ export function rateLimitAddress(raw: string): string {
   const mapped = value.match(/^::ffff:(\d{1,3}(?:\.\d{1,3}){3})$/);
   if (mapped?.[1]) return mapped[1];
   if (/^\d{1,3}(\.\d{1,3}){3}$/.test(value)) return value;
-  if (!value.includes(":") || !/^[0-9a-f:.]+$/.test(value)) return value.slice(0, 100);
+  // Anything that isn't an IP address is never used as a key as it is.
+  if (!value.includes(":") || !/^[0-9a-f:.]+$/.test(value)) return "unknown";
 
   const [head = "", tail = ""] = value.split("::", 2) as [string?, string?];
   const headParts = head ? head.split(":") : [];
   const tailParts = value.includes("::") ? (tail ? tail.split(":") : []) : [];
   const missing = value.includes("::") ? 8 - headParts.length - tailParts.length : 0;
   const groups = [...headParts, ...Array<string>(Math.max(missing, 0)).fill("0"), ...tailParts];
-  if (groups.length < 4) return value.slice(0, 100);
+  if (groups.length < 4) return "unknown";
   const prefix = groups
     .slice(0, 4)
     .map((group) => group.replace(/^0+(?=.)/, "") || "0")

@@ -120,7 +120,8 @@ export const deleteMyAccount = createServerFn({ method: "POST" })
     if (!db) return { ok: false, reason: "unavailable" };
 
     try {
-      if (await guard.overLimit("account", 30, 60, `user:${context.userId}`)) {
+      // Its own bucket, so sign-in sync retries can never use up deletion attempts.
+      if (await guard.overLimit("account", 10, 60, `delete:${context.userId}`)) {
         return { ok: false, reason: "error" };
       }
       const kit = await import("@/lib/kit.server");

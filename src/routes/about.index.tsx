@@ -209,7 +209,6 @@ function ProjectSection() {
           </div>
         </div>
       </div>
-
     </section>
   );
 }
@@ -236,7 +235,7 @@ function TeamSection() {
                 />
               ) : (
                 <div className="flex aspect-[3/4] items-center justify-center bg-light-grey">
-                  <span className="text-sm font-medium text-charcoal/60">Photo coming soon</span>
+                  <span className="text-sm font-medium text-charcoal/70">Photo coming soon</span>
                 </div>
               )}
 
@@ -273,7 +272,7 @@ function TeamSection() {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-base italic leading-8 text-charcoal/60">
+                    <p className="text-base italic leading-8 text-charcoal/70">
                       Biography coming soon.
                     </p>
                   )}

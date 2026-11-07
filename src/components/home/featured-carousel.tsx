@@ -58,7 +58,7 @@ export function FeaturedCarousel({ items }: { items: FeaturedItem[] }) {
             <Link to={item.to} {...(item.hash ? { hash: item.hash } : {})} className="text-link">
               {item.action}
             </Link>
-            {item.date ? <span className="text-xs text-charcoal/60">{item.date}</span> : null}
+            {item.date ? <span className="text-xs text-charcoal/70">{item.date}</span> : null}
           </div>
         </article>
       </div>
@@ -89,7 +89,7 @@ export function FeaturedCarousel({ items }: { items: FeaturedItem[] }) {
           >
             <ChevronRight aria-hidden="true" className="size-4" />
           </button>
-          <p aria-live="polite" className="ml-auto text-xs text-charcoal/60">
+          <p aria-live="polite" className="ml-auto text-xs text-charcoal/70">
             {index + 1} / {count}
           </p>
         </div>

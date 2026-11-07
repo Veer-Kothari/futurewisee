@@ -249,6 +249,42 @@ if (files.length === 0) {
       },
     );
     await t.test(
+      "scheduled and my-journey posts stay hidden until the site would show them",
+      async () => {
+        const hidden = [];
+        for (const [slug, category, interval] of [
+          ["scheduled-post", "personal-finance", "7 days"],
+          ["journey-post", "my-journey", "-1 day"],
+        ])
+          hidden.push(
+            (
+              await db.query(
+                `insert into public.posts (slug,title,category,author_name,published,published_at)
+                 values ($1,'Hidden post',$2,'Author',true, now() + $3::interval) returning id`,
+                [slug, category, interval],
+              )
+            ).rows[0].id,
+          );
+        try {
+          for (const [role, userId] of [
+            ["anon", null],
+            ["authenticated", A],
+          ]) {
+            const ids = (await queryAs(role, userId, "select id from public.posts")).rows.map(
+              (r) => r.id,
+            );
+            assert.deepEqual(ids, [PUBLIC_POST], role);
+          }
+          const adminIds = (
+            await queryAs("authenticated", ADMIN, "select id from public.posts")
+          ).rows.map((r) => r.id);
+          for (const id of hidden) assert.ok(adminIds.includes(id), "admin sees " + id);
+        } finally {
+          await db.query("delete from public.posts where id = any($1::uuid[])", [hidden]);
+        }
+      },
+    );
+    await t.test(
       "ordinary users see only their own private rows and published content",
       async () => {
         for (const userId of [A, B]) {

@@ -2,7 +2,7 @@ import type { LegalDoc } from "./types";
 
 export const privacyPolicy: LegalDoc = {
   title: "Privacy Policy",
-  updated: "2026-11-06",
+  updated: "2026-11-07",
   intro: [
     "FutureWise is a student-led educational project for high school students in Oman, aged about 15–19. Parents and educators also use it. It is not a registered company or charity.",
     "This policy explains what information we collect and how we use it. For privacy requests or questions, email partners@futurewiseapp.org.",
@@ -49,7 +49,8 @@ export const privacyPolicy: LegalDoc = {
       paragraphs: [
         "Google Analytics 4, provided by Google, loads only after you click ‘Accept analytics’ in the cookie banner. If you decline, it is not loaded. It measures pages viewed and resource clicks.",
         "Google Analytics sets cookies named _ga and _ga_<ID>, which can last up to two years. You can change your choice at any time through ‘Cookie settings’ in the footer.",
-        "Our site is hosted on Lovable, with servers on the Cloudflare network. Lovable records basic page-view statistics for the site owner and may set a short session cookie.",
+        "futurewiseapp.org is hosted on Vercel, which processes your IP address and basic request details to deliver the site and protect it from abuse.",
+        "A copy of the site at futurewisee.lovable.app is hosted on Lovable, with servers on the Cloudflare network. Lovable records basic page-view statistics for the site owner and may set a short session cookie.",
       ],
     },
     {
@@ -59,7 +60,7 @@ export const privacyPolicy: LegalDoc = {
       bullets: [
         "Your sign-in session is kept in local storage under a key starting with sb-.",
         "Your cookie choice is stored as fw-cookie-consent.",
-        "A temporary survey link token is stored as fw-pending-survey until you sign in after confirming your email. It lets us link your answers to your account.",
+        "While you are signed in, a short marker starting with fw-mailchimp-synced- is kept in session storage, so the email-list check runs once per visit. It is removed when you sign out or close the tab.",
       ],
     },
     {

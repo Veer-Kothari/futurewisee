@@ -98,7 +98,10 @@ function IndustryPage() {
           <nav aria-label="Breadcrumb">
             <ol className="flex flex-wrap items-center gap-x-2 text-sm text-charcoal/65">
               <li>
-                <Link to="/industry-resources" className="font-semibold text-navy hover:text-blue">
+                <Link
+                  to="/industry-resources"
+                  className="inline-flex min-h-6 items-center font-semibold text-navy hover:text-blue"
+                >
                   Industry Insights
                 </Link>
               </li>

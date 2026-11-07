@@ -20,5 +20,13 @@ test("IPv6 addresses are counted per /64 network", () => {
 test("missing or odd values never throw", () => {
   assert.equal(rateLimitAddress(""), "unknown");
   assert.equal(rateLimitAddress("unknown"), "unknown");
-  assert.ok(rateLimitAddress("x".repeat(300)).length <= 100);
+  assert.equal(rateLimitAddress("x".repeat(300)), "unknown");
+});
+
+test("values that aren't addresses can't choose their own key", () => {
+  const sha = "a".repeat(40);
+  assert.equal(rateLimitAddress(`email:${sha}`), "unknown");
+  assert.equal(rateLimitAddress("user:00000000-0000-0000-0000-000000000000"), "unknown");
+  assert.equal(rateLimitAddress("1.2.3.4, 5.6.7.8"), "unknown");
+  assert.equal(rateLimitAddress("abc:def"), "unknown");
 });

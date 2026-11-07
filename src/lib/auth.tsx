@@ -12,9 +12,7 @@ import {
 } from "react";
 
 import { reconcileMarketing } from "@/lib/account.functions";
-import { clearPendingClaim, readPendingClaim } from "@/lib/pending-claim";
 import { getSupabase } from "@/lib/supabase/client";
-import { claimSurveyResponse } from "@/lib/survey.functions";
 
 export type Profile = {
   id: string;
@@ -102,21 +100,18 @@ function clearSyncMarkers() {
   }
 }
 
-/**
- * Attaches an anonymous survey kept in this browser (only when it belongs to
- * this account's email), then syncs the email choice.
- */
-async function afterSignIn(session: Session, profile: Profile | null) {
-  const pending = readPendingClaim();
-  if (pending && pending.email === (session.user.email ?? "").trim().toLowerCase()) {
-    const result = await claimSurveyResponse({
-      data: { id: pending.id, claimToken: pending.claimToken },
-    }).catch(() => null);
-    // Keep it for a retry only when the service was unreachable.
-    if (result && (result.ok || result.reason === "not_found" || result.reason === "invalid")) {
-      clearPendingClaim();
-    }
+/** The retired survey kept a link token here; remove it from browsers that still have one. */
+function clearRetiredSurveyToken() {
+  try {
+    window.localStorage.removeItem("fw-pending-survey");
+  } catch {
+    // storage unavailable
   }
+}
+
+/** Syncs the email choice after sign-in. */
+async function afterSignIn(session: Session, profile: Profile | null) {
+  clearRetiredSurveyToken();
   // Also when the account has a Kit subscriber or a recorded sync: a failed
   // unsubscribe is retried this way on a later sign-in.
   if (
@@ -236,7 +231,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = useCallback(async () => {
     const supabase = getSupabase();
     signOuts.current += 1;
-    clearPendingClaim();
+    clearRetiredSurveyToken();
     invalidateSyncs();
     queryClient.clear();
     if (supabase) await supabase.auth.signOut().catch(() => undefined);

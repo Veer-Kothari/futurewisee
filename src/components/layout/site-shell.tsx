@@ -310,7 +310,7 @@ function SiteFooter({ newsletter }: { newsletter: boolean }) {
     <footer className="bg-navy text-primary-foreground">
       <div className="site-container grid gap-12 py-16 md:grid-cols-[1.2fr_1fr_1.3fr] lg:gap-20">
         <div className="max-w-sm">
-          <Link to="/" aria-label="FutureWise home">
+          <Link to="/" aria-label="FutureWise home" className="inline-flex min-h-11 items-center">
             <Wordmark inverse />
           </Link>
           <p className="mt-5 text-sm leading-7 text-primary-foreground/80">

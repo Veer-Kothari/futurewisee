@@ -96,7 +96,7 @@ Titles stay under 60 characters and descriptions under 155 so search results don
 - Google Analytics only runs after "Accept analytics". Don't add other trackers without updating the Privacy Policy and the cookie bar.
 - Survey answers are shown publicly only as totals, never individually.
 - If you add referral/affiliate links, they are labelled on the Resources page and the Privacy Policy is updated first.
-- Emails only go to people who ticked the box and confirmed through Kit.
+- Emails only go to people who confirmed through Kit: everyone who signs up on Get Involved (signing up there includes email updates), and anyone else who ticked the box.
 - Deleting an account deletes the person's details and the survey answers linked to it. Requests by email (partners@futurewiseapp.org) — including a parent asking to delete a child's account — are handled by first unsubscribing and deleting the address in Kit's dashboard, then deleting the account in Lovable Cloud → Users. Deleting in Lovable alone doesn't touch Kit, so the emails would continue.
 
 ## Changing things with Lovable
