@@ -8,6 +8,13 @@
       "when": 1792026415807,
       "tag": "0000_futurewise_accounts_content",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794051669680,
+      "tag": "0001_restrict_public_post_visibility",
+      "breakpoints": true
     }
   ]
 }
