@@ -314,7 +314,7 @@ function SiteFooter({ newsletter }: { newsletter: boolean }) {
             <Wordmark inverse />
           </Link>
           <p className="mt-5 text-sm leading-7 text-primary-foreground/80">
-            Any Questions? Ask Away on our{" "}
+            Any questions? Ask away on our{" "}
             <a
               href={site.linkedinCommunityUrl}
               target="_blank"
@@ -323,6 +323,7 @@ function SiteFooter({ newsletter }: { newsletter: boolean }) {
             >
               LinkedIn Community
             </a>
+            .
           </p>
           {newsletter ? (
             <div className="mt-8">
@@ -335,7 +336,7 @@ function SiteFooter({ newsletter }: { newsletter: boolean }) {
         </div>
 
         <div>
-          <h2 className="text-base font-semibold text-primary-foreground">Quick Links</h2>
+          <h2 className="text-base font-semibold text-primary-foreground">Quick links</h2>
           <ul className="mt-4 space-y-3">
             <li>
               <Link to="/privacy-policy" className={footerLink}>
@@ -358,7 +359,7 @@ function SiteFooter({ newsletter }: { newsletter: boolean }) {
         </div>
 
         <div>
-          <h2 className="text-base font-semibold text-primary-foreground">Menu Sitemap</h2>
+          <h2 className="text-base font-semibold text-primary-foreground">Site map</h2>
           <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {siteMapLinks.map((link) => (
               <li key={link.label}>
@@ -371,7 +372,9 @@ function SiteFooter({ newsletter }: { newsletter: boolean }) {
 
       <div className="border-t border-primary-foreground/15">
         <div className="site-container flex flex-col items-center gap-4 py-8 text-center">
-          <p className="text-xs text-primary-foreground/70">© Copyright All Rights Reserved</p>
+          <p className="text-xs text-primary-foreground/70">
+            © {new Date().getFullYear()} {site.name}. All rights reserved.
+          </p>
           <p className="max-w-4xl text-left text-sm leading-relaxed text-primary-foreground/70 sm:text-center">
             Disclaimer: FutureWise provides general educational and informational content only and
             does not provide legal, financial, investment, tax, career or other professional advice.

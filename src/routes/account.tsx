@@ -375,7 +375,7 @@ function DataSection() {
     if (!result?.ok) {
       setBusy(null);
       setMessage(
-        "Your account couldn't be deleted. Please try again.",
+        `Your account couldn't be deleted. Please try again, or email ${site.email} and we'll delete it for you.`,
       );
       return;
     }
