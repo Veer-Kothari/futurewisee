@@ -61,19 +61,25 @@ async function sweep() {
 }
 
 /**
- * True when this connection (IPv4 address or IPv6 /64) — or the given key,
- * e.g. an account or an email hash — already has `max` attempts of this kind
- * in the last `minutes` (public.rate_attempt, one locked step that also
- * records an allowed attempt). Fails closed: a database error counts as over.
+ * "unavailable": no service-role database settings on this host.
+ * "error": the database call failed. Neither means the visitor did too much.
  */
-export async function overLimit(
+export type RateCheck = "ok" | "over" | "unavailable" | "error";
+
+/**
+ * Whether this connection (IPv4 address or IPv6 /64) — or the given key,
+ * e.g. an account or an email hash — may make another attempt of this kind:
+ * "over" once it has `max` in the last `minutes` (public.rate_attempt, one
+ * locked step that also records an allowed attempt).
+ */
+export async function rateCheck(
   kind: LimitKind,
   max: number,
   minutes: number,
   key?: string,
-): Promise<boolean> {
+): Promise<RateCheck> {
   const db = getSupabaseAdmin();
-  if (!db) return true;
+  if (!db) return "unavailable";
   if (Math.random() < 0.05) await sweep().catch(() => undefined);
   const { data, error } = await db.rpc("rate_attempt", {
     p_kind: kind,
@@ -82,8 +88,18 @@ export async function overLimit(
     p_minutes: minutes,
     p_record: true,
   });
-  if (error || typeof data !== "boolean") return true;
-  return data;
+  if (error || typeof data !== "boolean") return "error";
+  return data ? "over" : "ok";
+}
+
+/** rateCheck as a yes/no that fails closed: a missing or failing database counts as over. */
+export async function overLimit(
+  kind: LimitKind,
+  max: number,
+  minutes: number,
+  key?: string,
+): Promise<boolean> {
+  return (await rateCheck(kind, max, minutes, key)) !== "ok";
 }
 
 export const pause = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

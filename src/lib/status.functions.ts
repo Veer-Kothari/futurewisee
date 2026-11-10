@@ -11,13 +11,12 @@ export const getIntegrationStatus = createServerFn({ method: "GET" }).handler(
   async (): Promise<IntegrationStatus> => {
     const { kitConfigured } = await import("@/lib/kit.server");
     const { isSupabaseConfigured } = await import("@/lib/supabase/client");
-    const env = typeof process !== "undefined" && process.env ? process.env : undefined;
+    const { adminConfigured } = await import("@/lib/supabase/admin.server");
     return {
-      accounts:
-        isSupabaseConfigured() &&
-        Boolean(env?.["SUPABASE_URL"]) &&
-        Boolean(env?.["SUPABASE_SERVICE_ROLE_KEY"]),
-      newsletter: kitConfigured(),
+      accounts: isSupabaseConfigured() && adminConfigured(),
+      // The sign-up limits live in the database: without the service-role
+      // settings every sign-up would be refused, so the form stays hidden.
+      newsletter: kitConfigured() && adminConfigured(),
     };
   },
 );

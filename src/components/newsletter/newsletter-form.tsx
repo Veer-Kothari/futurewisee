@@ -4,14 +4,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { site } from "@/data/site";
-import { subscribeNewsletter } from "@/lib/newsletter.functions";
+import { subscribeNewsletter, type NewsletterResult } from "@/lib/newsletter.functions";
 import { cn } from "@/lib/utils";
 
 type Status = "idle" | "sending" | "done" | "error";
 
+function failureMessage(result: NewsletterResult | null): string {
+  if (result && !result.ok && result.reason === "busy") {
+    return "Too many sign-ups from this connection. Please try again later.";
+  }
+  if (result && !result.ok && result.reason === "unavailable") {
+    return `Email sign-up isn't available right now. Please try again later or email ${site.email}.`;
+  }
+  return "That didn't work. Please try again in a moment.";
+}
+
 /**
- * Email updates through Kit (double opt-in). Only rendered when
- * Kit is connected (see getIntegrationStatus).
+ * Email updates through Kit (double opt-in). Only rendered when Kit and the
+ * service-role database (for the sign-up limits) are connected (see
+ * getIntegrationStatus).
  */
 export function NewsletterForm({ tone = "light" }: { tone?: "light" | "dark" }) {
   const id = useId();
@@ -51,11 +62,7 @@ export function NewsletterForm({ tone = "light" }: { tone?: "light" | "dark" }) 
       return;
     }
     setStatus("error");
-    setMessage(
-      result && !result.ok && result.reason === "busy"
-        ? "Too many sign-ups from this connection. Please try again later."
-        : "That didn't work. Please try again in a moment.",
-    );
+    setMessage(failureMessage(result));
   }
 
   return (

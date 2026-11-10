@@ -29,10 +29,17 @@ export const subscribeNewsletter = createServerFn({ method: "POST" })
     if (!kit.kitConfigured()) return { ok: false, reason: "unavailable" };
 
     try {
-      if (await guard.overLimit("newsletter", 5, 15)) return { ok: false, reason: "busy" };
+      // Only a real "over" blames the visitor's connection; a host without the
+      // database settings, or a failed database call, says so instead.
+      const byConnection = await guard.rateCheck("newsletter", 5, 15);
+      if (byConnection === "over") return { ok: false, reason: "busy" };
+      if (byConnection === "unavailable") return { ok: false, reason: "unavailable" };
+      if (byConnection === "error") return { ok: false, reason: "error" };
       // At most 3 confirmation emails a day to any one address, whoever asks.
       const emailKey = `email:${(await guard.sha256Hex(parsed.data.email)).slice(0, 40)}`;
-      if (await guard.overLimit("newsletter", 3, 1440, emailKey)) return { ok: true };
+      const byAddress = await guard.rateCheck("newsletter", 3, 1440, emailKey);
+      if (byAddress === "over") return { ok: true };
+      if (byAddress !== "ok") return { ok: false, reason: "error" };
       const { ok, refused } = await kit.kitOptIn(parsed.data.email, [kit.KIT_TAGS.website], {
         resubscribe: true,
       });
