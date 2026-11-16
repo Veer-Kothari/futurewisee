@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
+import { isBrokenLink } from "@/data/broken-links";
 import { LINKS_DISCLAIMER, type Resource } from "@/data/resources";
 import type { InsightItem } from "@/lib/content";
 import { recordResourceClick } from "@/lib/resource-clicks";
@@ -39,18 +40,26 @@ export function UsefulLinks({
           : LINKS_DISCLAIMER}
       </p>
       <ul className="mt-5 grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {resources.map((resource) => (
-          <li key={resource.id}>
-            <ExternalLink
-              href={resourceHref(resource)}
-              rel="noopener"
-              onOpen={() => recordResourceClick(resource.id)}
-            >
-              {resource.name}
-            </ExternalLink>
-            <p className="text-sm leading-6 text-charcoal/65">{resource.category}</p>
-          </li>
-        ))}
+        {resources.map((resource) => {
+          const href = resourceHref(resource);
+          return (
+            <li key={resource.id}>
+              {/* An address that no longer works shows the name only (broken-links.ts). */}
+              {isBrokenLink(href) ? (
+                <span className="inline-block py-1 font-semibold text-navy">{resource.name}</span>
+              ) : (
+                <ExternalLink
+                  href={href}
+                  rel="noopener"
+                  onOpen={() => recordResourceClick(resource.id)}
+                >
+                  {resource.name}
+                </ExternalLink>
+              )}
+              <p className="text-sm leading-6 text-charcoal/65">{resource.category}</p>
+            </li>
+          );
+        })}
         {adminLinks.map((item) =>
           item.link_url ? (
             <li key={item.id}>

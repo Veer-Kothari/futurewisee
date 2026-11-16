@@ -29,7 +29,11 @@ export function FeaturedCarousel({ items }: { items: FeaturedItem[] }) {
   const go = (step: number) => setIndex((current) => (current + step + count) % count);
 
   return (
-    <section aria-roledescription="carousel" aria-label="Latest from FutureWise" className="w-full">
+    <section
+      aria-roledescription="carousel"
+      aria-label="Latest from FutureWise"
+      className="w-full min-w-0"
+    >
       <p className="text-sm font-semibold text-navy">Latest from FutureWise</p>
       <div className="relative mt-5 pb-3 pr-3">
         {count > 1 ? (
@@ -69,11 +73,12 @@ export function FeaturedCarousel({ items }: { items: FeaturedItem[] }) {
             type="button"
             onClick={() => go(-1)}
             aria-label="Previous item"
-            className="grid size-11 place-items-center border border-navy text-navy hover:bg-navy hover:text-primary-foreground"
+            className="grid size-11 shrink-0 place-items-center border border-navy text-navy hover:bg-navy hover:text-primary-foreground"
           >
             <ChevronLeft aria-hidden="true" className="size-4" />
           </button>
-          <div className="flex gap-1.5" aria-hidden="true">
+          {/* min-w-0: on a 320 px phone the dots narrow instead of pushing the hero past the screen. */}
+          <div className="flex min-w-0 gap-1.5" aria-hidden="true">
             {items.map((entry, position) => (
               <span
                 key={entry.key}
@@ -85,11 +90,11 @@ export function FeaturedCarousel({ items }: { items: FeaturedItem[] }) {
             type="button"
             onClick={() => go(1)}
             aria-label="Next item"
-            className="grid size-11 place-items-center border border-navy text-navy hover:bg-navy hover:text-primary-foreground"
+            className="grid size-11 shrink-0 place-items-center border border-navy text-navy hover:bg-navy hover:text-primary-foreground"
           >
             <ChevronRight aria-hidden="true" className="size-4" />
           </button>
-          <p aria-live="polite" className="ml-auto text-xs text-charcoal/70">
+          <p aria-live="polite" className="ml-auto shrink-0 text-xs text-charcoal/70">
             {index + 1} / {count}
           </p>
         </div>

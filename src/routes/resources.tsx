@@ -1,5 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 
+import { isBrokenLink } from "@/data/broken-links";
 import {
   LINKS_DISCLAIMER,
   resourceSections,
@@ -130,6 +131,7 @@ function SectionLink({
 function ResourceCard({ resource }: { resource: Resource }) {
   const logoUrl = resourceLogos[resource.id];
   const visibleUrl = new URL(resource.url).hostname.replace(/^www\./, "");
+  const href = resourceHref(resource);
 
   const onClick = () => recordResourceClick(resource.id);
 
@@ -159,17 +161,20 @@ function ResourceCard({ resource }: { resource: Resource }) {
 
       <p className="mt-5 flex-1 text-sm leading-6 text-charcoal/80">{resource.description}</p>
 
-      <a
-        href={resourceHref(resource)}
-        target="_blank"
-        rel="noopener"
-        onClick={onClick}
-        onAuxClick={onClick}
-        className="text-link mt-6 w-fit"
-        aria-label={`${resource.name}: ${visibleUrl} (opens in a new tab)`}
-      >
-        {visibleUrl}
-      </a>
+      {/* An address that no longer works gets no link until Veer supplies the new one (broken-links.ts). */}
+      {isBrokenLink(href) ? null : (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener"
+          onClick={onClick}
+          onAuxClick={onClick}
+          className="text-link mt-6 w-fit"
+          aria-label={`${resource.name}: ${visibleUrl} (opens in a new tab)`}
+        >
+          {visibleUrl}
+        </a>
+      )}
     </article>
   );
 }

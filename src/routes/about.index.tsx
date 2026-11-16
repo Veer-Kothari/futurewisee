@@ -2,8 +2,12 @@ import { createFileRoute, Link, useRouterState } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import veerKothariPhoto from "@/assets/team/veer-kothari.jpg";
-import williamDarkerPhoto from "@/assets/team/william-darker.jpg";
+// "?inline": an image imported the normal way is copied into every build even when
+// unused, so the photos would stay public. Inline, they are left out while
+// TEAM_CONSENT_RECORDED is false. Once it is true they are embedded in this
+// page's script; removing "?inline" then serves them as separate files again.
+import veerKothariPhoto from "@/assets/team/veer-kothari.jpg?inline";
+import williamDarkerPhoto from "@/assets/team/william-darker.jpg?inline";
 
 import { Button } from "@/components/ui/button";
 import { site } from "@/data/site";
@@ -36,13 +40,41 @@ const tabs = [
   { id: "vision-2040", label: "Oman Vision 2040" },
 ];
 
+/**
+ * Written parent/guardian consent for the team's photos and school details.
+ * Both team members are under 18. Herdy sets this to true only once that
+ * written consent is on record. While it is false, The Team shows initials
+ * instead of photos, and the bios leave out the school, city, year group and
+ * graduating class. The photos and the full bios stay in the repo; a build
+ * with this set to false doesn't use them.
+ */
+const TEAM_CONSENT_RECORDED = false;
+
+// The bios' first paragraphs as written, with the school and year details (shown only with consent).
+const veerIntroWithSchool =
+  "I am Veer Kothari, a Year 12 student at British School Muscat in Muscat, Oman. I have a strong interest in mathematics, economics, careers and practical education, and I am particularly interested in business and finance. I am in the high school graduating class of 2028, and look to apply to the UK, the United States and wider Europe to pursue a career in finance.";
+const williamIntroWithSchool =
+  "My name is William Darker, a Year 12 student with a passionate interest in economic and personal wellbeing. Having composed numerous essays on both analytical philosophy & practical ethics, I aim to eventually refine & contribute my interests to the world through a degree of Physics & Philosophy.";
+
+// The same paragraphs without the school, city, year group and graduating class.
+const veerIntro =
+  "I am Veer Kothari, a student in Oman. I have a strong interest in mathematics, economics, careers and practical education, and I am particularly interested in business and finance. I look to apply to the UK, the United States and wider Europe to pursue a career in finance.";
+const williamIntro =
+  "My name is William Darker, a student with a passionate interest in economic and personal wellbeing. Having composed numerous essays on both analytical philosophy & practical ethics, I aim to eventually refine & contribute my interests to the world through a degree of Physics & Philosophy.";
+
+const initials = (name: string) =>
+  name
+    .split(" ")
+    .map((part) => part.charAt(0))
+    .join("");
+
 const team = [
   {
     name: "Veer Kothari",
     role: "Founder & Project Lead",
-    photo: veerKothariPhoto,
+    photo: TEAM_CONSENT_RECORDED ? veerKothariPhoto : null,
     bio: [
-      "I am Veer Kothari, a Year 12 student at British School Muscat in Muscat, Oman. I have a strong interest in mathematics, economics, careers and practical education, and I am particularly interested in business and finance. I am in the high school graduating class of 2028, and look to apply to the UK, the United States and wider Europe to pursue a career in finance.",
+      TEAM_CONSENT_RECORDED ? veerIntroWithSchool : veerIntro,
       "Through my academic and extracurricular experiences, including the Harvard Secondary School Program in Microeconomics, an internship at one of the largest college investment funds globally, and articulating essays to answer economic queries far beyond the classroom, I have developed an interest in understanding how education can better prepare young people for the world beyond school and exams.",
       "I founded FutureWise because I noticed that students, including myself, often receive strong academic preparation but have fewer opportunities to learn about different industries, career pathways, financial literacy and independent adulthood in a practical and accessible way.",
       "Through FutureWise, I aim to make practical knowledge more accessible to young people and help students make more informed decisions about their futures. The project initially focuses on students in Oman, with the long-term goal of growing our impact further into the GCC and beyond.",
@@ -51,9 +83,9 @@ const team = [
   {
     name: "William Darker",
     role: "Head of Content Creation",
-    photo: williamDarkerPhoto,
+    photo: TEAM_CONSENT_RECORDED ? williamDarkerPhoto : null,
     bio: [
-      "My name is William Darker, a Year 12 student with a passionate interest in economic and personal wellbeing. Having composed numerous essays on both analytical philosophy & practical ethics, I aim to eventually refine & contribute my interests to the world through a degree of Physics & Philosophy.",
+      TEAM_CONSENT_RECORDED ? williamIntroWithSchool : williamIntro,
       "My primary role in FutureWise is as the foremost columnist for The Practical Skills Guide; a personal project I had previously created out of frustration at the lack of resources provided for soon-to-be solo living students.",
       "As a result, I orchestrated this guidebook for independent living to provide students like myself with a clear, concise, all in one place manual for everything one may need to fulfill their independent lives to the greatest extent.",
     ],
@@ -226,7 +258,17 @@ function TeamSection() {
 
           return (
             <article key={member.name} className="min-w-0">
-              {member.photo ? (
+              {!TEAM_CONSENT_RECORDED ? (
+                // No photo without written consent: initials (the name is in the heading below).
+                <div
+                  aria-hidden="true"
+                  className="flex aspect-[3/4] items-center justify-center bg-light-grey"
+                >
+                  <span className="font-display text-6xl font-bold text-navy">
+                    {initials(member.name)}
+                  </span>
+                </div>
+              ) : member.photo ? (
                 <img
                   src={member.photo}
                   alt={member.name}

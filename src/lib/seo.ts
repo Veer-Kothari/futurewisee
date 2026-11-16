@@ -13,10 +13,32 @@ export function clip(text: string, max = 155): string {
   return `${(lastSpace > 60 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.–—-]+$/, "")}…`;
 }
 
-/** "[Page] — FutureWise" (≤ 60 characters); the home page passes its full title. */
+const TITLE_MAX = 60;
+
+/**
+ * "[Page] — FutureWise" (≤ 60 characters); the home page passes its full title.
+ * A page title that only fits on its own is kept whole, without the suffix. A
+ * page title over 60 characters is cut at a word boundary with "…" (never
+ * mid-word), keeping " — FutureWise" whenever a word of the title still fits.
+ */
 export function pageTitle(page: string): string {
   const full = `${page} — ${site.name}`;
-  return full.length <= 60 ? full : page.slice(0, 60);
+  if (full.length <= TITLE_MAX) return full;
+  if (page.length <= TITLE_MAX) return page;
+  const title = page.replace(/\s+/g, " ").trim();
+  const suffix = ` — ${site.name}`;
+  const short = clipToWords(title, TITLE_MAX - suffix.length);
+  if (short) return `${short}${suffix}`;
+  return clipToWords(title, TITLE_MAX) ?? `${title.slice(0, TITLE_MAX - 1)}…`;
+}
+
+/** The whole words of `text` that fit in `max` characters with a closing "…" (null if none do). */
+function clipToWords(text: string, max: number): string | null {
+  if (text.length <= max) return text;
+  const end = text.lastIndexOf(" ", max - 1);
+  if (end <= 0) return null;
+  const kept = text.slice(0, end).replace(/[\s,;:.–—-]+$/, "");
+  return kept ? `${kept}…` : null;
 }
 
 type SeoOptions = {

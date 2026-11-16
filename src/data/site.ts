@@ -3,14 +3,14 @@
  *
  * siteUrl must equal the address the site is actually published at (no
  * trailing slash): canonicals, the sitemap, robots.txt, llms.txt, share
- * previews and structured data use it. It is the custom domain (Herdy, 23 Oct
- * 2026): connect futurewiseapp.org in Lovable with the bare domain as primary
- * (www redirects to it) before publishing this. If www is made primary instead,
- * change this to https://www.futurewiseapp.org, or the two redirect in a loop.
+ * previews and structured data use it. It is the custom domain's primary
+ * address: www.futurewiseapp.org is primary on Vercel and the bare domain
+ * redirects to it (checked 16 Nov 2026). If the bare domain is made primary
+ * again, change this back to https://futurewiseapp.org.
  */
 export const site = {
   name: "FutureWise",
-  siteUrl: "https://futurewiseapp.org",
+  siteUrl: "https://www.futurewiseapp.org",
   tagline: "Practical knowledge for life beyond school.",
   description:
     "FutureWise helps high school students in Oman aged 15-19 explore careers, industries, money, and independent adulthood.",

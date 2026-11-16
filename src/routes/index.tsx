@@ -99,13 +99,14 @@ function Index() {
     <>
       <section className="border-b border-border bg-background">
         <div className="site-container grid gap-14 py-16 sm:py-20 lg:min-h-[38rem] lg:grid-cols-[1fr_0.85fr] lg:items-center lg:py-24">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl font-bold leading-[1.08] text-navy sm:text-5xl lg:text-6xl">
+          <div className="min-w-0 max-w-3xl">
+            <h1 className="text-4xl font-bold leading-[1.08] text-navy sm:text-5xl lg:text-[3.375rem] xl:text-6xl">
               Practical knowledge for life beyond school.
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-charcoal/80 sm:text-xl">
-              FutureWise gives students aged 15–19 in Oman clear introductions to industries,
-              personal finance, and the everyday responsibilities of independent adulthood.
+              FutureWise gives students aged <span className="whitespace-nowrap">15–19</span> in
+              Oman clear introductions to industries, personal finance, and the everyday
+              responsibilities of independent adulthood.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Button asChild variant="survey" size="lg" className="h-11">

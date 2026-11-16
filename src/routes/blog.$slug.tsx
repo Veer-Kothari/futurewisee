@@ -6,14 +6,23 @@ import { VideoEmbed } from "@/components/content/video-embed";
 import { absoluteUrl, site } from "@/data/site";
 import { BLOG_CATEGORIES } from "@/lib/content-schema";
 import { formatDate, getPublishedPost, listPublishedPosts } from "@/lib/content";
+import { linkRelatedArticles } from "@/lib/related-articles";
 import { clip, pageTitle, seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
     const post = await getPublishedPost(params.slug);
     if (!post) throw notFound();
-    const sameCategory = await listPublishedPosts({ category: post.category, limit: 4 });
-    return { post, related: sameCategory.filter((entry) => entry.id !== post.id).slice(0, 3) };
+    const [sameCategory, published] = await Promise.all([
+      listPublishedPosts({ category: post.category, limit: 4 }),
+      listPublishedPosts(),
+    ]);
+    return {
+      post,
+      related: sameCategory.filter((entry) => entry.id !== post.id).slice(0, 3),
+      // Titles and addresses of published posts, for the "Related FutureWise articles:" line.
+      articles: published.map(({ slug, title }) => ({ slug, title })),
+    };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -53,7 +62,7 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function BlogPostPage() {
-  const { post, related } = Route.useLoaderData();
+  const { post, related, articles } = Route.useLoaderData();
   const category = BLOG_CATEGORIES.find((entry) => entry.slug === post.category);
 
   return (
@@ -96,7 +105,7 @@ function BlogPostPage() {
               <VideoEmbed url={post.video_url} title={post.title} />
             </div>
           ) : null}
-          <Markdown source={post.body} />
+          <Markdown source={linkRelatedArticles(post.body, articles, post.slug)} />
         </div>
 
         <div className="mx-auto mt-14 max-w-[700px]">

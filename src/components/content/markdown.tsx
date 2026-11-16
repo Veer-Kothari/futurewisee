@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Fragment } from "react";
 
+import { isBrokenLink } from "@/data/broken-links";
 import { outlineHeadings, parseMarkdownLite, type MdBlock, type MdInline } from "@/lib/markdown";
 import { cn } from "@/lib/utils";
 
@@ -111,6 +112,14 @@ function Inline({ nodes }: { nodes: MdInline[] }) {
               </em>
             );
           case "link":
+            // An outside address that no longer works keeps its text, without the link (broken-links.ts).
+            if (isBrokenLink(node.href)) {
+              return (
+                <Fragment key={index}>
+                  <Inline nodes={node.children} />
+                </Fragment>
+              );
+            }
             return node.href.startsWith("/") ? (
               <Link key={index} to={node.href}>
                 <Inline nodes={node.children} />

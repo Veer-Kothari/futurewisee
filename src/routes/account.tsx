@@ -1,4 +1,4 @@
-import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Link, createFileRoute, getRouteApi, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
 
 import { AccountsUnavailable } from "@/components/auth/auth-card";
@@ -16,6 +16,8 @@ import { formatDate } from "@/lib/content";
 import { fetchAll } from "@/lib/fetch-all";
 import { privateHead } from "@/lib/seo";
 import { getSupabase } from "@/lib/supabase/client";
+
+const rootApi = getRouteApi("__root__");
 
 export const Route = createFileRoute("/account")({
   validateSearch: (search: Record<string, unknown>): { welcome?: 1 } =>
@@ -37,6 +39,10 @@ type MyResponse = {
 function AccountPage() {
   const auth = useAuth();
   const { welcome } = Route.useSearch();
+  // Deleting an account and changing the email choice run on the server with the
+  // database's service-role key. Where it isn't set up (integrations.accounts is
+  // false), those controls aren't offered.
+  const { integrations } = rootApi.useLoaderData();
 
   if (auth.status === "loading") {
     return (
@@ -96,9 +102,9 @@ function AccountPage() {
 
       <div className="site-container grid gap-10 py-14 lg:grid-cols-[1fr_1fr]">
         <ProfileSection />
-        <EmailSection />
+        <EmailSection available={integrations.accounts} />
         <AnswersSection />
-        <DataSection />
+        <DataSection canDelete={integrations.accounts} />
       </div>
     </>
   );
@@ -167,11 +173,22 @@ function ProfileSection() {
   );
 }
 
-function EmailSection() {
+function EmailSection({ available }: { available: boolean }) {
   const auth = useAuth();
   const optedIn = auth.profile?.marketing_opt_in ?? false;
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+
+  if (!available) {
+    return (
+      <Panel title="Email updates">
+        <p className="text-sm leading-6 text-charcoal/80">
+          Changing your email choice isn't available on this web address yet. To stop FutureWise
+          emails, use the unsubscribe link in any email.
+        </p>
+      </Panel>
+    );
+  }
 
   async function change(next: boolean) {
     setBusy(true);
@@ -291,7 +308,7 @@ function AnswersSection() {
   );
 }
 
-function DataSection() {
+function DataSection({ canDelete }: { canDelete: boolean }) {
   const auth = useAuth();
   const navigate = useNavigate();
   const [confirm, setConfirm] = useState("");
@@ -410,27 +427,37 @@ function DataSection() {
             Sign out
           </Button>
         </div>
-        <form onSubmit={remove} noValidate className="space-y-3 border-t border-border pt-6">
-          <h3 className="font-semibold text-navy">Delete your account</h3>
-          <p className="text-sm leading-6 text-charcoal/80">
-            This removes your account, your details and the survey answers saved to it. It can't be
-            undone.
-          </p>
-          <Label htmlFor="delete-confirm">Type DELETE to confirm</Label>
-          <Input
-            id="delete-confirm"
-            value={confirm}
-            onChange={(event) => setConfirm(event.target.value)}
-            autoComplete="off"
-            className="h-11"
-          />
-          <Button type="submit" variant="destructive" disabled={busy !== null} className="h-11">
-            {busy === "delete" ? "Deleting…" : "Delete my account"}
-          </Button>
-          <p role="alert" className="text-sm text-destructive">
-            {message}
-          </p>
-        </form>
+        {canDelete ? (
+          <form onSubmit={remove} noValidate className="space-y-3 border-t border-border pt-6">
+            <h3 className="font-semibold text-navy">Delete your account</h3>
+            <p className="text-sm leading-6 text-charcoal/80">
+              This removes your account, your details and the survey answers saved to it. It can't
+              be undone.
+            </p>
+            <Label htmlFor="delete-confirm">Type DELETE to confirm</Label>
+            <Input
+              id="delete-confirm"
+              value={confirm}
+              onChange={(event) => setConfirm(event.target.value)}
+              autoComplete="off"
+              className="h-11"
+            />
+            <Button type="submit" variant="destructive" disabled={busy !== null} className="h-11">
+              {busy === "delete" ? "Deleting…" : "Delete my account"}
+            </Button>
+            <p role="alert" className="text-sm text-destructive">
+              {message}
+            </p>
+          </form>
+        ) : (
+          <div className="space-y-3 border-t border-border pt-6">
+            <h3 className="font-semibold text-navy">Delete your account</h3>
+            <p className="text-sm leading-6 text-charcoal/80">
+              Deleting your account isn't available on this web address yet. Email {site.email} and
+              we'll delete it for you.
+            </p>
+          </div>
+        )}
       </div>
     </Panel>
   );
