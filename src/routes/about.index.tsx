@@ -3,9 +3,7 @@ import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import veerKothariPhotoAsset from "@/assets/team/veer-kothari-portrait.png.asset.json";
-// "?inline" keeps William's photo out of the rendered page while his consent
-// flag is false. Veer's uploaded portrait has separate recorded consent.
-import williamDarkerPhoto from "@/assets/team/william-darker.jpg?inline";
+import williamDarkerPhotoAsset from "@/assets/team/william-darker-portrait.jpeg.asset.json";
 
 import { Button } from "@/components/ui/button";
 import { site } from "@/data/site";
@@ -41,9 +39,8 @@ const tabs = [
 /**
  * Written parent/guardian consent for the team's photos and school details.
  * Both team members are under 18. Photos are only assigned to members whose
- * consent is recorded. This flag controls William's photo and both full bios.
- * While it is false, the bios leave out the school, city, year group and
- * graduating class, and members without an approved photo show initials.
+ * consent is recorded. This flag controls both full bios. While it is false,
+ * the bios leave out the school, city, year group and graduating class.
  */
 const TEAM_CONSENT_RECORDED = false;
 
@@ -80,7 +77,7 @@ const team = [
   {
     name: "William Darker",
     role: "Head of Content Creation",
-    photo: TEAM_CONSENT_RECORDED ? williamDarkerPhoto : null,
+    photo: williamDarkerPhotoAsset.url,
     bio: [
       TEAM_CONSENT_RECORDED ? williamIntroWithSchool : williamIntro,
       "My primary role in FutureWise is as the foremost columnist for The Practical Skills Guide; a personal project I had previously created out of frustration at the lack of resources provided for soon-to-be solo living students.",
