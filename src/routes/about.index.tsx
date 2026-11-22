@@ -2,11 +2,9 @@ import { createFileRoute, Link, useRouterState } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
-// "?inline": an image imported the normal way is copied into every build even when
-// unused, so the photos would stay public. Inline, they are left out while
-// TEAM_CONSENT_RECORDED is false. Once it is true they are embedded in this
-// page's script; removing "?inline" then serves them as separate files again.
-import veerKothariPhoto from "@/assets/team/veer-kothari.jpg?inline";
+import veerKothariPhotoAsset from "@/assets/team/veer-kothari-portrait.png.asset.json";
+// "?inline" keeps William's photo out of the rendered page while his consent
+// flag is false. Veer's uploaded portrait has separate recorded consent.
 import williamDarkerPhoto from "@/assets/team/william-darker.jpg?inline";
 
 import { Button } from "@/components/ui/button";
@@ -42,11 +40,10 @@ const tabs = [
 
 /**
  * Written parent/guardian consent for the team's photos and school details.
- * Both team members are under 18. Herdy sets this to true only once that
- * written consent is on record. While it is false, The Team shows initials
- * instead of photos, and the bios leave out the school, city, year group and
- * graduating class. The photos and the full bios stay in the repo; a build
- * with this set to false doesn't use them.
+ * Both team members are under 18. Photos are only assigned to members whose
+ * consent is recorded. This flag controls William's photo and both full bios.
+ * While it is false, the bios leave out the school, city, year group and
+ * graduating class, and members without an approved photo show initials.
  */
 const TEAM_CONSENT_RECORDED = false;
 
@@ -72,7 +69,7 @@ const team = [
   {
     name: "Veer Kothari",
     role: "Founder & Project Lead",
-    photo: TEAM_CONSENT_RECORDED ? veerKothariPhoto : null,
+    photo: veerKothariPhotoAsset.url,
     bio: [
       TEAM_CONSENT_RECORDED ? veerIntroWithSchool : veerIntro,
       "Through my academic and extracurricular experiences, including the Harvard Secondary School Program in Microeconomics, an internship at one of the largest college investment funds globally, and articulating essays to answer economic queries far beyond the classroom, I have developed an interest in understanding how education can better prepare young people for the world beyond school and exams.",
@@ -258,8 +255,15 @@ function TeamSection() {
 
           return (
             <article key={member.name} className="min-w-0">
-              {!TEAM_CONSENT_RECORDED ? (
-                // No photo without written consent: initials (the name is in the heading below).
+              {member.photo ? (
+                <img
+                  src={member.photo}
+                  alt={member.name}
+                  loading="lazy"
+                  className="aspect-[3/4] w-full object-cover object-top"
+                />
+              ) : !TEAM_CONSENT_RECORDED ? (
+                // No approved photo: initials (the name is in the heading below).
                 <div
                   aria-hidden="true"
                   className="flex aspect-[3/4] items-center justify-center bg-light-grey"
@@ -268,13 +272,6 @@ function TeamSection() {
                     {initials(member.name)}
                   </span>
                 </div>
-              ) : member.photo ? (
-                <img
-                  src={member.photo}
-                  alt={member.name}
-                  loading="lazy"
-                  className="aspect-[3/4] w-full object-cover object-top"
-                />
               ) : (
                 <div className="flex aspect-[3/4] items-center justify-center bg-light-grey">
                   <span className="text-sm font-medium text-charcoal/70">Photo coming soon</span>
