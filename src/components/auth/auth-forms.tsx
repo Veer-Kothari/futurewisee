@@ -9,6 +9,7 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { site } from "@/data/site";
 import { authRedirectBase } from "@/lib/auth";
 import { getSupabase } from "@/lib/supabase/client";
+import { USER_TYPES, type UserType } from "@/lib/user-type";
 import { cn } from "@/lib/utils";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -39,7 +40,7 @@ export function authErrorMessage(error: AuthError | Error | null | undefined): s
   return "That didn't work. Please try again.";
 }
 
-type FieldErrors = Partial<Record<"name" | "email" | "password" | "age", string>>;
+type FieldErrors = Partial<Record<"name" | "email" | "password" | "userType" | "age", string>>;
 
 function FieldError({ id, message }: { id: string; message: string | undefined }) {
   if (!message) return null;
@@ -67,9 +68,9 @@ function FormAlert({ message }: { message: string }) {
 export type SignUpOutcome = { needsConfirmation: boolean; email: string };
 
 /**
- * Create an account: name, email, password, the age confirmation (16+, or a
- * parent/guardian agreed — also enforced by the database) and an optional
- * email-updates choice. `beforeSignUp` lets the survey save its answers first.
+ * Create an account: name, email, password, who they are (student, parent or
+ * organization), the age confirmation (16+, or a parent/guardian agreed — also
+ * enforced by the database) and an optional email-updates choice. `beforeSignUp` lets the survey save its answers first.
  * `emailUpdates="included"` (Get Involved): signing up is joining the email
  * list, so the choice isn't offered and the page says so above the form.
  */
@@ -93,6 +94,7 @@ export function SignUpForm({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState<UserType | null>(null);
   const [age, setAge] = useState(false);
   const [marketing, setMarketing] = useState(emailUpdates === "included");
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -107,6 +109,7 @@ export function SignUpForm({
     name: useRef<HTMLInputElement>(null),
     email: useRef<HTMLInputElement>(null),
     password: useRef<HTMLInputElement>(null),
+    userType: useRef<HTMLInputElement>(null),
     age: useRef<HTMLInputElement>(null),
   };
 
@@ -116,6 +119,7 @@ export function SignUpForm({
     else if (name.trim().length > 120) next.name = "Use 120 characters or fewer.";
     if (!EMAIL.test(email.trim())) next.email = "Enter a valid email address.";
     if (password.length < MIN_PASSWORD) next.password = `Use at least ${MIN_PASSWORD} characters.`;
+    if (!userType) next.userType = "Choose the option that describes you.";
     if (!age) next.age = "Please confirm this to create an account.";
     return next;
   }
@@ -125,7 +129,9 @@ export function SignUpForm({
     const found = validate();
     setErrors(found);
     setFormError("");
-    const first = (["name", "email", "password", "age"] as const).find((key) => found[key]);
+    const first = (["name", "email", "password", "userType", "age"] as const).find(
+      (key) => found[key],
+    );
     if (first) {
       setFormError("Please fix the highlighted fields.");
       refs[first].current?.focus();
@@ -150,7 +156,12 @@ export function SignUpForm({
         email: email.trim(),
         password,
         options: {
-          data: { full_name: name.trim(), age_confirmed: true, marketing_opt_in: marketing },
+          data: {
+            full_name: name.trim(),
+            user_type: userType,
+            age_confirmed: true,
+            marketing_opt_in: marketing,
+          },
           emailRedirectTo: `${authRedirectBase(site.siteUrl)}/account?welcome=1`,
         },
       });
@@ -216,6 +227,41 @@ export function SignUpForm({
         </p>
         <FieldError id={`${id}-password-error`} message={errors.password} />
       </div>
+
+      <fieldset
+        role="radiogroup"
+        aria-required="true"
+        aria-invalid={Boolean(errors.userType)}
+        aria-describedby={describedBy("userType")}
+        className="space-y-2"
+      >
+        <legend className="text-sm font-medium leading-none">I am a…</legend>
+        <div className="grid gap-2 sm:grid-cols-3">
+          {USER_TYPES.map((type, index) => (
+            <label
+              key={type.value}
+              htmlFor={`${id}-type-${type.value}`}
+              className={cn(
+                "flex min-h-11 cursor-pointer items-center gap-3 border px-3 text-sm text-charcoal",
+                userType === type.value ? "border-navy bg-light-blue" : "border-border",
+              )}
+            >
+              <input
+                ref={index === 0 ? refs.userType : undefined}
+                id={`${id}-type-${type.value}`}
+                type="radio"
+                name={`${id}-type`}
+                value={type.value}
+                checked={userType === type.value}
+                onChange={() => setUserType(type.value)}
+                className="size-4 shrink-0 accent-[var(--navy)]"
+              />
+              {type.label}
+            </label>
+          ))}
+        </div>
+        <FieldError id={`${id}-userType-error`} message={errors.userType} />
+      </fieldset>
 
       <div className="space-y-1">
         <label

@@ -4,6 +4,7 @@ import { downloadFile, toCsv } from "@/components/admin/admin-utils";
 import { Button } from "@/components/ui/button";
 import { listSignups, type Signup } from "@/lib/admin.functions";
 import { formatDate } from "@/lib/content";
+import { userTypeLabel } from "@/lib/user-type";
 
 const SHOWN = 100;
 
@@ -34,6 +35,7 @@ export function SignupsPanel() {
     const csv = toCsv(
       signups.map((row) => ({
         ...row,
+        user_type: userTypeLabel(row.user_type),
         email_confirmed: row.email_confirmed ? "Yes" : "No",
         email_updates: row.email_updates ? "Yes" : "No",
       })),
@@ -41,6 +43,7 @@ export function SignupsPanel() {
         ["signed_up", "Signed up"],
         ["name", "Name"],
         ["email", "Email"],
+        ["user_type", "Type"],
         ["email_confirmed", "Email confirmed"],
         ["email_updates", "Email updates"],
       ],
@@ -81,6 +84,7 @@ export function SignupsPanel() {
             <tr>
               <th className="p-3 font-semibold">Name</th>
               <th className="p-3 font-semibold">Email</th>
+              <th className="p-3 font-semibold">Type</th>
               <th className="p-3 font-semibold">Signed up</th>
               <th className="p-3 font-semibold">Confirmed</th>
               <th className="p-3 font-semibold">Email updates</th>
@@ -91,6 +95,7 @@ export function SignupsPanel() {
               <tr key={`${row.email}-${row.signed_up}`} className="border-t border-border">
                 <td className="p-3 font-medium text-navy">{row.name || "—"}</td>
                 <td className="p-3">{row.email}</td>
+                <td className="p-3">{userTypeLabel(row.user_type) || "—"}</td>
                 <td className="p-3 whitespace-nowrap">{formatDate(row.signed_up)}</td>
                 <td className="p-3">{row.email_confirmed ? "Yes" : "No"}</td>
                 <td className="p-3">{row.email_updates ? "Yes" : "No"}</td>

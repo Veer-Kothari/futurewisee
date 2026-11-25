@@ -23,6 +23,8 @@ const BASE = "https://api.kit.com/v4";
 /** Kit requires this when adding to a form by id; it is only shown in Kit's reports. */
 const REFERRER = "https://futurewiseapp.org/";
 
+import type { UserType } from "@/lib/user-type";
+
 type Config = { key: string; formId: string };
 type Answer = { status: number; ok: boolean; json: Record<string, unknown> | null };
 
@@ -31,6 +33,21 @@ export const KIT_TAGS = {
   account: "account",
   survey: "survey-completed",
 } as const;
+
+/** One tag per kind of account, for segments and automations in Kit. */
+export const KIT_ROLE_TAGS: Record<UserType, string> = {
+  student: "role-student",
+  parent: "role-parent",
+  organization: "role-organization",
+};
+
+/** The tags an account gets. No role tag for accounts made before the question existed. */
+export function accountTags(account: { userType: UserType | null; hasSurvey: boolean }): string[] {
+  const tags: string[] = [KIT_TAGS.account];
+  if (account.userType) tags.push(KIT_ROLE_TAGS[account.userType]);
+  if (account.hasSurvey) tags.push(KIT_TAGS.survey);
+  return tags;
+}
 
 function config(): Config | null {
   const env = typeof process !== "undefined" && process.env ? process.env : undefined;

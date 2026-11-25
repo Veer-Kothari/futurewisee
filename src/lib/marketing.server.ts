@@ -24,8 +24,9 @@
  * The database columns and lock functions keep their mailchimp_ names (no
  * migration was needed to move to Kit); they hold the Kit sync state.
  */
-import { KIT_TAGS, kitConfigured, kitOptIn, kitOptOut } from "@/lib/kit.server";
+import { accountTags, kitConfigured, kitOptIn, kitOptOut } from "@/lib/kit.server";
 import { getSupabaseAdmin } from "@/lib/supabase/admin.server";
+import type { UserType } from "@/lib/user-type";
 
 type ProfileSyncRow = {
   marketing_opt_in: boolean;
@@ -34,6 +35,7 @@ type ProfileSyncRow = {
   mailchimp_synced_choice: boolean | null;
   mailchimp_survey_tagged: boolean;
   mailchimp_resubscribe_pending: boolean;
+  user_type: UserType | null;
 };
 
 type Db = NonNullable<ReturnType<typeof getSupabaseAdmin>>;
@@ -46,9 +48,9 @@ export type ReconcileResult = {
 };
 
 const SYNC_COLUMNS =
-  "marketing_opt_in, marketing_version, mailchimp_member, mailchimp_synced_choice, mailchimp_survey_tagged, mailchimp_resubscribe_pending";
-/** Longer than one round (up to 6 Kit calls × 8 s + database calls); renewed every round. */
-const LEASE_SECONDS = 75;
+  "marketing_opt_in, marketing_version, mailchimp_member, mailchimp_synced_choice, mailchimp_survey_tagged, mailchimp_resubscribe_pending, user_type";
+/** Longer than one round (up to 8 Kit calls × 8 s + database calls); renewed every round. */
+const LEASE_SECONDS = 95;
 const MAX_ROUNDS = 3;
 const MAX_PASSES = 3;
 const DEADLINE_MS = 30_000;
@@ -172,8 +174,7 @@ async function syncPass(
     let refused = false;
     let member = profile.mailchimp_member;
     if (choice) {
-      const tags: string[] = [KIT_TAGS.account];
-      if (hasSurvey) tags.push(KIT_TAGS.survey);
+      const tags = accountTags({ userType: profile.user_type, hasSurvey });
       const result = await kitOptIn(email, tags, { resubscribe });
       remoteOk = result.ok;
       refused = result.refused;

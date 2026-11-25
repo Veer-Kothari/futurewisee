@@ -344,6 +344,7 @@ if (files.length === 0) {
       for (const column of [
         "id",
         "age_confirmed",
+        "user_type",
         "marketing_opt_in",
         "mailchimp_synced_at",
         "mailchimp_survey_tagged",
@@ -879,6 +880,30 @@ if (files.length === 0) {
           ).rows[0];
           assert.equal(row.marketing_opt_in, false, JSON.stringify(value));
         }
+      },
+    );
+    await t.test(
+      "user type: only the three choices are stored, and it's never required",
+      async () => {
+        const cases = [
+          ["student", "student"],
+          ["parent", "parent"],
+          ["organization", "organization"],
+          ["Student", null],
+          ["admin", null],
+          ["", null],
+          [1, null],
+          [null, null],
+          [undefined, null],
+        ];
+        for (const [index, [value, stored]] of cases.entries()) {
+          const id = `00000000-0000-4000-8000-0000000002${String(index).padStart(2, "0")}`;
+          await signup(id, `type${index}@example.org`, { age_confirmed: true, user_type: value });
+          const row = (await db.query("select user_type from public.profiles where id=$1", [id]))
+            .rows[0];
+          assert.equal(row.user_type, stored, JSON.stringify(value));
+        }
+        await constraint("update public.profiles set user_type='other' where id=$1", [A]);
       },
     );
     await t.test("visitors can't call the role helper; signed-in users can", async () => {

@@ -83,6 +83,22 @@ test("a new address starts unconfirmed, is tagged, then joins the form last", as
   assert.equal(typeof f.calls[3]?.body["referrer"], "string");
 });
 
+test("an account gets one role tag, and none when the type is unknown", async (t) => {
+  const { accountTags } = await load(t);
+  for (const type of ["student", "parent", "organization"]) {
+    assert.deepEqual(accountTags({ userType: type, hasSurvey: false }), [
+      "account",
+      `role-${type}`,
+    ]);
+  }
+  assert.deepEqual(accountTags({ userType: null, hasSurvey: false }), ["account"]);
+  assert.deepEqual(accountTags({ userType: "parent", hasSurvey: true }), [
+    "account",
+    "role-parent",
+    "survey-completed",
+  ]);
+});
+
 test("a failed tag sends no confirmation, so retries can't repeat the email", async (t) => {
   const kit = await load(t);
   let tagsWork = false;

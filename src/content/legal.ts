@@ -2,7 +2,7 @@ import type { LegalDoc } from "./types";
 
 export const privacyPolicy: LegalDoc = {
   title: "Privacy Policy",
-  updated: "2026-11-07",
+  updated: "2026-11-24",
   intro: [
     "FutureWise is a student-led educational project for high school students in Oman, aged about 15–19. Parents and educators also use it. It is not a registered company or charity.",
     "This policy explains what information we collect and how we use it. For privacy requests or questions, email partners@futurewiseapp.org.",
@@ -12,8 +12,8 @@ export const privacyPolicy: LegalDoc = {
       id: "accounts",
       heading: "What do we collect for an account?",
       paragraphs: [
-        "We collect your name, email address, confirmation that you are 16 or older or have a parent’s or guardian’s agreement, and your choice about email updates. Your password is handled by the sign-in provider. FutureWise never sees it.",
-        "We use this information to let you sign in, save your survey answers and send emails if you choose them. Database and sign-in services run on Lovable Cloud, which is built on Supabase.",
+        "We collect your name, email address, whether you are a student, parent or organization, confirmation that you are 16 or older or have a parent’s or guardian’s agreement, and your choice about email updates. Your password is handled by the sign-in provider. FutureWise never sees it.",
+        "We use this information to let you sign in, save your survey answers, understand who uses FutureWise and send emails if you choose them. Database and sign-in services run on Lovable Cloud, which is built on Supabase.",
       ],
     },
     {
@@ -39,7 +39,7 @@ export const privacyPolicy: LegalDoc = {
       heading: "When will we email you?",
       paragraphs: [
         "We use Kit (kit.com) for email updates. Signing up on the Get Involved page includes them: emails with FutureWise content, resources and partner information. You can also choose them by ticking the box when you create an account elsewhere, on the Account page, or through the newsletter form.",
-        "Kit sends a confirmation email first. You need to confirm before receiving updates. This is called double opt-in. Once you confirm, FutureWise may send a short series of follow-up emails with updates and resources.",
+        "Kit sends a confirmation email first. You need to confirm before receiving updates. This is called double opt-in. Once you confirm, FutureWise may send a short series of follow-up emails with updates and resources. If you have an account, we label your address in Kit as student, parent or organization so the emails we send can fit you.",
         "Every email has an unsubscribe link. Unticking the email-updates setting on the Account page also unsubscribes you. Once you unsubscribe, emails can't be restarted from this site: email partners@futurewiseapp.org if you want them back. To delete your Kit data, email partners@futurewiseapp.org.",
       ],
     },

@@ -327,7 +327,7 @@ function DataSection({ canDelete }: { canDelete: boolean }) {
       const [profile, responses, clicks] = await Promise.all([
         supabase
           .from("profiles")
-          .select("full_name, marketing_opt_in, age_confirmed, created_at")
+          .select("full_name, user_type, marketing_opt_in, age_confirmed, created_at")
           .eq("id", userId)
           .maybeSingle()
           .then(({ data, error }) => {

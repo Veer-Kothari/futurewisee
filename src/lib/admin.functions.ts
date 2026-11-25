@@ -2,10 +2,13 @@ import { createServerFn } from "@tanstack/react-start";
 
 import { attachAuthToken } from "@/lib/supabase/auth-attach";
 import { resolveUser } from "@/lib/supabase/auth-resolve";
+import type { UserType } from "@/lib/user-type";
 
 export type Signup = {
   name: string;
   email: string;
+  /** null for accounts made before the question existed. */
+  user_type: UserType | null;
   signed_up: string;
   email_confirmed: boolean;
   email_updates: boolean;
@@ -62,17 +65,21 @@ export const listSignups = createServerFn({ method: "POST" })
         if (data.users.length < 1000) break;
       }
 
-      const profiles = new Map<string, { full_name: string; marketing_opt_in: boolean }>();
+      const profiles = new Map<
+        string,
+        { full_name: string; marketing_opt_in: boolean; user_type: UserType | null }
+      >();
       for (let from = 0; ; from += 1000) {
         const { data, error } = await db
           .from("profiles")
-          .select("id, full_name, marketing_opt_in")
+          .select("id, full_name, marketing_opt_in, user_type")
           .range(from, from + 999);
         if (error) return { ok: false, reason: "error" };
         for (const row of data as Array<{
           id: string;
           full_name: string;
           marketing_opt_in: boolean;
+          user_type: UserType | null;
         }>) {
           profiles.set(row.id, row);
         }
@@ -83,6 +90,7 @@ export const listSignups = createServerFn({ method: "POST" })
         .map((user) => ({
           name: profiles.get(user.id)?.full_name ?? "",
           email: user.email,
+          user_type: profiles.get(user.id)?.user_type ?? null,
           signed_up: user.created_at,
           email_confirmed: user.confirmed,
           email_updates: profiles.get(user.id)?.marketing_opt_in ?? false,

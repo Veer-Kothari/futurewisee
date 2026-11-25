@@ -38,9 +38,10 @@ const tabs = [
 
 /**
  * Written parent/guardian consent for the team's photos and school details.
- * Both team members are under 18. Photos are only assigned to members whose
- * consent is recorded. This flag controls both full bios. While it is false,
- * the bios leave out the school, city, year group and graduating class.
+ * Both team members are under 18. While this is false, initials show instead of
+ * the photos, and the bios leave out the school, city, year group and
+ * graduating class. Before turning it on: the photos are stored on Lovable's
+ * hosting (/__l5e/…), so they 404 on Vercel until they are moved into the repo.
  */
 const TEAM_CONSENT_RECORDED = false;
 
@@ -66,7 +67,7 @@ const team = [
   {
     name: "Veer Kothari",
     role: "Founder & Project Lead",
-    photo: veerKothariPhotoAsset.url,
+    photo: TEAM_CONSENT_RECORDED ? veerKothariPhotoAsset.url : null,
     bio: [
       TEAM_CONSENT_RECORDED ? veerIntroWithSchool : veerIntro,
       "Through my academic and extracurricular experiences, including the Harvard Secondary School Program in Microeconomics, an internship at one of the largest college investment funds globally, and articulating essays to answer economic queries far beyond the classroom, I have developed an interest in understanding how education can better prepare young people for the world beyond school and exams.",
@@ -77,7 +78,7 @@ const team = [
   {
     name: "William Darker",
     role: "Head of Content Creation",
-    photo: williamDarkerPhotoAsset.url,
+    photo: TEAM_CONSENT_RECORDED ? williamDarkerPhotoAsset.url : null,
     bio: [
       TEAM_CONSENT_RECORDED ? williamIntroWithSchool : williamIntro,
       "My primary role in FutureWise is as the foremost columnist for The Practical Skills Guide; a personal project I had previously created out of frustration at the lack of resources provided for soon-to-be solo living students.",
